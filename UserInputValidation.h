@@ -12,32 +12,35 @@ class UserInputValidation
 	// movement
 	// player actions - view map, view health, view rules
 	private:
-		string playerMove;
+		char playerMove;
 		string playerAction;
 
+	public:
 		// WASD is player movement - W (up), A (left), S (down), D (right)
-		enum Move
+		// Set to their ASCII Values
+		enum class Move
 		{
-			W,A,S,D
+			W = 'W',
+			A = 'A',
+			S = 'S',
+			D = 'D'
 		};
 		// Constants for player actions
-		enum Action
+		enum class Action
 		{
 			RULES, INV, MAP
 		};
-
-	public:
 		// Call Setters inside check functions in .cpp
 		// Only set player moves/actions to valid ones
-		bool CheckValidMove(string playerMove);
-		bool CheckValidAction(string playerAction);
+		bool CheckValidMove(Move);
+		bool CheckValidAction(Action);
 
 		// Player Move Setter/Getters
 		Move GetPlayerMove();
-		void SetPlayerMove();
+		void SetPlayerMove(Move move);
 
 		// Player Actions Setter/Getters
 		Action GetPlayerAction();
-		void SetPlayerAction(); 
+		void SetPlayerAction(Action action); 
 };
 
