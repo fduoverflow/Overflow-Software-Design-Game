@@ -14,10 +14,12 @@ Chunk can either be valid or invalid, noting it's ability for a player to move o
 */
 class Chunk
 {
-private:
-	Tile tiles[ROW_SIZE][COLUMN_SIZE];
-public:
-	Chunk();
-	Tile getTileAt(int, int);
+	private:
+		Tile tiles[ROW_SIZE][COLUMN_SIZE];
+
+	public:
+		Chunk(ChunkType);
+		void DisplayChunk();
+		Tile getTileAt(int, int);
 };
 
