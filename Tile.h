@@ -2,6 +2,8 @@
 #include <string>
 using namespace std;
 
+const string TILE_DISPLAY = "  ";
+
 /*
 Tile class will hold information for 1 specific tile in the Map
 Tile can also be "out of bounds" as a description
@@ -18,14 +20,9 @@ class Tile
 	public:
 		// Description Setter/Getters
 		string GetDescription();
-		void SetDescription();
+		void SetDescription(string desc);
+		void DisplayTile();
 
-		// Row Setter/Getters
-		int GetRow();
-		void setRow();
-
-		// Column Setter/Getters
-		int GetColumn();
-		void SetColumn();
-		Tile(string desc, int r, int c);
+		Tile();
+		Tile(string desc);
 };
