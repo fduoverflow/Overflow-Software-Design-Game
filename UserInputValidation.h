@@ -11,9 +11,6 @@ class UserInputValidation
 {
 	// movement
 	// player actions - view map, view health, view rules
-	private:
-		char playerMove;
-		string playerAction;
 
 	public:
 		// WASD is player movement - W (up), A (left), S (down), D (right)
@@ -34,6 +31,8 @@ class UserInputValidation
 		// Only set player moves/actions to valid ones
 		bool CheckValidMove(Move);
 		bool CheckValidAction(Action);
+		bool MoveChecker(string);
+		
 
 		// Player Move Setter/Getters
 		Move GetPlayerMove();
@@ -41,6 +40,15 @@ class UserInputValidation
 
 		// Player Actions Setter/Getters
 		Action GetPlayerAction();
-		void SetPlayerAction(Action action); 
+		void SetPlayerAction(Action); 
+
+		// Check length of user input-- movement is only WASD
+		bool CheckMoveInputLength(string);
+
+		Move CharToMove(char);
+
+	private:
+		Move playerMove;
+		string playerAction;
 };
 
