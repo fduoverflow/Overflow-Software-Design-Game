@@ -11,7 +11,9 @@ void Map::DisplayMap()
 
 }
 
-
+/*
+* Returns Chunk at given row and col
+*/
 Chunk& Map::GetChunkAt(int r, int c)
 {
 	return startingAreaMap[r][c];

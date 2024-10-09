@@ -3,6 +3,7 @@
 #include <string>
 #include "Tile.h"
 #include "Map.h"
+#include "Chunk.h"
 using namespace std;
 
 /*
@@ -15,8 +16,10 @@ class Player
 	private: 
 		string playerName;
 		string outOfBoundsMessage = "\nThe player can not move to that location.\n";
+		string movingChunkMessage = "\nMoving to new Chunk.\n";
 		int playerHealth;
-		Tile* playerLocation;
+		int playerChunkLoc[2];		//Player chunk location stored as row and column
+		Tile* playerLocation;		//Tile that the player is located on
 		Map myMap;
 
 	public:
@@ -32,6 +35,7 @@ class Player
 		Map& GetMap();
 		Tile& GetPlayerLocation();
 		void SetPlayerLocation(Tile &location);
+		void SetPlayerChunkLocation(int r, int c);
 
 		//Move Player
 		void MovePlayerNorth();
