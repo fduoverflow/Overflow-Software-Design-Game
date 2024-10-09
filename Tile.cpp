@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Tile.h"
 using namespace std;
 
@@ -81,4 +82,8 @@ void Tile::SetEastTile(Tile targetTile)
 void Tile::SetWestTile(Tile targetTile)
 {
 	westTile = &targetTile;
+}
+void Tile::DisplayTile() 
+{
+	cout << TILE_DISPLAY;
 }
