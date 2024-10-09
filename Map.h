@@ -27,6 +27,4 @@ class Map
 		//Accessor methods
 		void DisplayMap();
 		Chunk& GetChunkAt(int r, int c);
-
-		//Player Location on Map Getters/Setters
 };
