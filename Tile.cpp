@@ -1,12 +1,26 @@
 #include "Tile.h"
 using namespace std;
 
-//Constructor
+//Constructors
 Tile::Tile(string desc, int r, int c)
 {
 	description = desc;
 	row = r;
 	col = c;
+	northTile = nullptr;
+	southTile = nullptr;
+	eastTile = nullptr;
+	westTile = nullptr;
+}
+Tile::Tile()
+{
+	description = "";
+	row = 0;
+	col = 0;
+	northTile = nullptr;
+	southTile = nullptr;
+	eastTile = nullptr;
+	westTile = nullptr;
 }
 
 //Main variables getters and setters

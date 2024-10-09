@@ -29,7 +29,7 @@ int main() {
 		{
 			cout << "North detected\n";
 			cout << testTile.GetDescription() + "\n";
-			cout << testTile.GetNorthTile().GetDescription();
+			cout << testTile.GetNorthTile().GetDescription();		//Example of how a tile can access its adjacent tiles
 		}
 		else if (moveInput == "S")
 			cout << "South detected";

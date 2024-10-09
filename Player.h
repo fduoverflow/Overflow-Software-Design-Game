@@ -31,4 +31,3 @@ class Player
 		//To use until health aspect is implemented
 		Player(string name, Tile location);
 };
-
