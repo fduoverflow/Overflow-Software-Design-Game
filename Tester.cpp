@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include "ConsoleColors.h"
 #include "Map.h"
@@ -18,7 +19,6 @@ int main()
 	myPlayer.SetPlayerLocation(myPlayer.GetMap().GetChunkAt(1, 1).GetTileAt(7, 7));
 	myPlayer.SetPlayerChunkLocation(1, 1);
 
-	/*
 	cout << myPlayer.GetPlayerLocation().GetDescription();
 	myPlayer.GetPlayerLocation().SetDescription("This is the player starting position");
 	cout << "\n" + myPlayer.GetPlayerLocation().GetDescription();
@@ -104,7 +104,7 @@ int main()
 			myPlayer.MovePlayerWest();
 		}
 	}
-	*/
 
 	return 0;
 }
+*/

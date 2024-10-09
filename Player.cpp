@@ -72,6 +72,8 @@ void Player::MovePlayerNorth()
 					cout << outOfBoundsMessage;
 				}
 			}
+			else
+				cout << outOfBoundsMessage;
 		}
 	}
 }
@@ -100,6 +102,8 @@ void Player::MovePlayerSouth()
 					cout << outOfBoundsMessage;
 				}
 			}
+			else
+				cout << outOfBoundsMessage;
 		}
 	}
 }
@@ -128,6 +132,8 @@ void Player::MovePlayerEast()
 					cout << outOfBoundsMessage;
 				}
 			}
+			else
+				cout << outOfBoundsMessage;
 		}
 	}
 }
@@ -156,6 +162,8 @@ void Player::MovePlayerWest()
 					cout << outOfBoundsMessage;
 				}
 			}
+			else
+				cout << outOfBoundsMessage;
 		}
 	}
 }
