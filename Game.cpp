@@ -9,24 +9,52 @@
 
 using namespace std;
 
-int main() {
+int main() 
+{
 	cout << "Overflow Game!" << endl;
-	/*
-	//TEST CASE FOR MOVECHECKER
-	string userInput;
-	cout << "Enter test value for input validation:";
-	cin >> userInput;
-	UserInputValidation valid;
 	
-	valid.MoveChecker(userInput);
-	*/
+	//Initialize Player then place them in middle of starting chunk
+	Player myPlayer("Shakir");
+	myPlayer.SetPlayerLocation(myPlayer.GetMap().GetChunkAt(1, 1).GetTileAt(7, 7));
+	myPlayer.SetPlayerChunkLocation(1, 1);
 
-    ConsoleColors::EnableColor();
+	//Set description of Tile at current player goal
+	myPlayer.GetMap().GetChunkAt(3, 6).GetTileAt(7, 15).SetDescription("This is the entrance to the City!");
 
-    Chunk dummyChunk(VALID);
+	//Initialize control variables
+	bool isGameOver = false;
+	string moveInput;
 
-    ConsoleColors::SetColor(GREEN);
-    dummyChunk.DisplayChunk();
-    ConsoleColors::DisableColor();
+	while (!isGameOver)
+	{
+		//Get user input. Did not validate input yet.
+		cout << "Player's current location: " + myPlayer.GetPlayerLocation().GetDescription();
+		cout << "\nRow: " << myPlayer.GetPlayerLocation().GetRow();
+		cout << "\nCol: " << myPlayer.GetPlayerLocation().GetColumn();
+		cout << "\nEnter movement command: ";
+		cin >> moveInput;
+
+		if (moveInput == "W")
+		{
+			cout << "North detected\n";
+			myPlayer.MovePlayerNorth();
+		}
+		else if (moveInput == "S")
+		{
+			cout << "South detected\n";
+			myPlayer.MovePlayerSouth();
+		}
+		else if (moveInput == "D")
+		{
+			cout << "East detected\n";
+			myPlayer.MovePlayerEast();
+		}
+		else if (moveInput == "A")
+		{
+			cout << "West detected\n";
+			myPlayer.MovePlayerWest();
+		}
+	}
+
 	return 0;
 }
