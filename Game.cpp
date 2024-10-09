@@ -22,8 +22,12 @@ int main() {
 	testTile.SetNorthTile(upTile);						//Connect the initial tile to the tile above it
 	upTile.SetSouthTile(testTile);						//Connect the up tile to the initial tile
 
+	//Player example code
+	Player myPlayer("Shakir", testTile);
+
 	while (!isGameOver)
 	{
+		cout << "Player's current location: " + myPlayer.GetPlayerLocation().GetDescription();
 		cout << "\nEnter movement command: ";
 		cin >> moveInput;
 
@@ -31,14 +35,25 @@ int main() {
 		{
 			cout << "North detected\n";
 			cout << testTile.GetDescription() + "\n";
-			cout << testTile.GetNorthTile().GetDescription();		//Example of how a tile can access its adjacent tiles
+			cout << testTile.GetNorthTile().GetDescription() + "\n";		//Example of how a tile can access its adjacent tiles
+
+			myPlayer.MovePlayerNorth();										//Example of changing player location
 		}
 		else if (moveInput == "S")
-			cout << "South detected";
+		{
+			cout << "South detected\n";
+			myPlayer.MovePlayerSouth();
+		}
 		else if (moveInput == "D")
-			cout << "East detected";
+		{
+			cout << "East detected\n";
+			myPlayer.MovePlayerEast();
+		}
 		else if (moveInput == "A")
-			cout << "West detected";
+		{
+			cout << "West detected\n";
+			myPlayer.MovePlayerWest();
+		}
 	}
 
 	return 0;

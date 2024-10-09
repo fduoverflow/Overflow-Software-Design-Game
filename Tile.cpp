@@ -50,36 +50,51 @@ void Tile::SetColumn(int c)
 	col = c;
 }
 
-//Adjacent tiles getters and setters
+/*
+* Adjacent tiles getters and setters
+* Getters throw int 404 as exception when out of bounds
+*/
 Tile Tile::GetNorthTile()
 {
-	return *northTile;
+	if (northTile != nullptr)
+		return *northTile;
+	else
+		throw 404;
 }
 Tile Tile::GetSouthTile()
 {
-	return *southTile;
+	if (southTile != nullptr)
+		return *southTile;
+	else
+		throw 404;
 }
 Tile Tile::GetEastTile()
 {
-	return *eastTile;
+	if (eastTile != nullptr)
+		return *eastTile;
+	else
+		throw 404;
 }
 Tile Tile::GetWestTile()
 {
-	return *westTile;
+	if (westTile != nullptr)
+		return *westTile;
+	else
+		throw 404;
 }
 void Tile::SetNorthTile(Tile &targetTile)
 {
 	northTile = &targetTile;
 }
-void Tile::SetSouthTile(Tile targetTile)
+void Tile::SetSouthTile(Tile &targetTile)
 {
 	southTile = &targetTile;
 }
-void Tile::SetEastTile(Tile targetTile)
+void Tile::SetEastTile(Tile &targetTile)
 {
 	eastTile = &targetTile;
 }
-void Tile::SetWestTile(Tile targetTile)
+void Tile::SetWestTile(Tile &targetTile)
 {
 	westTile = &targetTile;
 }

@@ -17,4 +17,3 @@ class Map
 	public:
 		void DisplayMap();
 };
-
