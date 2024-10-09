@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "Tile.h"
+#include "Map.h"
 using namespace std;
 
 /*
@@ -15,7 +16,8 @@ class Player
 		string playerName;
 		string outOfBoundsMessage = "\nThe player can not move to that location.\n";
 		int playerHealth;
-		Tile playerLocation;
+		Tile* playerLocation;
+		Map myMap;
 
 	public:
 		//Player Name Setter/Getter
@@ -27,8 +29,9 @@ class Player
 		void SetPlayerHealth(int health);
 
 		//Player Location Setter/Getter
-		Tile GetPlayerLocation();
-		void SetPlayerLocation(Tile location);
+		Map& GetMap();
+		Tile& GetPlayerLocation();
+		void SetPlayerLocation(Tile &location);
 
 		//Move Player
 		void MovePlayerNorth();
@@ -37,8 +40,9 @@ class Player
 		void MovePlayerWest();
 
 		//Constructors for Player Class
-		Player(string name, int health, Tile location);
+		Player(string name, int health, Tile &location);
 		//To use until health aspect is implemented
-		Player(string name, Tile location);
+		Player(string name, Tile &location);
+		Player(string name);
 		Player();
 };

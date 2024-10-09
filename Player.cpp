@@ -2,33 +2,43 @@
 using namespace std;
 
 //Constructors
-Player::Player(string name, int health, Tile location)
+Player::Player(string name, int health, Tile &location)
 {
 	playerName = name;
-	playerLocation = location;
+	playerLocation = &location;
 	playerHealth = health;
 }
-Player::Player(string name, Tile location)
+Player::Player(string name, Tile &location)
 {
 	playerName = name;
-	playerLocation = location;
+	playerLocation = &location;
+	playerHealth = 0;
+}
+Player::Player(string name)
+{
+	playerName = name;
+	playerLocation = new Tile();
 	playerHealth = 0;
 }
 Player::Player()
 {
 	playerName = "";
-	playerLocation = Tile();
+	playerLocation = new Tile();
 	playerHealth = 0;
 }
 
 //Player Location Setter/Getter
-Tile Player::GetPlayerLocation()
+Map& Player::GetMap()
 {
-	return playerLocation;
+	return myMap;
 }
-void Player::SetPlayerLocation(Tile location)
+Tile& Player::GetPlayerLocation()
 {
-	playerLocation = location;
+	return *playerLocation;
+}
+void Player::SetPlayerLocation(Tile &location)
+{
+	playerLocation = &location;
 }
 
 //Move player methods. Checks for out of bounds.
@@ -36,7 +46,7 @@ void Player::MovePlayerNorth()
 {
 	try
 	{
-		SetPlayerLocation(playerLocation.GetNorthTile());
+		SetPlayerLocation(GetPlayerLocation().GetNorthTile());
 	}
 	catch (int errCode)
 	{
@@ -48,7 +58,7 @@ void Player::MovePlayerSouth()
 {
 	try
 	{
-		SetPlayerLocation(playerLocation.GetSouthTile());
+		SetPlayerLocation(GetPlayerLocation().GetSouthTile());
 	}
 	catch (int errCode)
 	{
@@ -60,7 +70,7 @@ void Player::MovePlayerEast()
 {
 	try
 	{
-		SetPlayerLocation(playerLocation.GetEastTile());
+		SetPlayerLocation(GetPlayerLocation().GetEastTile());
 	}
 	catch (int errCode)
 	{
@@ -72,7 +82,7 @@ void Player::MovePlayerWest()
 {
 	try
 	{
-		SetPlayerLocation(playerLocation.GetWestTile());
+		SetPlayerLocation(GetPlayerLocation().GetWestTile());
 	}
 	catch (int errCode)
 	{

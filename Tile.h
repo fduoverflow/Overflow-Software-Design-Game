@@ -39,10 +39,10 @@ class Tile
 		void SetColumn(int c);
 
 		//Adacent Tile Setter/Getters
-		Tile GetNorthTile();
-		Tile GetSouthTile();
-		Tile GetEastTile();
-		Tile GetWestTile();
+		Tile& GetNorthTile();
+		Tile& GetSouthTile();
+		Tile& GetEastTile();
+		Tile& GetWestTile();
 		void SetNorthTile(Tile &targetTile);
 		void SetSouthTile(Tile &targetTile);
 		void SetEastTile(Tile &targetTile);

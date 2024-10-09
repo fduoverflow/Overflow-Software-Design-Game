@@ -52,30 +52,31 @@ void Tile::SetColumn(int c)
 
 /*
 * Adjacent tiles getters and setters
-* Getters throw int 404 as exception when out of bounds
+* Getters throw int 404 as exception when out of bounds.
+* Getters pass reference to allow other classes to change Tile values.
 */
-Tile Tile::GetNorthTile()
+Tile& Tile::GetNorthTile()
 {
 	if (northTile != nullptr)
 		return *northTile;
 	else
 		throw 404;
 }
-Tile Tile::GetSouthTile()
+Tile& Tile::GetSouthTile()
 {
 	if (southTile != nullptr)
 		return *southTile;
 	else
 		throw 404;
 }
-Tile Tile::GetEastTile()
+Tile& Tile::GetEastTile()
 {
 	if (eastTile != nullptr)
 		return *eastTile;
 	else
 		throw 404;
 }
-Tile Tile::GetWestTile()
+Tile& Tile::GetWestTile()
 {
 	if (westTile != nullptr)
 		return *westTile;

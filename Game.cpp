@@ -9,12 +9,33 @@
 
 using namespace std;
 
-int main() {
+int main() 
+{
 	cout << "Overflow Game!" << endl;
 
+	//Initialize Player then place them in middle of starting chunk
+	Player myPlayer("Shakir");
+	myPlayer.SetPlayerLocation(myPlayer.GetMap().GetChunkAt(1, 1).GetTileAt(7, 7));
+
+	
+	cout << myPlayer.GetPlayerLocation().GetDescription();
+	myPlayer.GetPlayerLocation().SetDescription("This is the player starting position");
+	cout << "\n" + myPlayer.GetPlayerLocation().GetDescription();
+	cout << "\n" + myPlayer.GetPlayerLocation().GetNorthTile().GetSouthTile().GetDescription();
+
+	myPlayer.MovePlayerNorth();
+	myPlayer.MovePlayerNorth();
+	myPlayer.MovePlayerNorth();
+	myPlayer.MovePlayerNorth();
+	myPlayer.MovePlayerNorth();
+	myPlayer.MovePlayerNorth();
+	myPlayer.MovePlayerNorth();
+	myPlayer.MovePlayerNorth();
+
 	/*
-	* The following is test code for user movement and does not check for input validation.
+	* The following is test code and does not check for input validation.
 	*/
+	/*
 	bool isGameOver = false;
 	string moveInput;
 	Tile testTile("This is the test tile", 0, 0);		//This is an example of a starting tile declaration
@@ -28,9 +49,11 @@ int main() {
 
 	startingChunk.GetTileAt(0, 0).SetDescription("This is a Tile");
 	startingChunk.GetTileAt(3, 10).SetDescription("Wow a middle Tile");
+	startingChunk.GetTileAt(3, 10).GetNorthTile().SetDescription("North of the middle tile");
 
 	cout << startingChunk.GetTileAt(0, 0).GetDescription();
 	cout << "\n" + startingChunk.GetTileAt(3, 10).GetDescription() + "\n";
+	cout << startingChunk.GetTileAt(3, 10).GetNorthTile().GetDescription() + "\n";
 
 	//Player example code
 	Player myPlayer("Shakir", testTile);
@@ -65,6 +88,7 @@ int main() {
 			myPlayer.MovePlayerWest();
 		}
 	}
+	*/
 
 	return 0;
 }

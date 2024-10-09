@@ -3,11 +3,20 @@
 
 using namespace std;
 
-Chunk::Chunk(ChunkType type) {
-	if (type == VALID) {
-		for (int column = 0; column < COLUMN_SIZE; column++) {
-			for (int row = 0; row < ROW_SIZE; row++) {
-				tiles[column][row] = Tile("", row, column);			//might want to switch tiles[column][row] to tiles[row][column] for better readability
+/*
+* Constructor.
+*/
+Chunk::Chunk(ChunkType type) 
+{
+	myChunkType = type;
+	if (type == VALID) 
+	{
+		//Fill array
+		for (int row = 0; row < ROW_SIZE; row++) 
+		{
+			for (int column = 0; column < COLUMN_SIZE; column++) 
+			{
+				tiles[row][column] = Tile("", row, column);
 			}
 		}
 
@@ -30,10 +39,16 @@ Chunk::Chunk(ChunkType type) {
 	}
 }
 
-void Chunk::DisplayChunk() {
-	for (int column = 0; column < COLUMN_SIZE; column++) {
-		for (int row = 0; row < ROW_SIZE; row++) {
-			tiles[column][row].DisplayTile();
+/*
+* Display Chunk.
+*/
+void Chunk::DisplayChunk() 
+{
+	for (int row = 0; row < ROW_SIZE; row++)
+	{
+		for (int column = 0; column < COLUMN_SIZE; column++)
+		{
+			tiles[row][column].DisplayTile();
 		}
 		cout << endl;
 	}
@@ -47,4 +62,10 @@ void Chunk::DisplayChunk() {
 Tile& Chunk::GetTileAt(int r, int c)
 {
 	return tiles[r][c];
+}
+
+//Return Chunk type
+ChunkType Chunk::getType()
+{
+	return myChunkType;
 }
