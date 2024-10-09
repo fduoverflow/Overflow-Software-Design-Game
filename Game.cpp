@@ -22,6 +22,16 @@ int main() {
 	testTile.SetNorthTile(upTile);						//Connect the initial tile to the tile above it
 	upTile.SetSouthTile(testTile);						//Connect the up tile to the initial tile
 
+
+	//Test code for chunks
+	Chunk startingChunk(VALID);
+
+	startingChunk.GetTileAt(0, 0).SetDescription("This is a Tile");
+	startingChunk.GetTileAt(3, 10).SetDescription("Wow a middle Tile");
+
+	cout << startingChunk.GetTileAt(0, 0).GetDescription();
+	cout << "\n" + startingChunk.GetTileAt(3, 10).GetDescription() + "\n";
+
 	//Player example code
 	Player myPlayer("Shakir", testTile);
 

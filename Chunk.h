@@ -20,6 +20,6 @@ class Chunk
 	public:
 		Chunk(ChunkType);
 		void DisplayChunk();
-		Tile getTileAt(int, int);
+		Tile& GetTileAt(int r, int c);
 };
 
