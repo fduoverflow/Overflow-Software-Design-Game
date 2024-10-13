@@ -41,7 +41,11 @@ int main()
 		//TEST CASE FOR MOVECHECKER
 		UserInputValidation valid;
 		valid.MoveChecker(moveInput);
+
+		//Move player
+		myPlayer.MovePlayerTo(valid.GetPlayerMove());
 	
+		/*
 		if (moveInput == "W")
 		{
 			cout << "North detected\n";
@@ -62,6 +66,7 @@ int main()
 			cout << "West detected\n";
 			myPlayer.MovePlayerWest();
 		}
+		*/
 	}
 
 	return 0;
