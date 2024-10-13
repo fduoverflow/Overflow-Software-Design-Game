@@ -167,8 +167,6 @@ void Player::MovePlayerTo(UserInputValidation::Move dir)
 				}
 			}
 			break;
-		default:
-			cout << "Invalid input";
 	}
 }
 /*

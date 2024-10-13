@@ -19,6 +19,7 @@ bool UserInputValidation::CheckValidMove(Move playerMove)
 			//SetPlayerMove(playerMove);
 			return true;
 			//If the player's move is not WASD, then return false
+		case Move::X:
 		default:
 			return false;
 		}
@@ -51,6 +52,7 @@ UserInputValidation::Move UserInputValidation::CharToMove(char input)
 		case 'A': return Move::A;
 		case 'S': return Move::S;
 		case 'D': return Move::D;
+		default: return Move::X;
 	}
 }
 
@@ -68,6 +70,13 @@ bool UserInputValidation::MoveChecker(string userInput)
 		{
 			SetPlayerMove(move);
 			return true;
+		}
+		else
+		{
+			cout << "Invalid Input! Please enter WASD!\n";
+			// X move for invalid
+			SetPlayerMove(move);
+			return false;
 		}
 	}
 	return false;

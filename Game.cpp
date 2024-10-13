@@ -37,36 +37,21 @@ int main()
 		cin >> moveInput;
 
 		//User Input Validation
-		
-		//TEST CASE FOR MOVECHECKER
 		UserInputValidation valid;
 		valid.MoveChecker(moveInput);
 
 		//Move player
 		myPlayer.MovePlayerTo(valid.GetPlayerMove());
-	
+
 		/*
-		if (moveInput == "W")
-		{
-			cout << "North detected\n";
-			myPlayer.MovePlayerNorth();
-		}
-		else if (moveInput == "S")
-		{
-			cout << "South detected\n";
-			myPlayer.MovePlayerSouth();
-		}
-		else if (moveInput == "D")
-		{
-			cout << "East detected\n";
-			myPlayer.MovePlayerEast();
-		}
-		else if (moveInput == "A")
-		{
-			cout << "West detected\n";
-			myPlayer.MovePlayerWest();
-		}
-		*/
+		Piece to display player map
+		Input Validation will be using the enum Action class under UserInputValidation (Xavier can do later)
+
+		Tiffany work - 
+		Display the map when the user enters the string "MAP"
+
+		Have some way to see the player location on the displayed map
+		 */
 	}
 
 	return 0;
