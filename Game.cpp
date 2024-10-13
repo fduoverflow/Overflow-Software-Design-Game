@@ -12,6 +12,8 @@ using namespace std;
 int main() 
 {
 	cout << "Overflow Game!" << endl;
+
+	//Rules and Backstory Output Here
 	
 	//Initialize Player then place them in middle of starting chunk
 	Player myPlayer("Shakir");
@@ -34,6 +36,12 @@ int main()
 		cout << "\nEnter movement command: ";
 		cin >> moveInput;
 
+		//User Input Validation
+		
+		//TEST CASE FOR MOVECHECKER
+		UserInputValidation valid;
+		valid.MoveChecker(moveInput);
+	
 		if (moveInput == "W")
 		{
 			cout << "North detected\n";
