@@ -36,7 +36,7 @@ Tile& Player::GetPlayerLocation()
 {
 	return *playerLocation;
 }
-void Player::SetPlayerLocation(Tile &location)
+void Player::SetPlayerLocation(Tile &location)				//Only set to a tile that is instantiated to avoid a nullptr error
 {
 	playerLocation = &location;
 }
@@ -47,6 +47,129 @@ void Player::SetPlayerChunkLocation(int r, int c)
 }
 
 //Move player methods. Checks for out of bounds.
+void Player::MovePlayerTo(UserInputValidation::Move dir)
+{
+	switch (dir)
+	{
+		case UserInputValidation::Move::W:
+			try
+			{
+				SetPlayerLocation(GetPlayerLocation().GetNorthTile());
+			}
+			catch (int errCode)
+			{
+				if (errCode == 404)
+				{
+					//Check if player can move to a valid adjacent Chunk
+					if (playerChunkLoc[0] > 0)
+					{
+						//Move player to valid chunk while keeping relative Tile position
+						if (myMap.GetChunkAt(playerChunkLoc[0] - 1, playerChunkLoc[1]).getType() == VALID)
+						{
+							cout << movingChunkMessage;
+							playerChunkLoc[0]--;
+							SetPlayerLocation(myMap.GetChunkAt(playerChunkLoc[0], playerChunkLoc[1]).GetTileAt(15, playerLocation->GetColumn()));
+						}
+						else
+						{
+							cout << outOfBoundsMessage;
+						}
+					}
+					else
+						cout << outOfBoundsMessage;
+				}
+			}
+			break;
+		case UserInputValidation::Move::S:
+			try
+			{
+				SetPlayerLocation(GetPlayerLocation().GetSouthTile());
+			}
+			catch (int errCode)
+			{
+				if (errCode == 404)
+				{
+					//Check if player can move to a valid adjacent Chunk
+					if (playerChunkLoc[0] < 4)
+					{
+						//Move player to valid chunk while keeping relative Tile position
+						if (myMap.GetChunkAt(playerChunkLoc[0] + 1, playerChunkLoc[1]).getType() == VALID)
+						{
+							cout << movingChunkMessage;
+							playerChunkLoc[0]++;
+							SetPlayerLocation(myMap.GetChunkAt(playerChunkLoc[0], playerChunkLoc[1]).GetTileAt(0, playerLocation->GetColumn()));
+						}
+						else
+						{
+							cout << outOfBoundsMessage;
+						}
+					}
+					else
+						cout << outOfBoundsMessage;
+				}
+			}
+			break;
+		case UserInputValidation::Move::D:
+			try
+			{
+				SetPlayerLocation(GetPlayerLocation().GetEastTile());
+			}
+			catch (int errCode)
+			{
+				if (errCode == 404)
+				{
+					//Check if player can move to a valid adjacent Chunk
+					if (playerChunkLoc[1] < 6)
+					{
+						//Move player to valid chunk while keeping relative Tile position
+						if (myMap.GetChunkAt(playerChunkLoc[0], playerChunkLoc[1] + 1).getType() == VALID)
+						{
+							cout << movingChunkMessage;
+							playerChunkLoc[1]++;
+							SetPlayerLocation(myMap.GetChunkAt(playerChunkLoc[0], playerChunkLoc[1]).GetTileAt(playerLocation->GetRow(), 0));
+						}
+						else
+						{
+							cout << outOfBoundsMessage;
+						}
+					}
+					else
+						cout << outOfBoundsMessage;
+				}
+			}
+			break;
+		case UserInputValidation::Move::A:
+			try
+			{
+				SetPlayerLocation(GetPlayerLocation().GetWestTile());
+			}
+			catch (int errCode)
+			{
+				if (errCode == 404)
+				{
+					//Check if player can move to a valid adjacent Chunk
+					if (playerChunkLoc[1] > 0)
+					{
+						//Move player to valid chunk while keeping relative Tile position
+						if (myMap.GetChunkAt(playerChunkLoc[0], playerChunkLoc[1] - 1).getType() == VALID)
+						{
+							cout << movingChunkMessage;
+							playerChunkLoc[1]--;
+							SetPlayerLocation(myMap.GetChunkAt(playerChunkLoc[0], playerChunkLoc[1]).GetTileAt(playerLocation->GetRow(), 15));
+						}
+						else
+						{
+							cout << outOfBoundsMessage;
+						}
+					}
+					else
+						cout << outOfBoundsMessage;
+				}
+			}
+			break;
+	}
+}
+/*
 void Player::MovePlayerNorth()
 {
 	try
@@ -167,6 +290,7 @@ void Player::MovePlayerWest()
 		}
 	}
 }
+*/
 
 //Player Name Setter/Getter
 string Player::GetPlayerName()

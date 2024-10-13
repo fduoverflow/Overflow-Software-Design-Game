@@ -20,7 +20,10 @@ class UserInputValidation
 			W = 'W',
 			A = 'A',
 			S = 'S',
-			D = 'D'
+			D = 'D',
+
+			//For invalid inputs
+			X = 'X'
 		};
 		// Constants for player actions
 		enum class Action

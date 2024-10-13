@@ -4,6 +4,7 @@
 #include "Tile.h"
 #include "Map.h"
 #include "Chunk.h"
+#include "UserInputValidation.h"
 using namespace std;
 
 /*
@@ -38,10 +39,14 @@ class Player
 		void SetPlayerChunkLocation(int r, int c);
 
 		//Move Player
+		void MovePlayerTo(UserInputValidation::Move dir);
+
+		/*
 		void MovePlayerNorth();
 		void MovePlayerSouth();
 		void MovePlayerEast();
 		void MovePlayerWest();
+		*/
 
 		//Constructors for Player Class
 		Player(string name, int health, Tile &location);
