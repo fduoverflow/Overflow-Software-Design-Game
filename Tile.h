@@ -13,16 +13,42 @@ every other tile would be "out of bounds" and not accessible by the player
 class Tile
 {
 	private:
+		//Main Tile variables
 		string description;
 		int row;
 		int col;
 
+		//Adjacent tiles
+		Tile* northTile;
+		Tile* southTile;
+		Tile* eastTile;
+		Tile* westTile;
+
 	public:
-		// Description Setter/Getters
+		//Description Setter/Getters
 		string GetDescription();
 		void SetDescription(string desc);
 		void DisplayTile();
 
+		//Row Setter/Getters
+		int GetRow();
+		void SetRow(int r);
+
+		//Column Setter/Getters
+		int GetColumn();
+		void SetColumn(int c);
+
+		//Adacent Tile Setter/Getters
+		Tile& GetNorthTile();
+		Tile& GetSouthTile();
+		Tile& GetEastTile();
+		Tile& GetWestTile();
+		void SetNorthTile(Tile &targetTile);
+		void SetSouthTile(Tile &targetTile);
+		void SetEastTile(Tile &targetTile);
+		void SetWestTile(Tile &targetTile);
+
+		//Constructors
+		Tile(string desc, int r, int c);
 		Tile();
-		Tile(string desc);
 };
