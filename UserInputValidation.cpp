@@ -57,17 +57,16 @@ UserInputValidation::Move UserInputValidation::CharToMove(char input)
 // Will check 
 bool UserInputValidation::MoveChecker(string userInput)
 {
-	UserInputValidation validate;
-	UserInputValidation::Move move;
-	bool lengthCheck = validate.CheckMoveInputLength(userInput);
+	Move move;
+	bool lengthCheck = CheckMoveInputLength(userInput);
 	//Check that the length of the input is only 1 char long
 	if (lengthCheck)
 	{
-		move = validate.CharToMove((char)(userInput[0]));
-		bool validMove = validate.CheckValidMove(move);
+		move = CharToMove((char)(userInput[0]));
+		bool validMove = CheckValidMove(move);
 		if (validMove)
 		{
-			validate.SetPlayerMove(move);
+			SetPlayerMove(move);
 			return true;
 		}
 	}
