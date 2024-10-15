@@ -9,7 +9,7 @@
 
 using namespace std;
 
-int main() 
+int main()
 {
 	cout << "Overflow Game!" << endl;
 
@@ -23,7 +23,7 @@ int main()
 
 	// Continue with the rest of the game setup
 
-	
+
 	//Initialize Player then place them in middle of starting chunk
 	Player myPlayer("Shakir");
 	myPlayer.SetPlayerLocation(myPlayer.GetMap().GetChunkAt(1, 1).GetTileAt(7, 7));
@@ -56,7 +56,7 @@ int main()
 		Piece to display player map
 		Input Validation will be using the enum Action class under UserInputValidation (Xavier can do later)
 
-		Tiffany work - 
+		Tiffany work -
 		Display the map when the user enters the string "MAP"
 
 		Have some way to see the player location on the displayed map
