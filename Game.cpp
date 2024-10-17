@@ -47,13 +47,18 @@ int main()
 		cout << "Player's current location: " + myPlayer.GetPlayerLocation().GetDescription();
 		cout << "\nRow: " << myPlayer.GetPlayerLocation().GetRow();
 		cout << "\nCol: " << myPlayer.GetPlayerLocation().GetColumn();
-		cout << "\nEnter movement command: ";
+		cout << "\nEnter command: ";
 		cin >> moveInput;
 		// Clears the console screen
 		system("cls");
 
 		//User Input Validation
 		UserInputValidation valid;
+		// TODO - Add 'map' commend to input validation. Refactor how we check for this command.
+		if (moveInput == "map") {
+			worldMap.DisplayMap();
+			continue;
+		}
 		valid.MoveChecker(moveInput);
 
 		//Move player
@@ -68,10 +73,7 @@ int main()
 		
 		Have some way to see the player location on the displayed map
 		 */
-		ConsoleColors::EnableColor();
-		ConsoleColors::SetColor(GREEN);
-		worldMap.DisplayMap();
-		ConsoleColors::DisableColor();
+		worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY());
 	}
 
 	return 0;

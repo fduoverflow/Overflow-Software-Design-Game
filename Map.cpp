@@ -1,4 +1,6 @@
+#include <iostream>
 #include "Map.h"
+#include "ConsoleColors.h"
 
 using namespace std;
 
@@ -13,17 +15,27 @@ Map::Map(Chunk** chunkList, int rows, int cols) {
 	numColumns = cols;
 }
 
+void Map::Display(int x, int y) {
+	ConsoleColors::EnableColor();
+	ConsoleColors::SetColor(GREEN);
+	chunks[x][y].DisplayChunk();
+	ConsoleColors::DisableColor();
+}
+
 /*
 * Display Map.
 * Only displays VALID Chunks.
 */
 void Map::DisplayMap()
 {
-	for (int row = numRows - 1; row >= 0; row--) {
+	ConsoleColors::EnableColor();
+	for (int row = 0; row < numRows; row++) {
 		Chunk *chunksInRow = chunks[row];
 		for (int column = 0; column < numColumns; column++)
-			chunksInRow[column].DisplayChunk();
+			chunksInRow[column].DisplayChunkInMap();
+		cout << endl;
 	}
+	ConsoleColors::DisableColor();
 }
 
 /*

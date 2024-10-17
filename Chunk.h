@@ -16,13 +16,14 @@ class Chunk
 {
 	private:
 		Tile tiles[ROW_SIZE][COLUMN_SIZE];
-		ChunkType myChunkType;
+		ChunkType type;
 	public:
 		//Constructor
 		Chunk(ChunkType);
 
 		//Accessor methods
 		void DisplayChunk();
+		void DisplayChunkInMap();
 		Tile& GetTileAt(int r, int c);
 		ChunkType getType();
 };

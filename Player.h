@@ -36,6 +36,8 @@ class Player
 		Map& GetMap();
 		Tile& GetPlayerLocation();
 		void SetPlayerLocation(Tile &location);
+		int GetPlayerChunkLocationX();
+		int GetPlayerChunkLocationY();
 		void SetPlayerChunkLocation(int r, int c);
 
 		//Move Player

@@ -37,6 +37,12 @@ Tile& Player::GetPlayerLocation()
 {
 	return *playerLocation;
 }
+int Player::GetPlayerChunkLocationX() {
+	return playerChunkLoc[0];
+}
+int Player::GetPlayerChunkLocationY() {
+	return playerChunkLoc[1];
+}
 void Player::SetPlayerLocation(Tile &location)				//Only set to a tile that is instantiated to avoid a nullptr error
 {
 	playerLocation = &location;
