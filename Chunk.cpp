@@ -43,7 +43,26 @@ Chunk::Chunk(ChunkType chunkType)
 }
 
 /*
-* Displays the full chunk with all objects inside of it.
+* Displays the Chunk and the Player inside of it
+*/
+void Chunk::DisplayPlayerChunk(int playerX, int playerY)
+{
+	for (int row = 0; row < ROW_SIZE; row++)
+	{
+		for (int column = 0; column < COLUMN_SIZE; column++)
+		{
+			if (column == playerX && row == playerY)
+				ConsoleColors::SetColor(PINK);
+			else
+				ConsoleColors::SetColor(GREEN);
+			tiles[row][column].DisplayTile();
+		}
+		cout << endl;
+	}
+}
+
+/*
+* Displays the full chunk with no objects inside of it.
 */
 void Chunk::DisplayChunk()
 {

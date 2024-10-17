@@ -15,10 +15,9 @@ Map::Map(Chunk** chunkList, int rows, int cols) {
 	numColumns = cols;
 }
 
-void Map::Display(int x, int y) {
+void Map::Display(int chunkX, int chunkY, int tileX, int tileY) {
 	ConsoleColors::EnableColor();
-	ConsoleColors::SetColor(GREEN);
-	chunks[x][y].DisplayChunk();
+	chunks[chunkX][chunkY].DisplayPlayerChunk(tileX, tileY);
 	ConsoleColors::DisableColor();
 }
 

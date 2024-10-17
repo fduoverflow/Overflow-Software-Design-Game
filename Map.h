@@ -18,6 +18,6 @@ class Map
 		Map(Chunk**, int, int);
 		//Accessor methods
 		void DisplayMap();
-		void Display(int, int);
+		void Display(int, int, int, int);
 		Chunk& GetChunkAt(int r, int c);
 };

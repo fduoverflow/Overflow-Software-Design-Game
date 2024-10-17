@@ -23,6 +23,7 @@ class Chunk
 
 		//Accessor methods
 		void DisplayChunk();
+		void DisplayPlayerChunk(int, int);
 		void DisplayChunkInMap();
 		Tile& GetTileAt(int r, int c);
 		ChunkType getType();
