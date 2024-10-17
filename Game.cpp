@@ -83,7 +83,7 @@ int main()
 		
 		Have some way to see the player location on the displayed map
 		 */
-		worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY());
+		worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY(), myPlayer.GetPlayerLocation().GetColumn(), myPlayer.GetPlayerLocation().GetRow());
 	}
 
 	return 0;
