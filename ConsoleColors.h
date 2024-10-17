@@ -1,6 +1,6 @@
 #pragma once
 
-enum Color {GREEN = 70};
+enum Color {GREEN = 70, BLACK = 239};
 
 static class ConsoleColors
 {

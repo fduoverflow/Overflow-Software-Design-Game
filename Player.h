@@ -36,6 +36,8 @@ class Player
 		Map& GetMap();
 		Tile& GetPlayerLocation();
 		void SetPlayerLocation(Tile &location);
+		int GetPlayerChunkLocationX();
+		int GetPlayerChunkLocationY();
 		void SetPlayerChunkLocation(int r, int c);
 
 		//Move Player
@@ -52,6 +54,6 @@ class Player
 		Player(string name, int health, Tile &location);
 		//To use until health aspect is implemented
 		Player(string name, Tile &location);
-		Player(string name);
+		Player(string name, Map map);
 		Player();
 };

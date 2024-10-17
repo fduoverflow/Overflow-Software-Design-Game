@@ -1,14 +1,17 @@
 #include <iostream>
 #include "Chunk.h"
+#include "ConsoleColors.h"
 
 using namespace std;
+
+const string CHUNK_MAP_DISPLAY = "  ";
 
 /*
 * Constructor.
 */
-Chunk::Chunk(ChunkType type) 
+Chunk::Chunk(ChunkType chunkType) 
 {
-	myChunkType = type;
+	type = chunkType;
 	if (type == VALID) 
 	{
 		//Fill array
@@ -40,9 +43,9 @@ Chunk::Chunk(ChunkType type)
 }
 
 /*
-* Display Chunk.
+* Displays the full chunk with all objects inside of it.
 */
-void Chunk::DisplayChunk() 
+void Chunk::DisplayChunk()
 {
 	for (int row = 0; row < ROW_SIZE; row++)
 	{
@@ -52,6 +55,17 @@ void Chunk::DisplayChunk()
 		}
 		cout << endl;
 	}
+}
+
+/*
+* Displays the map version of a chunk, the size of a tile.
+*/
+void Chunk::DisplayChunkInMap() {
+	if (type == INVALID)
+		ConsoleColors::SetColor(BLACK);
+	if (type == VALID)
+		ConsoleColors::SetColor(GREEN);
+	cout << CHUNK_MAP_DISPLAY;
 }
 
 /*
@@ -67,5 +81,5 @@ Tile& Chunk::GetTileAt(int r, int c)
 //Return Chunk type
 ChunkType Chunk::getType()
 {
-	return myChunkType;
+	return type;
 }

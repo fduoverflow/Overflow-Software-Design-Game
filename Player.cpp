@@ -14,11 +14,12 @@ Player::Player(string name, Tile &location)
 	playerLocation = &location;
 	playerHealth = 0;
 }
-Player::Player(string name)
+Player::Player(string name, Map map)
 {
 	playerName = name;
 	playerLocation = new Tile();
 	playerHealth = 0;
+	myMap = map;
 }
 Player::Player()
 {
@@ -35,6 +36,12 @@ Map& Player::GetMap()
 Tile& Player::GetPlayerLocation()
 {
 	return *playerLocation;
+}
+int Player::GetPlayerChunkLocationX() {
+	return playerChunkLoc[0];
+}
+int Player::GetPlayerChunkLocationY() {
+	return playerChunkLoc[1];
 }
 void Player::SetPlayerLocation(Tile &location)				//Only set to a tile that is instantiated to avoid a nullptr error
 {
