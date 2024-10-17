@@ -14,11 +14,12 @@ Player::Player(string name, Tile &location)
 	playerLocation = &location;
 	playerHealth = 0;
 }
-Player::Player(string name)
+Player::Player(string name, Map map)
 {
 	playerName = name;
 	playerLocation = new Tile();
 	playerHealth = 0;
+	myMap = map;
 }
 Player::Player()
 {

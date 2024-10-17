@@ -52,6 +52,6 @@ class Player
 		Player(string name, int health, Tile &location);
 		//To use until health aspect is implemented
 		Player(string name, Tile &location);
-		Player(string name);
+		Player(string name, Map map);
 		Player();
 };

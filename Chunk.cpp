@@ -42,15 +42,17 @@ Chunk::Chunk(ChunkType type)
 /*
 * Display Chunk.
 */
-void Chunk::DisplayChunk() 
+void Chunk::DisplayChunk()
 {
-	for (int row = 0; row < ROW_SIZE; row++)
-	{
-		for (int column = 0; column < COLUMN_SIZE; column++)
+	if (myChunkType == VALID) {
+		for (int row = 0; row < ROW_SIZE; row++)
 		{
-			tiles[row][column].DisplayTile();
+			for (int column = 0; column < COLUMN_SIZE; column++)
+			{
+				tiles[row][column].DisplayTile();
+			}
+			cout << endl;
 		}
-		cout << endl;
 	}
 }
 
