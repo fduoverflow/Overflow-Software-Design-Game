@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "Map.h"
 #include "ConsoleColors.h"
 
@@ -13,6 +14,28 @@ Map::Map(Chunk** chunkList, int rows, int cols) {
 	chunks = chunkList;
 	numRows = rows;
 	numColumns = cols;
+}
+
+Map::Map(string fileName, int rows, int columns) {
+	numRows = rows;
+	numColumns = columns;
+
+	std::ifstream file(fileName);  // Open the file
+
+	// Check if the file was successfully opened
+	if (!file) {
+		std::cerr << "Error: Could not open the map file." << std::endl;
+		return;
+	}
+
+	std::string line;
+	// Read the file line by line
+	while (std::getline(file, line)) {
+		std::cout << line << std::endl;  // Output the line to the console
+	}
+
+	file.close();  // Close the file after reading
+	return;
 }
 
 void Map::Display(int chunkX, int chunkY, int tileX, int tileY) {

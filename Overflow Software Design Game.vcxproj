@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Blocks.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="ConsoleColors.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -159,6 +160,9 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="UserInputValidation.h" />
     <ClInclude Include="UserInterface.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="startingAreaMap.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
