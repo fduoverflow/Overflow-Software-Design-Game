@@ -10,8 +10,8 @@ class Quest
 private:
 	string name;
 	string prompt;
-	Item goal;			// The criteria to complete the quest if the criteria is to retrieve an item
-	Enemy goal;			// The criteria to complete the quest if the criteria is to kill an enemy
+	Item itemGoal;			// The criteria to complete the quest if the criteria is to retrieve an item
+	Enemy enemyGoal;			// The criteria to complete the quest if the criteria is to kill an enemy
 public:
 	Quest();						// Default constructor
 	Quest(string, string, Item);	// Constructor for an item quest
