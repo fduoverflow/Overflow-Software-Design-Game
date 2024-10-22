@@ -53,6 +53,7 @@ int main()
 
 	while (!isGameOver)
 	{
+		bool validAction = false; //Resets the validAction bool to default false
 		//Get user input. Did not validate input yet.
 		cout << "Player's current location: " + myPlayer.GetPlayerLocation().GetDescription();
 		cout << "\nRow: " << myPlayer.GetPlayerLocation().GetRow();
@@ -69,6 +70,14 @@ int main()
 			worldMap.DisplayMap();
 			continue;
 		}
+
+		// Checking for user actions
+		/*
+		validAction = valid.ActionChecker(moveInput);
+		if (validAction)
+		{
+		} */
+		
 		valid.MoveChecker(moveInput);
 
 		//Move player
