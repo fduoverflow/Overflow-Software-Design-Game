@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "Map.h"
 using namespace std;
 
 /*
@@ -56,8 +57,11 @@ class UserInputValidation
 		Move CharToMove(char);
 		Action StringToAction(string);
 
+		// Process the user input action
+		void ProcessAction(string, Map);
+
 	private:
 		Move playerMove;
-		string playerAction;
+		Action playerAction;
 };
 

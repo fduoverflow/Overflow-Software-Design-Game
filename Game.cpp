@@ -63,25 +63,33 @@ int main()
 		// Clears the console screen
 		system("cls");
 
-		//User Input Validation
+		//User Input Validation Object
 		UserInputValidation valid;
 		// TODO - Add 'map' commend to input validation. Refactor how we check for this command.
+
+		/*
 		if (moveInput == "map") {
 			worldMap.DisplayMap();
 			continue;
-		}
-
-		// Checking for user actions
-		/*
-		validAction = valid.ActionChecker(moveInput);
-		if (validAction)
-		{
 		} */
-		
-		valid.MoveChecker(moveInput);
 
-		//Move player
-		myPlayer.MovePlayerTo(valid.GetPlayerMove());
+		// Checking if input is a movement or action
+		bool isAction = valid.ActionChecker(moveInput);		
+		bool isMove = valid.MoveChecker(moveInput);
+
+		//Process Player Move and Player Action separately
+		if (isAction && !isMove)
+		{
+			valid.ProcessAction(moveInput, worldMap);
+		}
+		else if (!isAction && isMove)
+		{
+			// Player movement
+			myPlayer.MovePlayerTo(valid.GetPlayerMove());
+
+			// Displays the user moving around the map
+			worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY(), myPlayer.GetPlayerLocation().GetColumn(), myPlayer.GetPlayerLocation().GetRow());
+		}
 
 		/*
 		Piece to display player map
@@ -92,7 +100,7 @@ int main()
 		
 		Have some way to see the player location on the displayed map
 		 */
-		worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY(), myPlayer.GetPlayerLocation().GetColumn(), myPlayer.GetPlayerLocation().GetRow());
+		
 	}
 
 	return 0;

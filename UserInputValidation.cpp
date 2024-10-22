@@ -34,6 +34,15 @@ UserInputValidation::Move UserInputValidation::GetPlayerMove()
 {
 	return playerMove;
 }
+void UserInputValidation::SetPlayerAction(Action action)
+{
+	playerAction = action;
+}
+
+UserInputValidation::Action UserInputValidation::GetPlayerAction()
+{
+	return playerAction;
+}
 
 bool UserInputValidation::CheckMoveInputLength(string move)
 {
@@ -126,9 +135,19 @@ bool UserInputValidation::ActionChecker(string userInput)
 	}
 	else
 	{
-		cout << "Invalid action! Please enter valid action!\n";
-		//Player Action is set to ERROR
-		SetPlayerAction(action);
 		return false;
+	}
+}
+
+//Can scale to include other actions
+void UserInputValidation::ProcessAction(string userInput, Map worldMap)
+{
+	// Function assumes that action is valid
+	Action action = StringToAction(userInput);
+
+	// Display the worldMap when the user enters the map command
+	if (action == Action::MAP)
+	{
+		worldMap.DisplayMap();
 	}
 }
