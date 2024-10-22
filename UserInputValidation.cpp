@@ -1,5 +1,6 @@
 #include "UserInputValidation.h"
 #include <iostream>
+#include <algorithm>
 using namespace std;
 /*
 Checks if the player made a valid move
@@ -33,9 +34,19 @@ UserInputValidation::Move UserInputValidation::GetPlayerMove()
 {
 	return playerMove;
 }
+void UserInputValidation::SetPlayerAction(Action action)
+{
+	playerAction = action;
+}
+
+UserInputValidation::Action UserInputValidation::GetPlayerAction()
+{
+	return playerAction;
+}
 
 bool UserInputValidation::CheckMoveInputLength(string move)
 {
+	// Checks that the input move is one character (WASD)
 	if (move.length() != 1)
 	{
 		return false;
@@ -43,8 +54,21 @@ bool UserInputValidation::CheckMoveInputLength(string move)
 	return true;
 }
 
+bool UserInputValidation::CheckValidAction(Action action)
+{
+	//Check if action matches proper Action enum
+	switch (action)
+	{
+	case Action::MAP:
+		return true;
+	default:
+		return false;
+	}
+}
+
 UserInputValidation::Move UserInputValidation::CharToMove(char input)
 {
+	// returns the character (WASD) as a Move enum
 	input = toupper(input);
 	switch (input)
 	{
@@ -53,6 +77,19 @@ UserInputValidation::Move UserInputValidation::CharToMove(char input)
 		case 'S': return Move::S;
 		case 'D': return Move::D;
 		default: return Move::X;
+	}
+}
+UserInputValidation::Action UserInputValidation::StringToAction(string input)
+{
+	//convert user input to uppercase
+	transform(input.begin(), input.end(), input.begin(), ::toupper);
+	if (input == "MAP")
+	{
+		return Action::MAP;
+	}
+	else
+	{
+		return Action::ERROR;
 	}
 }
 
@@ -80,4 +117,37 @@ bool UserInputValidation::MoveChecker(string userInput)
 		}
 	}
 	return false;
+}
+
+
+bool UserInputValidation::ActionChecker(string userInput)
+{
+	// Convert user input to usable Action ENUM
+	Action action = StringToAction(userInput);
+
+	// Check if the action input is valid
+	bool validMove = CheckValidAction(action);
+	if (validMove)
+	{
+		//Player action is set to valid action
+		SetPlayerAction(action);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+//Can scale to include other actions
+void UserInputValidation::ProcessAction(string userInput, Map worldMap)
+{
+	// Function assumes that action is valid
+	Action action = StringToAction(userInput);
+
+	// Display the worldMap when the user enters the map command
+	if (action == Action::MAP)
+	{
+		worldMap.DisplayMap();
+	}
 }
