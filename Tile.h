@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "Item.h"
 using namespace std;
 
 const string TILE_DISPLAY = "  ";
@@ -18,7 +19,10 @@ class Tile
 		int row;
 		int col;
 
-		//Adjacent tiles
+		//Item in Tile
+		Item myItem;
+
+		//Adjacent Tiles
 		Tile* northTile;
 		Tile* southTile;
 		Tile* eastTile;
@@ -38,6 +42,13 @@ class Tile
 		int GetColumn();
 		void SetColumn(int c);
 
+		//Item Setter/Getters, passed by value
+		Item GetItem();
+		void SetItem(Item newItem);
+
+		//Pickup item
+		Item PickUpItem();
+
 		//Adacent Tile Setter/Getters
 		Tile& GetNorthTile();
 		Tile& GetSouthTile();
@@ -50,5 +61,6 @@ class Tile
 
 		//Constructors
 		Tile(string desc, int r, int c);
+		Tile(string desc, int r, int c, Item newItem);
 		Tile();
 };
