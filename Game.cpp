@@ -135,6 +135,7 @@ int main(){
 		worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY(), myPlayer.GetPlayerLocation().GetColumn(), myPlayer.GetPlayerLocation().GetRow());
 
 		//Test code for item pick up and inspect commands. To be removed when implementing user validation for pick up command.
+		
 		if (moveInput == "PickUp")
 		{
 			if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
@@ -149,7 +150,7 @@ int main(){
 			{
 				cout << "Item description: " + myPlayer.GetPlayerLocation().GetItem().GetDescription() + "\n";
 			}
-		}
+		} 
 
 		//User Input Validation Object
 		UserInputValidation valid;
