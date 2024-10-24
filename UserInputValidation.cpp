@@ -87,6 +87,14 @@ UserInputValidation::Action UserInputValidation::StringToAction(string input)
 	{
 		return Action::MAP;
 	}
+	else if (input == "PICKUP")
+	{
+		return Action::PICKUP;
+	}
+	else if (input == "INSPECT")
+	{
+		return Action::INSPECT;
+	}
 	else
 	{
 		return Action::ERROR;
@@ -146,8 +154,14 @@ void UserInputValidation::ProcessAction(string userInput, Map worldMap)
 	Action action = StringToAction(userInput);
 
 	// Display the worldMap when the user enters the map command
-	if (action == Action::MAP)
+	switch (action)
 	{
+	case Action::MAP:
 		worldMap.DisplayMap();
+		break;
+	case Action::PICKUP:
+		break;
+	case Action::INSPECT:
+		break;
 	}
 }
