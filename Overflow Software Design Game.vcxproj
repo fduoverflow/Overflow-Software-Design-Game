@@ -132,6 +132,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="ConsoleColors.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Map.h" />
@@ -157,6 +159,9 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="UserInputValidation.h" />
     <ClInclude Include="UserInterface.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="startingAreaMap.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

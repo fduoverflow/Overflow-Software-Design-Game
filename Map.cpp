@@ -1,4 +1,7 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <regex>
 #include "Map.h"
 #include "ConsoleColors.h"
 
@@ -15,9 +18,78 @@ Map::Map(Chunk** chunkList, int rows, int cols) {
 	numColumns = cols;
 }
 
+Map::Map(string fileName, int rows, int columns) {
+	numRows = rows;				// number of chunks
+	numColumns = columns;		// number of columns
+	chunks = new Chunk*[rows];
+
+	for (int row = 0; row < rows; row++) {
+		chunks[row] = new Chunk[columns];  // Allocate a new array of Chunk for each row
+	}
+
+	std::ifstream file(fileName);  // Open the file
+
+	// Check if the file was successfully opened
+	if (!file) {
+		std::cerr << "Error: Could not open the map file." << std::endl;
+		return;
+	}
+
+	Chunk currentChunk;
+	int mapRow = -1, mapColumn = -1;
+	int chunkRowCount = -1;
+	std::string line;
+	// Read the file line by line
+	while (getline(file, line)) {
+		// Checks to see if we've reached a new chunk
+		if (line[0] == '(') {
+			// captures the coordinates of this chunk
+			// Remove the '(' character
+			line.erase(0, 1);  // Remove the first character
+			line.erase(line.size() - 1); // Remove the last character
+
+			// Parse the remaining string
+			mapColumn = stoi(line.substr(0, line.find(',')));
+			mapRow = stoi(line.substr(line.find(',') + 1));
+
+			currentChunk = Chunk(); // creates a new chunk
+			chunkRowCount++; // increases chunkRowCount so the line satisfies the below if statement
+			continue;
+		}
+		// Check to see if we're currently in a chunk
+		if (chunkRowCount > -1) {
+			// Populates rows 0-15
+			stringstream ss(line);
+			int ID = 0;
+			int chunkColumnCount = 0;
+			while (ss >> ID) {
+				Tile currentTile(0, 0, ID);
+				currentChunk.SetTileAt(chunkRowCount, chunkColumnCount, currentTile);
+				chunkColumnCount++;
+			}
+			// Places the completed chunk into the map and resets chunkRowCount if we've reached the last row
+			if (chunkRowCount >= 15) {
+				chunks[mapRow][mapColumn] = currentChunk;
+				chunkRowCount = -1;
+			}
+			else
+				chunkRowCount++;
+		}
+	}
+
+	file.close();  // Close the file after reading
+	return;
+}
+
 void Map::Display(int chunkX, int chunkY, int tileX, int tileY) {
 	ConsoleColors::EnableColor();
-	chunks[chunkX][chunkY].DisplayPlayerChunk(tileX, tileY);
+	chunks[chunkY][chunkX].DisplayPlayerChunk(tileX, tileY);
+	ConsoleColors::DisableColor();
+}
+
+void Map::DisplayChunkAt(int chunkX, int chunkY) {
+	ConsoleColors::EnableColor();
+	chunks[chunkY][chunkX].DisplayChunk();
 	ConsoleColors::DisableColor();
 }
 
@@ -40,7 +112,15 @@ void Map::DisplayMap()
 /*
 * Returns Chunk at given row and col
 */
-Chunk& Map::GetChunkAt(int r, int c)
+Chunk& Map::GetChunkAt(int x, int y)
 {
-	return chunks[r][c];
+	return chunks[y][x];
+}
+
+int Map::GetNumColumns() {
+	return numColumns;
+}
+
+int Map::GetNumRows() {
+	return numRows;
 }
