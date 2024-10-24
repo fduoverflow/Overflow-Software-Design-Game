@@ -7,7 +7,6 @@
 #include "Tile.h"
 #include "UserInputValidation.h"
 #include "UserInterface.h"
-//#include "Item.h"
 
 using namespace std;
 
@@ -91,7 +90,7 @@ const int STARTING_AREA_NUM_COLS = 2;
 //	return 0;
 //}
 
-int main(){
+int main() {
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
 	Player myPlayer("link", 100, 5, 5);
@@ -120,35 +119,11 @@ int main(){
 		if (moveInput == "map") {
 			worldMap.DisplayMap();
 			continue;
-		} 
-
-		// Checking if input is a movement or action
-		bool isAction = valid.ActionChecker(moveInput);
-		bool isMove = valid.MoveChecker(moveInput);
-
-		//Process Player Move and Player Action separately
-		if (isAction && !isMove)
-		{
-			valid.ProcessAction(moveInput, worldMap);
 		}
-		else if (!isAction && isMove)
-		{
-			// Player movement
-			myPlayer.MovePlayerTo(valid.GetPlayerMove());
+		valid.MoveChecker(moveInput);
 
 		//Move player
 		manager.MovePlayer(valid.GetPlayerMove());
-			// Displays the user moving around the map
-			worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY(), myPlayer.GetPlayerLocation().GetColumn(), myPlayer.GetPlayerLocation().GetRow());
-		}
-		/*
-		Piece to display player map
-		Input Validation will be using the enum Action class under UserInputValidation (Xavier can do later)
 
-		Tiffany work -
-		Display the map when the user enters the string "MAP"
-		
-		Have some way to see the player location on the displayed map
-		 */
 	}
 }

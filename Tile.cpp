@@ -89,27 +89,6 @@ void Tile::SetColumn(int c)
 	col = c;
 }
 
-//Item getters and setters
-Item Tile::GetItem()
-{
-	return myItem;
-}
-void Tile::SetItem(Item newItem)
-{
-	myItem = newItem;
-}
-
-/*
-* Pick up item method used to remove Item from Tile and return to Player.
-* Item is set to default state of EMPTY to signify it has been removed.
-*/
-Item Tile::PickUpItem()
-{
-	Item temp = myItem;			//Needed because myItem can not be returned then changed to EMPTY
-	myItem = Item();
-	return temp;
-}
-
 /*
 * Adjacent tiles getters and setters
 * Getters throw int 404 as exception when out of bounds.
@@ -143,23 +122,23 @@ Tile& Tile::GetWestTile()
 	else
 		throw 404;
 }
-void Tile::SetNorthTile(Tile &targetTile)
+void Tile::SetNorthTile(Tile& targetTile)
 {
 	northTile = &targetTile;
 }
-void Tile::SetSouthTile(Tile &targetTile)
+void Tile::SetSouthTile(Tile& targetTile)
 {
 	southTile = &targetTile;
 }
-void Tile::SetEastTile(Tile &targetTile)
+void Tile::SetEastTile(Tile& targetTile)
 {
 	eastTile = &targetTile;
 }
-void Tile::SetWestTile(Tile &targetTile)
+void Tile::SetWestTile(Tile& targetTile)
 {
 	westTile = &targetTile;
 }
-void Tile::DisplayTile() 
+void Tile::DisplayTile()
 {
 	ConsoleColors::SetColor(BLOCK_TYPES[ID].color);
 	cout << TILE_DISPLAY;
