@@ -49,7 +49,10 @@ int main()
 	myPlayer.GetMap().GetChunkAt(3, 6).GetTileAt(7, 15).SetDescription("This is the entrance to the City!");
 
 	//Set items on starting chunk
-	//myPlayer.GetMap().GetChunkAt(1, 1).GetTileAt(7, 15)
+	myPlayer.GetMap().GetChunkAt(1, 1).GetTileAt(6, 7).SetItem(Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
+	myPlayer.GetMap().GetChunkAt(1, 1).GetTileAt(7, 8).SetItem(Item("Key", "This key might unlock a door somewhere.", Item::Type::KEY, 0));
+	myPlayer.GetMap().GetChunkAt(1, 1).GetTileAt(7, 6).SetItem(Item("Ring", "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5));
+	myPlayer.GetMap().GetChunkAt(1, 1).GetTileAt(8, 7).SetItem(Item("Wand", "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
 
 	//Initialize control variables
 	bool isGameOver = false;
@@ -64,7 +67,9 @@ int main()
 		//Display item if there is one on Tile
 		if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
 		{
-			cout << "\nThere is and item here: " + myPlayer.GetPlayerLocation().GetItem().GetName();
+			cout << "\nThere is an item here: " + myPlayer.GetPlayerLocation().GetItem().GetName();
+			cout << "\nType PickUp to pick up item.";
+			cout << "\nType Inspect to look at item description.";
 		}
 		cout << "\nRow: " << myPlayer.GetPlayerLocation().GetRow();
 		cout << "\nCol: " << myPlayer.GetPlayerLocation().GetColumn();
@@ -74,6 +79,26 @@ int main()
 		cin >> moveInput;
 		// Clears the console screen
 		system("cls");
+
+		// Displays the user moving around the map
+		worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY(), myPlayer.GetPlayerLocation().GetColumn(), myPlayer.GetPlayerLocation().GetRow());
+
+		//Test code for item pick up and inspect commands. To be removed when implementing user validation for pick up command.
+		if (moveInput == "PickUp")
+		{
+			if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
+			{
+				myPlayer.GetPlayerLocation().PickUpItem();
+				cout << "Item was picked up.\n";
+			}
+		}
+		else if(moveInput == "Inspect")
+		{
+			if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
+			{
+				cout << "Item description: " + myPlayer.GetPlayerLocation().GetItem().GetDescription() + "\n";
+			}
+		}
 
 		//User Input Validation Object
 		UserInputValidation valid;
@@ -86,7 +111,7 @@ int main()
 		} */
 
 		// Checking if input is a movement or action
-		bool isAction = valid.ActionChecker(moveInput);		
+		bool isAction = valid.ActionChecker(moveInput);
 		bool isMove = valid.MoveChecker(moveInput);
 
 		//Process Player Move and Player Action separately
@@ -98,9 +123,6 @@ int main()
 		{
 			// Player movement
 			myPlayer.MovePlayerTo(valid.GetPlayerMove());
-
-			// Displays the user moving around the map
-			worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY(), myPlayer.GetPlayerLocation().GetColumn(), myPlayer.GetPlayerLocation().GetRow());
 		}
 
 		/*
