@@ -6,6 +6,7 @@
 #include "Tile.h"
 #include "UserInputValidation.h"
 #include "UserInterface.h"
+//#include "Item.h"
 
 using namespace std;
 
@@ -47,6 +48,9 @@ int main()
 	//Set description of Tile at current player goal
 	myPlayer.GetMap().GetChunkAt(3, 6).GetTileAt(7, 15).SetDescription("This is the entrance to the City!");
 
+	//Set items on starting chunk
+	//myPlayer.GetMap().GetChunkAt(1, 1).GetTileAt(7, 15)
+
 	//Initialize control variables
 	bool isGameOver = false;
 	string moveInput;
@@ -54,10 +58,18 @@ int main()
 	while (!isGameOver)
 	{
 		bool validAction = false; //Resets the validAction bool to default false
-		//Get user input. Did not validate input yet.
+		
+		//Display Tile information
 		cout << "Player's current location: " + myPlayer.GetPlayerLocation().GetDescription();
+		//Display item if there is one on Tile
+		if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
+		{
+			cout << "\nThere is and item here: " + myPlayer.GetPlayerLocation().GetItem().GetName();
+		}
 		cout << "\nRow: " << myPlayer.GetPlayerLocation().GetRow();
 		cout << "\nCol: " << myPlayer.GetPlayerLocation().GetColumn();
+
+		//Get user input. Did not validate input yet.
 		cout << "\nEnter command: ";
 		cin >> moveInput;
 		// Clears the console screen
