@@ -103,6 +103,13 @@ int main(){
 	string moveInput;
 
 	while (!isGameOver) {
+		bool validAction = false; //Resets the validAction bool to default false
+		//Get user input. Did not validate input yet.
+		cout << "Player's current location: " + myPlayer.GetPlayerLocation().GetDescription();
+		cout << "\nRow: " << myPlayer.GetPlayerLocation().GetRow();
+		cout << "\nCol: " << myPlayer.GetPlayerLocation().GetColumn();
+		cout << "\nEnter command: ";
+		cin >> moveInput;
 		// Clears the console screen
 		system("cls");
 		worldMap.DisplayChunkAt(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY());
@@ -113,17 +120,43 @@ int main(){
 		cout << "\nEnter command: ";
 		cin >> moveInput;
 
-		//User Input Validation
+		//User Input Validation Object
 		UserInputValidation valid;
 		// TODO - Add 'map' commend to input validation. Refactor how we check for this command.
+
+		/*
 		if (moveInput == "map") {
 			worldMap.DisplayMap();
 			continue;
+		} */
+
+		// Checking if input is a movement or action
+		bool isAction = valid.ActionChecker(moveInput);		
+		bool isMove = valid.MoveChecker(moveInput);
+
+		//Process Player Move and Player Action separately
+		if (isAction && !isMove)
+		{
+			valid.ProcessAction(moveInput, worldMap);
 		}
-		valid.MoveChecker(moveInput);
+		else if (!isAction && isMove)
+		{
+			// Player movement
+			myPlayer.MovePlayerTo(valid.GetPlayerMove());
 
 		//Move player
 		manager.MovePlayer(valid.GetPlayerMove());
+			// Displays the user moving around the map
+			worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY(), myPlayer.GetPlayerLocation().GetColumn(), myPlayer.GetPlayerLocation().GetRow());
+		}
+		/*
+		Piece to display player map
+		Input Validation will be using the enum Action class under UserInputValidation (Xavier can do later)
 
+		Tiffany work -
+		Display the map when the user enters the string "MAP"
+		
+		Have some way to see the player location on the displayed map
+		 */
 	}
 }
