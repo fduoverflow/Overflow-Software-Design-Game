@@ -17,10 +17,12 @@ class Item
 		//Item types
 		enum class Type
 		{
-			Healing,
-			Key,
-			Equipment,
-			Weapon,
+			HEALING,
+			KEY,
+			EQUIPMENT,
+			WEAPON,
+
+			EMPTY		//Default type for empty item objects if the default constructor is called. Avoid using unless you need an empty item object.
 		};
 
 		//Constructors
