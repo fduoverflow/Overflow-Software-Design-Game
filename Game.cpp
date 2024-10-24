@@ -7,7 +7,6 @@
 #include "Tile.h"
 #include "UserInputValidation.h"
 #include "UserInterface.h"
-//#include "Item.h"
 
 using namespace std;
 
@@ -91,7 +90,7 @@ const int STARTING_AREA_NUM_COLS = 2;
 //	return 0;
 //}
 
-int main(){
+int main() {
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
 	Player myPlayer("link", 100, 5, 5);
@@ -104,23 +103,6 @@ int main(){
 	string moveInput;
 
 	while (!isGameOver) {
-		bool validAction = false; //Resets the validAction bool to default false
-		
-		//Display Tile information
-		cout << "Player's current location: " + myPlayer.GetPlayerLocation().GetDescription();
-		//Display item if there is one on Tile
-		if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
-		{
-			cout << "\nThere is an item here: " + myPlayer.GetPlayerLocation().GetItem().GetName();
-			cout << "\nType PickUp to pick up item.";
-			cout << "\nType Inspect to look at item description.";
-		}
-		cout << "\nRow: " << myPlayer.GetPlayerLocation().GetRow();
-		cout << "\nCol: " << myPlayer.GetPlayerLocation().GetColumn();
-
-		//Get user input. Did not validate input yet.
-		cout << "\nEnter command: ";
-		cin >> moveInput;
 		// Clears the console screen
 		system("cls");
 		worldMap.DisplayChunkAt(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY());
@@ -131,62 +113,17 @@ int main(){
 		cout << "\nEnter command: ";
 		cin >> moveInput;
 
-		// Displays the user moving around the map
-		worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY(), myPlayer.GetPlayerLocation().GetColumn(), myPlayer.GetPlayerLocation().GetRow());
-
-		//Test code for item pick up and inspect commands. To be removed when implementing user validation for pick up command.
-		
-		if (moveInput == "PickUp")
-		{
-			if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
-			{
-				myPlayer.GetPlayerLocation().PickUpItem();
-				cout << "Item was picked up.\n";
-			}
-		}
-		else if(moveInput == "Inspect")
-		{
-			if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
-			{
-				cout << "Item description: " + myPlayer.GetPlayerLocation().GetItem().GetDescription() + "\n";
-			}
-		} 
-
 		//User Input Validation
 		UserInputValidation valid;
 		// TODO - Add 'map' commend to input validation. Refactor how we check for this command.
 		if (moveInput == "map") {
 			worldMap.DisplayMap();
 			continue;
-		} 
-
-		// Checking if input is a movement or action
-		bool isAction = valid.ActionChecker(moveInput);
-		bool isMove = valid.MoveChecker(moveInput);
-
-		//Process Player Move and Player Action separately
-		if (isAction && !isMove)
-		{
-			valid.ProcessAction(moveInput, worldMap);
 		}
-		else if (!isAction && isMove)
-		{
-			// Player movement
-			myPlayer.MovePlayerTo(valid.GetPlayerMove());
+		valid.MoveChecker(moveInput);
 
 		//Move player
 		manager.MovePlayer(valid.GetPlayerMove());
-			// Displays the user moving around the map
-			worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY(), myPlayer.GetPlayerLocation().GetColumn(), myPlayer.GetPlayerLocation().GetRow());
-		}
-		/*
-		Piece to display player map
-		Input Validation will be using the enum Action class under UserInputValidation (Xavier can do later)
 
-		Tiffany work -
-		Display the map when the user enters the string "MAP"
-		
-		Have some way to see the player location on the displayed map
-		 */
 	}
 }
