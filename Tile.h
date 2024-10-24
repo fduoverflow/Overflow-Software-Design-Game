@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include "Item.h"
 using namespace std;
 
 const string TILE_DISPLAY = "  ";
@@ -13,51 +12,41 @@ every other tile would be "out of bounds" and not accessible by the player
 */
 class Tile
 {
-	private:
-		//Main Tile variables
-		int ID;
-		int row;
-		int col;
+private:
+	//Main Tile variables
+	int ID;
+	int row;
+	int col;
 
-		//Item in Tile
-		Item myItem;
+	//Adjacent tiles
+	Tile* northTile;
+	Tile* southTile;
+	Tile* eastTile;
+	Tile* westTile;
 
-		//Adjacent Tiles
-		Tile* northTile;
-		Tile* southTile;
-		Tile* eastTile;
-		Tile* westTile;
+public:
+	//Description Setter/Getters
+	void DisplayTile();
 
-	public:
-		//Description Setter/Getters
-		void DisplayTile();
+	//Row Setter/Getters
+	int GetRow();
+	void SetRow(int r);
 
-		//Row Setter/Getters
-		int GetRow();
-		void SetRow(int r);
+	//Column Setter/Getters
+	int GetColumn();
+	void SetColumn(int c);
 
-		//Column Setter/Getters
-		int GetColumn();
-		void SetColumn(int c);
+	//Adacent Tile Setter/Getters
+	Tile& GetNorthTile();
+	Tile& GetSouthTile();
+	Tile& GetEastTile();
+	Tile& GetWestTile();
+	void SetNorthTile(Tile& targetTile);
+	void SetSouthTile(Tile& targetTile);
+	void SetEastTile(Tile& targetTile);
+	void SetWestTile(Tile& targetTile);
 
-		//Item Setter/Getters, passed by value
-		Item GetItem();
-		void SetItem(Item newItem);
-
-		//Pickup item
-		Item PickUpItem();
-
-		//Adacent Tile Setter/Getters
-		Tile& GetNorthTile();
-		Tile& GetSouthTile();
-		Tile& GetEastTile();
-		Tile& GetWestTile();
-		void SetNorthTile(Tile &targetTile);
-		void SetSouthTile(Tile &targetTile);
-		void SetEastTile(Tile &targetTile);
-		void SetWestTile(Tile &targetTile);
-
-		//Constructors
-		Tile(int r, int c, int tileID);
-		Tile();
+	//Constructors
+	Tile(int r, int c, int tileID);
+	Tile();
 };
