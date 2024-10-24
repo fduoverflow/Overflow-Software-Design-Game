@@ -6,6 +6,33 @@ using namespace std;
 
 const string CHUNK_MAP_DISPLAY = "  ";
 
+// Default Constructor
+Chunk::Chunk() {
+	type = VALID;
+	for (int row = 0; row < ROW_SIZE; row++)
+	{
+		for (int column = 0; column < COLUMN_SIZE; column++)
+		{
+			tiles[row][column] = Tile();
+		}
+	}
+	for (int row = 0; row < ROW_SIZE; row++)
+	{
+		for (int column = 0; column < COLUMN_SIZE; column++)
+		{
+			//Check if adjacent tiles exist then connect. Incrementing and decrementing by 1 to reach adjacent tiles.
+			if (row > 0)
+				tiles[row][column].SetNorthTile(tiles[row - 1][column]);
+			if (row < ROW_SIZE - 1)
+				tiles[row][column].SetSouthTile(tiles[row + 1][column]);
+			if (column < COLUMN_SIZE - 1)
+				tiles[row][column].SetEastTile(tiles[row][column + 1]);
+			if (column > 0)
+				tiles[row][column].SetWestTile(tiles[row][column - 1]);
+		}
+	}
+}
+
 /*
 * Constructor.
 */
@@ -19,7 +46,7 @@ Chunk::Chunk(ChunkType chunkType)
 		{
 			for (int column = 0; column < COLUMN_SIZE; column++) 
 			{
-				tiles[row][column] = Tile("", row, column);
+				tiles[row][column] = Tile();
 			}
 		}
 
@@ -54,8 +81,7 @@ void Chunk::DisplayPlayerChunk(int playerX, int playerY)
 			if (column == playerX && row == playerY)
 				ConsoleColors::SetColor(PINK);
 			else
-				ConsoleColors::SetColor(GREEN);
-			tiles[row][column].DisplayTile();
+				tiles[row][column].DisplayTile();
 		}
 		cout << endl;
 	}
@@ -83,7 +109,7 @@ void Chunk::DisplayChunkInMap() {
 	if (type == INVALID)
 		ConsoleColors::SetColor(BLACK);
 	if (type == VALID)
-		ConsoleColors::SetColor(GREEN);
+		ConsoleColors::SetColor(LIME_GREEN);
 	cout << CHUNK_MAP_DISPLAY;
 }
 
@@ -95,6 +121,10 @@ void Chunk::DisplayChunkInMap() {
 Tile& Chunk::GetTileAt(int r, int c)
 {
 	return tiles[r][c];
+}
+
+void Chunk::SetTileAt(int r, int c, Tile tile) {
+	tiles[r][c] = tile;
 }
 
 //Return Chunk type

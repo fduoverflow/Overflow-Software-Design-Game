@@ -1,13 +1,48 @@
 #include <iostream>
 #include "Tile.h"
+#include "ConsoleColors.h"
 using namespace std;
 
+//enum BLOCK_TYPE { GRASS, WATER, TREE, FLOOR, BUSH };
+
+struct Block {
+	string name;
+	string description;
+	Color color;
+	bool collides;
+};
+
+const int NUM_BLOCK_TYPES = 19;
+
+
+Block BLOCK_TYPES[NUM_BLOCK_TYPES] = {
+	{"Grass", "just a silly block of grass", DARK_GREEN, false},
+	{"Water", "it's cold to the touch", LIGHT_BLUE, true},
+	{"Bridge", "", BROWN, false},
+	{"Dirt", "what a nice pattern!", TAN, false},
+	{"Bush", "there's pointy thorns in this bush. you probably shouldn't walk through it...", LIME_GREEN, true},
+	{"Fence", "", WHITE, true},
+	{"Enemy", "", RED, true},
+	{"Campfire", "", ORANGE, true},
+	{"Shopkeeper", "", PINK, true},
+	{"Scrummius", "", PURPLE, true},
+	{"Tower Wall", "", GRAY, true},
+	{"Friendly", "", BABY_BLUE, true},
+	{"Friendly", "", LIGHT_GREEN, true},
+	{"Mystery Item", "", LAVENDER, true},
+	{"Old House", "", LIGHT_YELLOW, true},
+	{"Old House", "", DARK_YELLOW, true},
+	{"House Window", "", DARK_PURPLE, true},
+	{"House Door", "", DARK_RED, true},
+	{"Sign", "", BROWN, true}
+};
+
 //Constructors
-Tile::Tile(string desc, int r, int c)
+Tile::Tile(int r, int c, int tileID)
 {
-	description = desc;
 	row = r;
 	col = c;
+	ID = tileID;
 	northTile = nullptr;
 	southTile = nullptr;
 	eastTile = nullptr;
@@ -15,9 +50,9 @@ Tile::Tile(string desc, int r, int c)
 }
 Tile::Tile()
 {
-	description = "";
 	row = 0;
 	col = 0;
+	ID = 0;
 	northTile = nullptr;
 	southTile = nullptr;
 	eastTile = nullptr;
@@ -25,14 +60,6 @@ Tile::Tile()
 }
 
 //Main variables getters and setters
-string Tile::GetDescription()
-{
-	return description;
-}
-void Tile::SetDescription(string desc)
-{
-	description = desc;
-}
 int Tile::GetRow()
 {
 	return row;
@@ -101,5 +128,6 @@ void Tile::SetWestTile(Tile &targetTile)
 }
 void Tile::DisplayTile() 
 {
+	ConsoleColors::SetColor(BLOCK_TYPES[ID].color);
 	cout << TILE_DISPLAY;
 }

@@ -1,9 +1,6 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include "Tile.h"
-#include "Map.h"
-#include "Chunk.h"
 #include "UserInputValidation.h"
 using namespace std;
 
@@ -20,8 +17,7 @@ class Player
 		string movingChunkMessage = "\nMoving to new Chunk.\n";
 		int playerHealth;
 		int playerChunkLoc[2];		//Player chunk location stored as row and column
-		Tile* playerLocation;		//Tile that the player is located on
-		Map myMap;
+		int playerTileLocation[2];		//Tile that the player is located on
 
 	public:
 		//Player Name Setter/Getter
@@ -33,9 +29,9 @@ class Player
 		void SetPlayerHealth(int health);
 
 		//Player Location Setter/Getter
-		Map& GetMap();
-		Tile& GetPlayerLocation();
-		void SetPlayerLocation(Tile &location);
+		int GetPlayerLocationX();
+		int GetPlayerLocationY();
+		void SetPlayerLocation(int tileX, int tileY);
 		int GetPlayerChunkLocationX();
 		int GetPlayerChunkLocationY();
 		void SetPlayerChunkLocation(int r, int c);
@@ -43,17 +39,8 @@ class Player
 		//Move Player
 		void MovePlayerTo(UserInputValidation::Move dir);
 
-		/*
-		void MovePlayerNorth();
-		void MovePlayerSouth();
-		void MovePlayerEast();
-		void MovePlayerWest();
-		*/
-
 		//Constructors for Player Class
-		Player(string name, int health, Tile &location);
+		Player(string name, int health, int tileX, int tileY);
 		//To use until health aspect is implemented
-		Player(string name, Tile &location);
-		Player(string name, Map map);
 		Player();
 };

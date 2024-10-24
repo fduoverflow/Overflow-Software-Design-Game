@@ -1,5 +1,6 @@
 #include <iostream>
 #include "ConsoleColors.h"
+#include "GameManager.h"
 #include "Map.h"
 #include "Player.h"
 #include "Chunk.h"
@@ -10,8 +11,8 @@
 using namespace std;
 
 
-const int STARTING_AREA_NUM_ROWS = 5;
-const int STARTING_AREA_NUM_COLS = 7;
+const int STARTING_AREA_NUM_ROWS = 2;
+const int STARTING_AREA_NUM_COLS = 2;
 
 //int main()
 //{
@@ -40,39 +41,39 @@ const int STARTING_AREA_NUM_COLS = 7;
 //
 //
 //	//Initialize Player then place them in middle of starting chunk
-//	Player myPlayer("Shakir", worldMap);
-//	myPlayer.SetPlayerLocation(myPlayer.GetMap().GetChunkAt(1, 1).GetTileAt(7, 7));
-//	myPlayer.SetPlayerChunkLocation(1, 1);
-//
-//	//Set description of Tile at current player goal
-//	myPlayer.GetMap().GetChunkAt(3, 6).GetTileAt(7, 15).SetDescription("This is the entrance to the City!");
-//
-//	//Initialize control variables
-//	bool isGameOver = false;
-//	string moveInput;
+	//Player myPlayer("Shakir", worldMap);
+	//myPlayer.SetPlayerLocation(myPlayer.GetMap().GetChunkAt(1, 1).GetTileAt(7, 7));
+	//myPlayer.SetPlayerChunkLocation(1, 1);
+
+	////Set description of Tile at current player goal
+	//myPlayer.GetMap().GetChunkAt(3, 6).GetTileAt(7, 15).SetDescription("This is the entrance to the City!");
+
+	////Initialize control variables
+	//bool isGameOver = false;
+	//string moveInput;
 //
 //	while (!isGameOver)
 //	{
 //		//Get user input. Did not validate input yet.
-//		cout << "Player's current location: " + myPlayer.GetPlayerLocation().GetDescription();
-//		cout << "\nRow: " << myPlayer.GetPlayerLocation().GetRow();
-//		cout << "\nCol: " << myPlayer.GetPlayerLocation().GetColumn();
-//		cout << "\nEnter command: ";
-//		cin >> moveInput;
-//		// Clears the console screen
-//		system("cls");
-//
-//		//User Input Validation
-//		UserInputValidation valid;
-//		// TODO - Add 'map' commend to input validation. Refactor how we check for this command.
-//		if (moveInput == "map") {
-//			worldMap.DisplayMap();
-//			continue;
-//		}
-//		valid.MoveChecker(moveInput);
-//
-//		//Move player
-//		myPlayer.MovePlayerTo(valid.GetPlayerMove());
+		//cout << "Player's current location: " + myPlayer.GetPlayerLocation().GetDescription();
+		//cout << "\nRow: " << myPlayer.GetPlayerLocation().GetRow();
+		//cout << "\nCol: " << myPlayer.GetPlayerLocation().GetColumn();
+		//cout << "\nEnter command: ";
+		//cin >> moveInput;
+		//// Clears the console screen
+		//system("cls");
+
+		////User Input Validation
+		//UserInputValidation valid;
+		//// TODO - Add 'map' commend to input validation. Refactor how we check for this command.
+		//if (moveInput == "map") {
+		//	worldMap.DisplayMap();
+		//	continue;
+		//}
+		//valid.MoveChecker(moveInput);
+
+		////Move player
+		//myPlayer.MovePlayerTo(valid.GetPlayerMove());
 //
 //		/*
 //		Piece to display player map
@@ -91,4 +92,38 @@ const int STARTING_AREA_NUM_COLS = 7;
 
 int main(){
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
+
+	Player myPlayer("link", 100, 5, 5);
+	myPlayer.SetPlayerChunkLocation(0, 0);
+
+	// Creates the Game Manager object that will handle all game logic
+	GameManager manager(&myPlayer, &worldMap);
+
+	bool isGameOver = false;
+	string moveInput;
+
+	while (!isGameOver) {
+		// Clears the console screen
+		system("cls");
+		worldMap.DisplayChunkAt(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY());
+		cout << "\nChunk X: " << myPlayer.GetPlayerChunkLocationX();
+		cout << "\nChunk Y: " << myPlayer.GetPlayerChunkLocationY();
+		cout << "\nRow: " << myPlayer.GetPlayerLocationY();
+		cout << "\nCol: " << myPlayer.GetPlayerLocationX();
+		cout << "\nEnter command: ";
+		cin >> moveInput;
+
+		//User Input Validation
+		UserInputValidation valid;
+		// TODO - Add 'map' commend to input validation. Refactor how we check for this command.
+		if (moveInput == "map") {
+			worldMap.DisplayMap();
+			continue;
+		}
+		valid.MoveChecker(moveInput);
+
+		//Move player
+		manager.MovePlayer(valid.GetPlayerMove());
+
+	}
 }
