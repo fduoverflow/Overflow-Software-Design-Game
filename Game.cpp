@@ -7,6 +7,7 @@
 #include "Tile.h"
 #include "UserInputValidation.h"
 #include "UserInterface.h"
+//#include "Item.h"
 
 using namespace std;
 
@@ -104,10 +105,18 @@ int main(){
 
 	while (!isGameOver) {
 		bool validAction = false; //Resets the validAction bool to default false
-		//Get user input. Did not validate input yet.
+		
+		//Display Tile information
 		cout << "Player's current location: " + myPlayer.GetPlayerLocation().GetDescription();
+		//Display item if there is one on Tile
+		if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
+		{
+			cout << "\nThere is and item here: " + myPlayer.GetPlayerLocation().GetItem().GetName();
+		}
 		cout << "\nRow: " << myPlayer.GetPlayerLocation().GetRow();
 		cout << "\nCol: " << myPlayer.GetPlayerLocation().GetColumn();
+
+		//Get user input. Did not validate input yet.
 		cout << "\nEnter command: ";
 		cin >> moveInput;
 		// Clears the console screen
