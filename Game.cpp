@@ -111,7 +111,9 @@ int main(){
 		//Display item if there is one on Tile
 		if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
 		{
-			cout << "\nThere is and item here: " + myPlayer.GetPlayerLocation().GetItem().GetName();
+			cout << "\nThere is an item here: " + myPlayer.GetPlayerLocation().GetItem().GetName();
+			cout << "\nType PickUp to pick up item.";
+			cout << "\nType Inspect to look at item description.";
 		}
 		cout << "\nRow: " << myPlayer.GetPlayerLocation().GetRow();
 		cout << "\nCol: " << myPlayer.GetPlayerLocation().GetColumn();
@@ -129,6 +131,26 @@ int main(){
 		cout << "\nEnter command: ";
 		cin >> moveInput;
 
+		// Displays the user moving around the map
+		worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY(), myPlayer.GetPlayerLocation().GetColumn(), myPlayer.GetPlayerLocation().GetRow());
+
+		//Test code for item pick up and inspect commands. To be removed when implementing user validation for pick up command.
+		if (moveInput == "PickUp")
+		{
+			if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
+			{
+				myPlayer.GetPlayerLocation().PickUpItem();
+				cout << "Item was picked up.\n";
+			}
+		}
+		else if(moveInput == "Inspect")
+		{
+			if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
+			{
+				cout << "Item description: " + myPlayer.GetPlayerLocation().GetItem().GetDescription() + "\n";
+			}
+		}
+
 		//User Input Validation Object
 		UserInputValidation valid;
 		// TODO - Add 'map' commend to input validation. Refactor how we check for this command.
@@ -140,7 +162,7 @@ int main(){
 		} */
 
 		// Checking if input is a movement or action
-		bool isAction = valid.ActionChecker(moveInput);		
+		bool isAction = valid.ActionChecker(moveInput);
 		bool isMove = valid.MoveChecker(moveInput);
 
 		//Process Player Move and Player Action separately
