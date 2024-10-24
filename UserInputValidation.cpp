@@ -159,9 +159,19 @@ void UserInputValidation::ProcessAction(string userInput, Map worldMap)
 	case Action::MAP:
 		worldMap.DisplayMap();
 		break;
+	/*
 	case Action::PICKUP:
+		if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
+		{
+			myPlayer.GetPlayerLocation().PickUpItem();
+			cout << "Item was picked up.\n";
+		}
 		break;
 	case Action::INSPECT:
-		break;
-	}
+		if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
+		{
+			cout << "Item description: " + myPlayer.GetPlayerLocation().GetItem().GetDescription() + "\n";
+		}
+		break; */
+	} 
 }
