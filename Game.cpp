@@ -152,11 +152,9 @@ int main(){
 			}
 		} 
 
-		//User Input Validation Object
+		//User Input Validation
 		UserInputValidation valid;
 		// TODO - Add 'map' commend to input validation. Refactor how we check for this command.
-
-		/*
 		if (moveInput == "map") {
 			worldMap.DisplayMap();
 			continue;

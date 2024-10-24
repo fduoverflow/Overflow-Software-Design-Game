@@ -58,7 +58,6 @@ class Tile
 		void SetWestTile(Tile &targetTile);
 
 		//Constructors
-		Tile(string desc, int r, int c);
-		Tile(string desc, int r, int c, Item newItem);
+		Tile(int r, int c, int tileID);
 		Tile();
 };

@@ -129,7 +129,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Blocks.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="ConsoleColors.cpp" />
     <ClCompile Include="Enemy.cpp" />

@@ -42,7 +42,7 @@ Tile::Tile(int r, int c, int tileID)
 {
 	row = r;
 	col = c;
-	myItem = Item();
+	ID = tileID;
 	northTile = nullptr;
 	southTile = nullptr;
 	eastTile = nullptr;
