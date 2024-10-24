@@ -49,11 +49,11 @@ Tile::Tile(int r, int c, int tileID)
 	eastTile = nullptr;
 	westTile = nullptr;
 }
-Tile::Tile(string desc, int r, int c, Item newItem)
+Tile::Tile(int r, int c, Item newItem, int tileID)
 {
-	description = desc;
 	row = r;
 	col = c;
+	ID = tileID;
 	myItem = newItem;
 	northTile = nullptr;
 	southTile = nullptr;
