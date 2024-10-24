@@ -158,7 +158,7 @@ int main(){
 		if (moveInput == "map") {
 			worldMap.DisplayMap();
 			continue;
-		} */
+		} 
 
 		// Checking if input is a movement or action
 		bool isAction = valid.ActionChecker(moveInput);
