@@ -15,7 +15,7 @@ class Tile
 {
 	private:
 		//Main Tile variables
-		string description;
+		int ID;
 		int row;
 		int col;
 
@@ -30,8 +30,6 @@ class Tile
 
 	public:
 		//Description Setter/Getters
-		string GetDescription();
-		void SetDescription(string desc);
 		void DisplayTile();
 
 		//Row Setter/Getters
@@ -60,7 +58,7 @@ class Tile
 		void SetWestTile(Tile &targetTile);
 
 		//Constructors
-		Tile(string desc, int r, int c);
-		Tile(string desc, int r, int c, Item newItem);
+		Tile(int r, int c, int tileID);
+		Tile(int r, int c, Item newItem, int tileID);
 		Tile();
 };

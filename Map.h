@@ -20,5 +20,8 @@ class Map
 		//Accessor methods
 		void DisplayMap();
 		void Display(int, int, int, int);
+		void DisplayChunkAt(int, int);
 		Chunk& GetChunkAt(int r, int c);
+		int GetNumColumns();
+		int GetNumRows();
 };

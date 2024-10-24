@@ -19,6 +19,7 @@ class Chunk
 		ChunkType type;
 	public:
 		//Constructor
+		Chunk();
 		Chunk(ChunkType);
 
 		//Accessor methods
@@ -26,6 +27,7 @@ class Chunk
 		void DisplayPlayerChunk(int, int);
 		void DisplayChunkInMap();
 		Tile& GetTileAt(int r, int c);
+		void SetTileAt(int r, int c, Tile t);
 		ChunkType getType();
 };
 
