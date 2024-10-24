@@ -50,11 +50,6 @@ Tile::Tile(int r, int c, int tileID)
 	westTile = nullptr;
 }
 Tile::Tile(int r, int c, Item newItem, int tileID)
-{
-	row = r;
-	col = c;
-	ID = tileID;
-	myItem = newItem;
 	northTile = nullptr;
 	southTile = nullptr;
 	eastTile = nullptr;

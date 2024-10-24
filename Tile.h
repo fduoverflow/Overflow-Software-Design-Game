@@ -18,15 +18,15 @@ private:
 	int ID;
 	int row;
 	int col;
+	//Item in Tile
+	Item myItem;
 
-		//Item in Tile
-		Item myItem;
+	//Adjacent Tiles
+	Tile* northTile;
+	Tile* southTile;
+	Tile* eastTile;
+	Tile* westTile;
 
-		//Adjacent Tiles
-		Tile* northTile;
-		Tile* southTile;
-		Tile* eastTile;
-		Tile* westTile;
 
 public:
 	//Description Setter/Getters
@@ -39,26 +39,26 @@ public:
 	//Column Setter/Getters
 	int GetColumn();
 	void SetColumn(int c);
+  
+	//Item Setter/Getters, passed by value
+	Item GetItem();
+	void SetItem(Item newItem);
 
-		//Item Setter/Getters, passed by value
-		Item GetItem();
-		void SetItem(Item newItem);
+	//Pickup item
+	Item PickUpItem();
 
-		//Pickup item
-		Item PickUpItem();
+	//Adacent Tile Setter/Getters
+	Tile& GetNorthTile();
+	Tile& GetSouthTile();
+	Tile& GetEastTile();
+	Tile& GetWestTile();
+	void SetNorthTile(Tile &targetTile);
+	void SetSouthTile(Tile &targetTile);
+	void SetEastTile(Tile &targetTile);
+	void SetWestTile(Tile &targetTile);
 
-		//Adacent Tile Setter/Getters
-		Tile& GetNorthTile();
-		Tile& GetSouthTile();
-		Tile& GetEastTile();
-		Tile& GetWestTile();
-		void SetNorthTile(Tile &targetTile);
-		void SetSouthTile(Tile &targetTile);
-		void SetEastTile(Tile &targetTile);
-		void SetWestTile(Tile &targetTile);
-
-		//Constructors
-		Tile(int r, int c, int tileID);
-		Tile(int r, int c, Item newItem, int tileID);
-		Tile();
+	//Constructors
+	Tile(int r, int c, int tileID);
+	Tile(int r, int c, Item newItem, int tileID);
+	Tile();
 };
