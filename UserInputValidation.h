@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "Map.h"
-//#include "Player.h"
+#include "Player.h"
 using namespace std;
 
 /*
@@ -38,7 +38,7 @@ class UserInputValidation
 		bool CheckValidMove(Move);
 		bool CheckValidAction(Action);
 		bool MoveChecker(string);
-		bool ActionChecker(string);
+		bool ActionChecker(string, Action);
 		
 
 		// Player Move Setter/Getters
@@ -57,9 +57,6 @@ class UserInputValidation
 		// Actions (i.e MAP) are string
 		Move CharToMove(char);
 		Action StringToAction(string);
-
-		// Process the user input action
-		void ProcessAction(string, Map);
 
 	private:
 		Move playerMove;
