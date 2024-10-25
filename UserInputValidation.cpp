@@ -121,7 +121,7 @@ bool UserInputValidation::MoveChecker(string userInput)
 		}
 		else
 		{
-			cout << "Invalid Input! Please enter WASD!\n";
+			//cout << "Invalid Input! Please enter WASD!\n";
 			// X move for invalid
 			SetPlayerMove(move);
 			return false;
@@ -131,8 +131,9 @@ bool UserInputValidation::MoveChecker(string userInput)
 }
 
 
-bool UserInputValidation::ActionChecker(string userInput, Action action)
+bool UserInputValidation::ActionChecker(string userInput)
 {
+	Action action;
 	// Convert user input to usable Action ENUM
 	action = StringToAction(userInput);
 
@@ -146,7 +147,7 @@ bool UserInputValidation::ActionChecker(string userInput, Action action)
 	}
 	else
 	{
-		cout << "Please enter a valid action!\n";
+		//cout << "Please enter a valid action!\n";
 		//Set Action to ERROR if player inputs an invalid action
 		SetPlayerAction(action);
 		return false;
