@@ -72,16 +72,24 @@ int main() {
 			switch (valid.GetPlayerAction())
 			{
 				case UserInputValidation::Action::PICKUP:
-					if (manager.GetPlayerLocationTile().GetItem()->GetType() != Item::Type::EMPTY)
+					if (manager.GetPlayerLocationTile().GetItem() != nullptr)		//Check if item is on Tile
 					{
 						manager.GetPlayerLocationTile().PickUpItem();
 						cout << "Item was picked up.\n";
 					}
+					else
+					{
+						cout << "No item to pick up.\n";
+					}
 					break;
 				case UserInputValidation::Action::INSPECT:
-					if (manager.GetPlayerLocationTile().GetItem()->GetType() != Item::Type::EMPTY)
+					if (manager.GetPlayerLocationTile().GetItem() != nullptr)		//Check if item is on Tile
 					{
 						cout << "Item description: " + manager.GetPlayerLocationTile().GetItem()->GetDescription() + "\n";
+					}
+					else
+					{
+						cout << "No item to inspect.\n";
 					}
 					break;
 				case UserInputValidation::Action::MAP:
