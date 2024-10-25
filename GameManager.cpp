@@ -44,3 +44,8 @@ void GameManager::MovePlayer(UserInputValidation::Move dir) {
 	else
 		cout << "sorry pookie can't move here :(";
 }
+
+Tile& GameManager::GetPlayerLocationTile()
+{
+	return map->GetChunkAt(player->GetPlayerChunkLocationX(), player->GetPlayerChunkLocationY()).GetTileAt(player->GetPlayerLocationX(), player->GetPlayerLocationY());
+}
