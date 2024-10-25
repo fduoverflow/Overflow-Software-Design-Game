@@ -60,7 +60,10 @@ bool UserInputValidation::CheckValidAction(Action action)
 	switch (action)
 	{
 	case Action::MAP:
+	case Action::PICKUP:
+	case Action::INSPECT:
 		return true;
+	case Action::ERROR:
 	default:
 		return false;
 	}
@@ -128,14 +131,14 @@ bool UserInputValidation::MoveChecker(string userInput)
 }
 
 
-bool UserInputValidation::ActionChecker(string userInput)
+bool UserInputValidation::ActionChecker(string userInput, Action action)
 {
 	// Convert user input to usable Action ENUM
-	Action action = StringToAction(userInput);
+	action = StringToAction(userInput);
 
 	// Check if the action input is valid
-	bool validMove = CheckValidAction(action);
-	if (validMove)
+	bool validAction = CheckValidAction(action);
+	if (validAction)
 	{
 		//Player action is set to valid action
 		SetPlayerAction(action);
@@ -143,35 +146,9 @@ bool UserInputValidation::ActionChecker(string userInput)
 	}
 	else
 	{
+		cout << "Please enter a valid action!\n";
+		//Set Action to ERROR if player inputs an invalid action
+		SetPlayerAction(action);
 		return false;
 	}
-}
-
-//Can scale to include other actions
-void UserInputValidation::ProcessAction(string userInput, Map worldMap)
-{
-	// Function assumes that action is valid
-	Action action = StringToAction(userInput);
-
-	// Display the worldMap when the user enters the map command
-	switch (action)
-	{
-	case Action::MAP:
-		worldMap.DisplayMap();
-		break;
-	/*
-	case Action::PICKUP:
-		if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
-		{
-			myPlayer.GetPlayerLocation().PickUpItem();
-			cout << "Item was picked up.\n";
-		}
-		break;
-	case Action::INSPECT:
-		if (myPlayer.GetPlayerLocation().GetItem().GetType() != Item::Type::EMPTY)
-		{
-			cout << "Item description: " + myPlayer.GetPlayerLocation().GetItem().GetDescription() + "\n";
-		}
-		break; */
-	} 
 }
