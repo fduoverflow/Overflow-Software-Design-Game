@@ -19,7 +19,7 @@ private:
 	int row;
 	int col;
 	//Item in Tile
-	Item myItem;
+	Item* myItem;
 
 	//Adjacent Tiles
 	Tile* northTile;
@@ -41,11 +41,11 @@ public:
 	void SetColumn(int c);
   
 	//Item Setter/Getters, passed by value
-	Item GetItem();
-	void SetItem(Item newItem);
+	Item* GetItem();
+	void SetItem(Item *newItem);
 
 	//Pickup item
-	Item PickUpItem();
+	Item& PickUpItem();
 
 	//Adacent Tile Setter/Getters
 	Tile& GetNorthTile();
@@ -59,6 +59,6 @@ public:
 
 	//Constructors
 	Tile(int r, int c, int tileID);
-	Tile(int r, int c, Item newItem, int tileID);
+	Tile(int r, int c, Item* newItem, int tileID);
 	Tile();
 };

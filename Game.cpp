@@ -15,82 +15,6 @@ using namespace std;
 const int STARTING_AREA_NUM_ROWS = 2;
 const int STARTING_AREA_NUM_COLS = 2;
 
-//int main()
-//{
-//	// Constant variable for row/col map size
-//	// Change after design of map has been created
-//	Chunk row1[STARTING_AREA_NUM_COLS] = { Chunk(INVALID), Chunk(VALID),   Chunk(INVALID), Chunk(INVALID), Chunk(INVALID), Chunk(INVALID), Chunk(INVALID) };
-//	Chunk row2[STARTING_AREA_NUM_COLS] = { Chunk(VALID),	 Chunk(VALID),   Chunk(VALID),   Chunk(VALID),   Chunk(VALID),   Chunk(INVALID), Chunk(INVALID) };
-//	Chunk row3[STARTING_AREA_NUM_COLS] = { Chunk(INVALID), Chunk(VALID),   Chunk(INVALID), Chunk(INVALID), Chunk(VALID),   Chunk(INVALID), Chunk(INVALID) };
-//	Chunk row4[STARTING_AREA_NUM_COLS] = { Chunk(INVALID), Chunk(VALID),   Chunk(INVALID), Chunk(INVALID), Chunk(VALID),   Chunk(VALID),   Chunk(VALID) };
-//	Chunk row5[STARTING_AREA_NUM_COLS] = { Chunk(INVALID), Chunk(INVALID), Chunk(INVALID), Chunk(INVALID), Chunk(VALID),   Chunk(INVALID), Chunk(INVALID) };
-//
-//	Chunk *startingAreaMap[STARTING_AREA_NUM_ROWS] = {row1, row2, row3, row4, row5};
-//	Map worldMap(startingAreaMap, STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
-//
-//	cout << "Overflow Game!" << endl;
-//
-//	// Ryan 
-//	// creating an instance of the UserInterface class
-//	UserInterface ui;
-//
-//	// Display the rules and backstory
-//	string rules = ui.DisplayRules();        // Call method to display and get rules
-//	string introMessage = ui.DisplayIntroMessage(); // Call method to display and get backstory
-//
-//	// Continue with the rest of the game setup
-//
-//
-//	//Initialize Player then place them in middle of starting chunk
-	//Player myPlayer("Shakir", worldMap);
-	//myPlayer.SetPlayerLocation(myPlayer.GetMap().GetChunkAt(1, 1).GetTileAt(7, 7));
-	//myPlayer.SetPlayerChunkLocation(1, 1);
-
-	////Set description of Tile at current player goal
-	//myPlayer.GetMap().GetChunkAt(3, 6).GetTileAt(7, 15).SetDescription("This is the entrance to the City!");
-
-	////Initialize control variables
-	//bool isGameOver = false;
-	//string moveInput;
-//
-//	while (!isGameOver)
-//	{
-//		//Get user input. Did not validate input yet.
-		//cout << "Player's current location: " + myPlayer.GetPlayerLocation().GetDescription();
-		//cout << "\nRow: " << myPlayer.GetPlayerLocation().GetRow();
-		//cout << "\nCol: " << myPlayer.GetPlayerLocation().GetColumn();
-		//cout << "\nEnter command: ";
-		//cin >> moveInput;
-		//// Clears the console screen
-		//system("cls");
-
-		////User Input Validation
-		//UserInputValidation valid;
-		//// TODO - Add 'map' commend to input validation. Refactor how we check for this command.
-		//if (moveInput == "map") {
-		//	worldMap.DisplayMap();
-		//	continue;
-		//}
-		//valid.MoveChecker(moveInput);
-
-		////Move player
-		//myPlayer.MovePlayerTo(valid.GetPlayerMove());
-//
-//		/*
-//		Piece to display player map
-//		Input Validation will be using the enum Action class under UserInputValidation (Xavier can do later)
-//
-//		Tiffany work -
-//		Display the map when the user enters the string "MAP"
-//		
-//		Have some way to see the player location on the displayed map
-//		 */
-//		worldMap.Display(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY(), myPlayer.GetPlayerLocation().GetColumn(), myPlayer.GetPlayerLocation().GetRow());
-//	}
-//
-//	return 0;
-//}
-
 int main() {
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
@@ -100,13 +24,28 @@ int main() {
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
 
+	//Place items near player's starting tile
+	worldMap.GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(new Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
+	worldMap.GetChunkAt(0, 0).GetTileAt(6, 5).SetItem(new Item("Key", "This key might unlock a door somewhere.", Item::Type::KEY, 0));
+	worldMap.GetChunkAt(0, 0).GetTileAt(4, 5).SetItem(new Item("Ring", "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5));
+	worldMap.GetChunkAt(0, 0).GetTileAt(5, 6).SetItem(new Item("Wand", "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
+
+	//Set game loop variables
 	bool isGameOver = false;
 	string moveInput;
 
+	//Display current chunk
+	worldMap.DisplayChunkAt(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY());
+
 	while (!isGameOver) {
-		// Clears the console screen
-		system("cls");
-		worldMap.DisplayChunkAt(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY());
+		
+		//Display item if there is one on Tile
+		if (manager.GetPlayerLocationTile().GetItem() != nullptr)
+		{
+			cout << "\nThere is an item here: " + manager.GetPlayerLocationTile().GetItem()->GetName();
+			cout << "\nType PickUp to pick up item.";
+			cout << "\nType Inspect to look at item description.";
+		}
 		cout << "\nChunk X: " << myPlayer.GetPlayerChunkLocationX();
 		cout << "\nChunk Y: " << myPlayer.GetPlayerChunkLocationY();
 		cout << "\nRow: " << myPlayer.GetPlayerLocationY();
@@ -114,17 +53,50 @@ int main() {
 		cout << "\nEnter command: ";
 		cin >> moveInput;
 
+		// Clears the console screen
+		system("cls");
+
+		//Display current chunk
+		worldMap.DisplayChunkAt(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY());
+
 		//User Input Validation
 		UserInputValidation valid;
-		// TODO - Add 'map' commend to input validation. Refactor how we check for this command.
-		if (moveInput == "map") {
-			worldMap.DisplayMap();
-			continue;
+
+		// Checking if input is a movement or action
+		bool isAction = valid.ActionChecker(moveInput);
+		bool isMove = valid.MoveChecker(moveInput);
+
+		//Process Player Move and Player Action separately
+		if (isAction && !isMove)
+		{
+			switch (valid.GetPlayerAction())
+			{
+				case UserInputValidation::Action::PICKUP:
+					if (manager.GetPlayerLocationTile().GetItem()->GetType() != Item::Type::EMPTY)
+					{
+						manager.GetPlayerLocationTile().PickUpItem();
+						cout << "Item was picked up.\n";
+					}
+					break;
+				case UserInputValidation::Action::INSPECT:
+					if (manager.GetPlayerLocationTile().GetItem()->GetType() != Item::Type::EMPTY)
+					{
+						cout << "Item description: " + manager.GetPlayerLocationTile().GetItem()->GetDescription() + "\n";
+					}
+					break;
+				case UserInputValidation::Action::MAP:
+					worldMap.DisplayMap();
+					break;
+			}
 		}
-		valid.MoveChecker(moveInput);
-
-		//Move player
-		manager.MovePlayer(valid.GetPlayerMove());
-
+		else if (!isAction && isMove)
+		{
+			//Move player
+			manager.MovePlayer(valid.GetPlayerMove());
+		}
+		else if (!isAction && !isMove)							//Moved action error messages here because they were printing when the other action was used. Ex: "Invalid action" printed when inputing WASD.
+		{
+			cout << "Invalid Input! Please enter WASD or a valid action!\n";
+		}
 	}
 }

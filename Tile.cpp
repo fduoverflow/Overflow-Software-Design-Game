@@ -43,14 +43,18 @@ Tile::Tile(int r, int c, int tileID)
 	row = r;
 	col = c;
 	ID = tileID;
-	myItem = Item();
+	myItem = nullptr;
 	northTile = nullptr;
 	southTile = nullptr;
 	eastTile = nullptr;
 	westTile = nullptr;
 }
-Tile::Tile(int r, int c, Item newItem, int tileID)
+Tile::Tile(int r, int c, Item* newItem, int tileID)
 {
+	row = r;
+	col = c;
+	ID = tileID;
+	myItem = newItem;
 	northTile = nullptr;
 	southTile = nullptr;
 	eastTile = nullptr;
@@ -61,6 +65,7 @@ Tile::Tile()
 	row = 0;
 	col = 0;
 	ID = 0;
+	myItem = nullptr;
 	northTile = nullptr;
 	southTile = nullptr;
 	eastTile = nullptr;
@@ -86,11 +91,11 @@ void Tile::SetColumn(int c)
 }
 
 //Item getters and setters
-Item Tile::GetItem()
+Item* Tile::GetItem()
 {
 	return myItem;
 }
-void Tile::SetItem(Item newItem)
+void Tile::SetItem(Item* newItem)
 {
 	myItem = newItem;
 }
@@ -99,11 +104,11 @@ void Tile::SetItem(Item newItem)
 * Pick up item method used to remove Item from Tile and return to Player.
 * Item is set to default state of EMPTY to signify it has been removed.
 */
-Item Tile::PickUpItem()
+Item& Tile::PickUpItem()
 {
-	Item temp = myItem;			//Needed because myItem can not be returned then changed to EMPTY
-	myItem = Item();
-	return temp;
+	Item* temp = myItem;			//Needed because myItem can not be returned then changed to EMPTY
+	myItem = nullptr;
+	return *temp;
 }
 
 /*
