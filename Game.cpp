@@ -18,7 +18,7 @@ const int STARTING_AREA_NUM_COLS = 2;
 int main() {
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
-	Player myPlayer("link", 100, 5, 5);
+	Player myPlayer("link", 20, 5, 5);
 	myPlayer.SetPlayerChunkLocation(0, 0);
 
 	// Creates the Game Manager object that will handle all game logic
@@ -86,6 +86,9 @@ int main() {
 					break;
 				case UserInputValidation::Action::MAP:
 					worldMap.DisplayMap();
+					break;
+				case UserInputValidation::Action::HEALTH:
+					cout << "You are at " << myPlayer.GetPlayerHealth() << " health.";
 					break;
 			}
 		}
