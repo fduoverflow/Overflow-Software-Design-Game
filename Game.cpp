@@ -8,6 +8,7 @@
 #include "UserInputValidation.h"
 #include "UserInterface.h"
 #include "Item.h"
+#include "Inventory.h"
 
 using namespace std;
 
@@ -20,6 +21,8 @@ int main() {
 
 	Player myPlayer("link", 20, 5, 5);
 	myPlayer.SetPlayerChunkLocation(0, 0);
+
+	Inventory inventory(5);
 
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
@@ -97,6 +100,9 @@ int main() {
 					break;
 				case UserInputValidation::Action::HEALTH:
 					cout << "You are at " << myPlayer.GetPlayerHealth() << " health.";
+					break;
+				case UserInputValidation::Action::INV:
+					inventory.displayInventory();
 					break;
 			}
 		}
