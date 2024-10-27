@@ -4,9 +4,9 @@
 static class Inventory{
 private:
 	int size;			// The number of different items the inventory can hold (note: need to refector if we want a flexible inventory)
-	Item* contents;	// An array of the items that are bring stored
+	Item* contents;	// A dynamically allocated array of the items that are being stored
 public:
 	Inventory();		// Default constructor
 	Inventory(int s);		// Constructor that takes in the size of the inventory
-	void displayInventory();
+	void displayInventory(); // Displays the inventory
 };

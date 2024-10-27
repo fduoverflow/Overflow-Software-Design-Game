@@ -15,13 +15,11 @@ Inventory::Inventory(int s) {
 
 void Inventory::displayInventory() {
     cout << "Inventory:" << endl;
- 
     for (int i = 0; i < size; i++) {
         if (contents[i].GetType() != Item::Type::EMPTY) {                   // Display items.
             cout << "Name: " << contents[i].GetName() << endl;
             cout << "Description: " << contents[i].GetDescription() << endl;
             cout << "Type: ";
-
             // Display the type of the item
             switch (contents[i].GetType()) {
                 case Item::Type::HEALING: cout << "Healing"; 
