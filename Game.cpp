@@ -77,7 +77,7 @@ int main() {
 				case UserInputValidation::Action::PICKUP:
 					if (manager.GetPlayerLocationTile().GetItem() != nullptr)		//Check if item is on Tile
 					{
-						inventory.addItem(manager.GetPlayerLocationTile().PickUpItem());
+						inventory.addItem(manager.GetPlayerLocationTile().PickUpItem()); //Adds the picked up item to the invetory
 						cout << "Item was picked up.\n";
 					}
 					else
