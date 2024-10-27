@@ -9,6 +9,7 @@ public:
     // Constructor for NPC
     // Takes a name (e.g., "Scrummius the Owl") and dialogue string (e.g., "Hellooo! My name is Scrummius the Owl, and I am quite pleased to meet yooou!") as parameters
     NPC(string name,  string dialogue);
+    NPC();
 
     // Method to initiate a conversation with the NPC
     // Displays the NPC's dialogue to the player

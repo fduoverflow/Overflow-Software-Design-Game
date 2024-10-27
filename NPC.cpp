@@ -3,8 +3,17 @@
 
 // Constructor definition
 // Initializes the NPC with a specified name and dialogue
-NPC::NPC(string name, string dialogue)
-    : name(name), dialogue(dialogue) {}
+NPC::NPC(string n, string d)
+{
+    name = n;
+    dialogue = d;
+}
+
+NPC::NPC()
+{
+    name = "";
+    dialogue = "";
+}
 
 // talk() method definition
 // This method displays the NPC's name and dialogue when called
