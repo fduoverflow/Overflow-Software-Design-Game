@@ -22,7 +22,7 @@ int main() {
 	Player myPlayer("link", 20, 5, 5);
 	myPlayer.SetPlayerChunkLocation(0, 0);
 
-	Inventory inventory(5);
+	Inventory inventory(25);
 
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
@@ -77,7 +77,7 @@ int main() {
 				case UserInputValidation::Action::PICKUP:
 					if (manager.GetPlayerLocationTile().GetItem() != nullptr)		//Check if item is on Tile
 					{
-						manager.GetPlayerLocationTile().PickUpItem();
+						inventory.addItem(manager.GetPlayerLocationTile().PickUpItem());
 						cout << "Item was picked up.\n";
 					}
 					else
