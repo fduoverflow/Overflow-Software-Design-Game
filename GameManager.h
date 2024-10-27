@@ -3,12 +3,14 @@
 #include "Map.h"
 #include "UserInputValidation.h"
 #include "Tile.h"
+#include "Quest.h"
 
 class GameManager
 {
 private:
 	Player* player;
 	Map* map;
+	Quest* firstQuest;
 public:
 	//Constructors
 	GameManager();
@@ -23,5 +25,7 @@ public:
 	* Returns the Tile address at player's current location.
 	*/
 	Tile& GetPlayerLocationTile();
+	void TutorialQuest(); // First Quest -- Retrieve spellbook from house after talking to Scrummius (owl)
+
 };
 
