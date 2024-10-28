@@ -44,6 +44,7 @@ Tile::Tile(int r, int c, int tileID)
 	col = c;
 	ID = tileID;
 	myItem = nullptr;
+	myNPC = nullptr;
 	northTile = nullptr;
 	southTile = nullptr;
 	eastTile = nullptr;
@@ -56,6 +57,7 @@ Tile::Tile(int r, int c, Item* newItem, int tileID)
 	col = c;
 	ID = tileID;
 	myItem = newItem;
+	myNPC = nullptr;
 	northTile = nullptr;
 	southTile = nullptr;
 	eastTile = nullptr;
@@ -68,6 +70,7 @@ Tile::Tile()
 	col = 0;
 	ID = 0;
 	myItem = nullptr;
+	myNPC = nullptr;
 	northTile = nullptr;
 	southTile = nullptr;
 	eastTile = nullptr;
@@ -101,6 +104,16 @@ Item* Tile::GetItem()
 void Tile::SetItem(Item* newItem)
 {
 	myItem = newItem;
+}
+
+//NPC getters and setters
+NPC* Tile::GetNPC()
+{
+	return myNPC;
+}
+void Tile::SetNPC(NPC* newNPC)
+{
+	myNPC = newNPC;
 }
 
 /*

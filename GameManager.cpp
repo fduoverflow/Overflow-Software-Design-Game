@@ -1,6 +1,6 @@
 #include "GameManager.h"
 
-
+//Constructors.
 GameManager::GameManager() 
 {
 	firstQuest = new Quest();
@@ -12,6 +12,9 @@ GameManager::GameManager(Player* p, Map* m) {
 	firstQuest = new Quest();
 }
 
+/*
+* Move player to adjacent Tile in given direction.
+*/
 void GameManager::MovePlayer(UserInputValidation::Move dir) {
 	int x = 0, y = 0;	// Transposition magnitude per direction
 	switch (dir)
@@ -47,11 +50,17 @@ void GameManager::MovePlayer(UserInputValidation::Move dir) {
 		cout << "sorry pookie can't move here :(";
 }
 
+/*
+* Returns Tile object at current player location.
+*/
 Tile& GameManager::GetPlayerLocationTile()
 {
 	return map->GetChunkAt(player->GetPlayerChunkLocationX(), player->GetPlayerChunkLocationY()).GetTileAt(player->GetPlayerLocationX(), player->GetPlayerLocationY());
 }
 
+/*
+* Initializes first quest by updating start bool and providing quest components.
+*/
 void GameManager::InitilizeTutorialQuest()
 {
 	//Setting the first quest to start as true -- Talking to Scrummius will trigger this
@@ -71,8 +80,22 @@ void GameManager::InitilizeTutorialQuest()
 	map->GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(spellBook);
 }
 
+/*
+* Update fist quest flags to complete status and update NPC dialogue.
+*/
 void GameManager::TutorialQuestComplete()
 {
 	firstQuest->SetQuestStart(false);
 	firstQuest->SetQuestComplete(true);
+	map->GetChunkAt(0, 0).GetTileAt(5, 2).GetNPC()->SetDialogue("Congrats on finding my spell book!");		//Temp dialogue until main dialogue design is finished.
+}
+
+//First Quest getters and setters
+Quest* GameManager::GetFirstQuest()
+{
+	return firstQuest;
+}
+void GameManager::SetFirstQuest(Quest* newQuest)
+{
+	firstQuest = newQuest;
 }

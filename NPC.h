@@ -13,7 +13,15 @@ public:
 
     // Method to initiate a conversation with the NPC
     // Displays the NPC's dialogue to the player
-    void talk();
+    void Talk();
+
+    //Name getters and setters
+    string GetName();
+    void SetName(string n);
+
+    //dialogue getters and setters
+    string GetDialogue();
+    void SetDialogue(string d);
 
 private:
     // Name of the NPC, used to identify the character (e.g., "Scrummius the Owl")

@@ -6,8 +6,6 @@ using namespace std;
 
 /*
 * Player class will hold variables relevant to the player.
-* MovePlayer() methods exists to help readability of code when class is implemented.
-* This helps remove try catch blocks which are needed when using SetPlayerLocation().
 */
 class Player
 {
@@ -36,11 +34,7 @@ public:
 	int GetPlayerChunkLocationY();
 	void SetPlayerChunkLocation(int r, int c);
 
-	//Move Player
-	void MovePlayerTo(UserInputValidation::Move dir);
-
 	//Constructors for Player Class
 	Player(string name, int health, int tileX, int tileY);
-	//To use until health aspect is implemented
 	Player();
 };
