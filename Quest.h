@@ -18,7 +18,7 @@ private:
 	bool isQuestCompleted;
 public:
 	Quest();						// Default constructor
-	Quest(string, string, string, Item&);	// Constructor for an item quest - name, prompt, Item
+	Quest(string, string, string, Item*);	// Constructor for an item quest - name, prompt, Item
 	//Quest(string, string, Enemy);	// Constructor for an enemy quest
 
 	// Setters and Getters for Quest Class
@@ -31,9 +31,14 @@ public:
 	void SetCurrentObjective(string);
 	string GetCurrentObjective();
 
-	void SetItemGoal(Item&);
+	void SetItemGoal(Item*);
 	Item* GetItemGoal();
-	
+
+	void SetQuestStart(bool);
+	bool GetQuestStart();
+
+	void SetQuestComplete(bool);
+	bool GetQuestComplete();
 };
 
 

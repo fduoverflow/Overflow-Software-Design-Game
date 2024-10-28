@@ -5,12 +5,14 @@
 #include "Tile.h"
 #include "Quest.h"
 
+
 class GameManager
 {
 private:
 	Player* player;
 	Map* map;
 	Quest* firstQuest;
+	Item* spellBook;
 public:
 	//Constructors
 	GameManager();

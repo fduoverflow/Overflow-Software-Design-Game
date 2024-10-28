@@ -49,3 +49,26 @@ Tile& GameManager::GetPlayerLocationTile()
 {
 	return map->GetChunkAt(player->GetPlayerChunkLocationX(), player->GetPlayerChunkLocationY()).GetTileAt(player->GetPlayerLocationX(), player->GetPlayerLocationY());
 }
+
+void GameManager::TutorialQuest()
+{
+	//Setting the first quest to start as true -- Talking to Scrummius will trigger this
+	firstQuest->SetQuestStart(true);
+
+	// Tutorial Quest Name, Description, and Overall Objective
+	string name = "Tutorial Quest- Retrieve the Spellbook from the house!";
+	string desc = "Before you can set off on your quest, you must retrieve back your spellbook so you may harness your magic powers once again!";
+	string objective = "Go to the house and gather the spellbook!";
+
+	// Spell book is a key item that is gathered after the first quest-- not a weapon for now
+	spellBook = new Item("Spell book","book desc",Item::Type::KEY, 0);
+	firstQuest = new Quest(name, desc, objective, spellBook);
+
+	// Place the spellbook in location
+	map->GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(spellBook);
+
+	// check if player has picked up the spellbook
+	// if yes, mark quest as complete
+
+	// new method: end tutorial quest --> called when player picks up item
+}

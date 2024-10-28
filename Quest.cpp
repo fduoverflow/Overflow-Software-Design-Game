@@ -8,12 +8,12 @@ Quest::Quest()
 	isQuestStarted = false;
 	isQuestCompleted = false;
 }
-Quest::Quest(string n, string p, string obj, Item &i)
+Quest::Quest(string n, string p, string obj, Item *i)
 {
 	questName = n;
 	questDescription = p;
 	currentObjective = obj;
-	itemGoal = &i;
+	itemGoal = i;
 	isQuestStarted = false;
 	isQuestCompleted = false;
 }
@@ -26,8 +26,14 @@ string Quest::GetQuestDescription() {return questDescription;}
 void Quest::SetCurrentObjective(string obj) {currentObjective = obj;}
 string Quest::GetCurrentObjective() {return currentObjective;}
 
-void Quest::SetItemGoal(Item &i) {itemGoal = &i;}
+void Quest::SetItemGoal(Item *i) {itemGoal = i;}
 Item* Quest::GetItemGoal() {return itemGoal;}
+
+void Quest::SetQuestStart(bool start) {isQuestStarted = start;}
+bool Quest::GetQuestStart() {return isQuestStarted;}
+
+void Quest::SetQuestComplete(bool end) {isQuestCompleted = end;}
+bool Quest::GetQuestComplete() {return isQuestCompleted;}
 
 
 // Is QuestCompleted method -- each quest has bool to see if it completed
