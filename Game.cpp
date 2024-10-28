@@ -18,7 +18,7 @@ const int STARTING_AREA_NUM_COLS = 6;
 int main() {
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
-	Player myPlayer("link", 100, 5, 5);
+	Player myPlayer("link", 100, 15, 15);
 	myPlayer.SetPlayerChunkLocation(1, 1);
 
 	// Creates the Game Manager object that will handle all game logic
@@ -34,10 +34,10 @@ int main() {
 	bool isGameOver = false;
 	string moveInput;
 
-	//Display current chunk
-	worldMap.DisplayChunkAt(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY());
-
 	while (!isGameOver) {
+
+		//Display current chunk
+		worldMap.DisplayChunkAt(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY());
 		
 		//Display item if there is one on Tile
 		if (manager.GetPlayerLocationTile().GetItem() != nullptr)
@@ -55,9 +55,6 @@ int main() {
 
 		// Clears the console screen
 		system("cls");
-
-		//Display current chunk
-		worldMap.DisplayChunkAt(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY());
 
 		//User Input Validation
 		UserInputValidation valid;
