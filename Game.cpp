@@ -12,14 +12,14 @@
 using namespace std;
 
 
-const int STARTING_AREA_NUM_ROWS = 2;
-const int STARTING_AREA_NUM_COLS = 2;
+const int STARTING_AREA_NUM_ROWS = 5;
+const int STARTING_AREA_NUM_COLS = 6;
 
 int main() {
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
 	Player myPlayer("link", 100, 5, 5);
-	myPlayer.SetPlayerChunkLocation(0, 0);
+	myPlayer.SetPlayerChunkLocation(1, 1);
 
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
