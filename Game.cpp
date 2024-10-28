@@ -8,6 +8,7 @@
 #include "UserInputValidation.h"
 #include "UserInterface.h"
 #include "Item.h"
+#include "Inventory.h"
 
 using namespace std;
 
@@ -21,15 +22,19 @@ int main() {
 	Player myPlayer("link", 20, 5, 5);
 	myPlayer.SetPlayerChunkLocation(0, 0);
 
+	Inventory inventory(25);
+
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
 
 	//Place items near player's starting tile
-	worldMap.GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(new Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
+	//worldMap.GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(new Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
 	worldMap.GetChunkAt(0, 0).GetTileAt(6, 5).SetItem(new Item("Key", "This key might unlock a door somewhere.", Item::Type::KEY, 0));
 	worldMap.GetChunkAt(0, 0).GetTileAt(4, 5).SetItem(new Item("Ring", "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5));
 	worldMap.GetChunkAt(0, 0).GetTileAt(5, 6).SetItem(new Item("Wand", "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
 
+	// Test code to Initialize First Quest until Scrummius is Implemmented
+	manager.InitilizeTutorialQuest();
 	//Set game loop variables
 	bool isGameOver = false;
 	string moveInput;
@@ -46,6 +51,10 @@ int main() {
 			cout << "\nType PickUp to pick up item.";
 			cout << "\nType Inspect to look at item description.";
 		}
+		if (manager.GetPlayerLocationTile().GetQuestFlag() == "First Quest")
+		{
+		}
+
 		cout << "\nChunk X: " << myPlayer.GetPlayerChunkLocationX();
 		cout << "\nChunk Y: " << myPlayer.GetPlayerChunkLocationY();
 		cout << "\nRow: " << myPlayer.GetPlayerLocationY();
@@ -74,7 +83,15 @@ int main() {
 				case UserInputValidation::Action::PICKUP:
 					if (manager.GetPlayerLocationTile().GetItem() != nullptr)		//Check if item is on Tile
 					{
-						manager.GetPlayerLocationTile().PickUpItem();
+						if (manager.GetPlayerLocationTile().GetItem()->GetName() == "Scrummius' Spell Book") // KEY item for First Quest-- flag trigger for completion of first quest
+						{
+							// Marking First Quest as Complete
+							manager.TutorialQuestComplete();
+
+							// Spawn in Dust Golem on tiles that correspond to the door tiles (7,7) and (7,8) -- once quest is complete
+							cout << "You hear a gust of wind coming from the doorway...\n";
+						}
+						inventory.addItem(manager.GetPlayerLocationTile().PickUpItem()); //Adds the picked up item to the invetory
 						cout << "Item was picked up.\n";
 					}
 					else
@@ -97,6 +114,9 @@ int main() {
 					break;
 				case UserInputValidation::Action::HEALTH:
 					cout << "You are at " << myPlayer.GetPlayerHealth() << " health.";
+					break;
+				case UserInputValidation::Action::INV:
+					inventory.displayInventory();
 					break;
 			}
 		}

@@ -1,13 +1,14 @@
 #pragma once
 #include "Item.h"
 
-static class Inventory
-{
+static class Inventory {
 private:
 	int size;			// The number of different items the inventory can hold (note: need to refector if we want a flexible inventory)
-	Item contents[];	// An array of the items that are bring stored
+	Item* contents;	// A dynamically allocated array of the items that are being stored
+	bool isEmpty;   // Checks to see if inventory is empty
 public:
 	Inventory();		// Default constructor
-	Inventory(int);		// Constructor that takes in the size of the inventory
+	Inventory(int s);		// Constructor that takes in the size of the inventory
+	void displayInventory(); // Displays the inventory
+	void addItem(Item& item); //Adds item to inventory
 };
-
