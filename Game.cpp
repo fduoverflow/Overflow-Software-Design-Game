@@ -17,11 +17,18 @@ const int STARTING_AREA_NUM_ROWS = 2;
 const int STARTING_AREA_NUM_COLS = 2;
 
 int main() {
+	//Initialize map
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
+	//Initialize Player
 	Player myPlayer("link", 20, 5, 5);
 	myPlayer.SetPlayerChunkLocation(0, 0);
 
+	//String to hold large npc dialogue. May move to somewhere else later.
+	string scrummiusDialogue = "Hellooo! My name is Scrummius the Owl, and I am quite pleased to meet yooou! What is your name?\nYooou said your name is " + myPlayer.GetPlayerName() +
+		" and Lord Vallonious has taken your pet, Gapplin? I don’t believe you. But if I did I would say yooou are going to need a spell book if you are going tooo face him. Head west from your house and enter the old château. I believe yooou may find what you’re looking for in there… liar.";
+
+	//Initialize inventory
 	Inventory inventory(25);
 
 	// Creates the Game Manager object that will handle all game logic
@@ -34,7 +41,7 @@ int main() {
 	worldMap.GetChunkAt(0, 0).GetTileAt(5, 6).SetItem(new Item("Wand", "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
 
 	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
-	worldMap.GetChunkAt(0, 0).GetTileAt(5, 2).SetNPC(new NPC("Scrummius", "This is where the npc dialog will be. Quest started and item placed two tiles south of here."));
+	worldMap.GetChunkAt(0, 0).GetTileAt(5, 2).SetNPC(new NPC("Scrummius", scrummiusDialogue));
 
 	// Test code to Initialize First Quest until Scrummius is Implemmented
 	//manager.InitilizeTutorialQuest();

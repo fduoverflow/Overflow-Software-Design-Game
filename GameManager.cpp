@@ -85,9 +85,12 @@ void GameManager::InitilizeTutorialQuest()
 */
 void GameManager::TutorialQuestComplete()
 {
+	//String to hold large npc dialogue. May move to somewhere else later.
+	string scrummiusDialogue = 
+		"That was fast. I bet yooou just wanted that book for yourself. Either way, now yooou must get to the city if you want tooo make it to Lord Vallonious‘ lair. Like that’s gonna happen. First, get throoough the forest by heading east. It will lead yooou straight there!";
 	firstQuest->SetQuestStart(false);
 	firstQuest->SetQuestComplete(true);
-	map->GetChunkAt(0, 0).GetTileAt(5, 2).GetNPC()->SetDialogue("Congrats on finding my spell book!");		//Temp dialogue until main dialogue design is finished.
+	map->GetChunkAt(0, 0).GetTileAt(5, 2).GetNPC()->SetDialogue(scrummiusDialogue);
 }
 
 //First Quest getters and setters
