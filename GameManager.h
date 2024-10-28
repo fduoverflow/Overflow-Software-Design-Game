@@ -27,7 +27,8 @@ public:
 	* Returns the Tile address at player's current location.
 	*/
 	Tile& GetPlayerLocationTile();
-	void TutorialQuest(); // First Quest -- Retrieve spellbook from house after talking to Scrummius (owl)
+	void InitilizeTutorialQuest(); // First Quest -- Retrieve spellbook from house after talking to Scrummius (owl)
+	void TutorialQuestComplete();
 
 };
 

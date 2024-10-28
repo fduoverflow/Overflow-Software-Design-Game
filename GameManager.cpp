@@ -1,13 +1,15 @@
 #include "GameManager.h"
 
 
-GameManager::GameManager() {
-
+GameManager::GameManager() 
+{
+	firstQuest = new Quest();
 }
 
 GameManager::GameManager(Player* p, Map* m) {
 	player = p;
 	map = m;
+	firstQuest = new Quest();
 }
 
 void GameManager::MovePlayer(UserInputValidation::Move dir) {
@@ -50,7 +52,7 @@ Tile& GameManager::GetPlayerLocationTile()
 	return map->GetChunkAt(player->GetPlayerChunkLocationX(), player->GetPlayerChunkLocationY()).GetTileAt(player->GetPlayerLocationX(), player->GetPlayerLocationY());
 }
 
-void GameManager::TutorialQuest()
+void GameManager::InitilizeTutorialQuest()
 {
 	//Setting the first quest to start as true -- Talking to Scrummius will trigger this
 	firstQuest->SetQuestStart(true);
@@ -61,14 +63,16 @@ void GameManager::TutorialQuest()
 	string objective = "Go to the house and gather the spellbook!";
 
 	// Spell book is a key item that is gathered after the first quest-- not a weapon for now
-	spellBook = new Item("Spell book","book desc",Item::Type::KEY, 0);
+	spellBook = new Item("Scrummius' Spell Book","book desc",Item::Type::KEY, 0);
 	firstQuest = new Quest(name, desc, objective, spellBook);
 
-	// Place the spellbook in location
+	// Place the spellbook in location -- door: (7,7) and (7,8)
+	// map->GetChunkAt(0, 1).GetTileAt(5,7).SetItem(spellBook);
 	map->GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(spellBook);
+}
 
-	// check if player has picked up the spellbook
-	// if yes, mark quest as complete
-
-	// new method: end tutorial quest --> called when player picks up item
+void GameManager::TutorialQuestComplete()
+{
+	firstQuest->SetQuestStart(false);
+	firstQuest->SetQuestComplete(true);
 }
