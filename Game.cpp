@@ -8,6 +8,7 @@
 #include "UserInputValidation.h"
 #include "UserInterface.h"
 #include "Item.h"
+#include "Inventory.h"
 
 using namespace std;
 
@@ -20,6 +21,8 @@ int main() {
 
 	Player myPlayer("link", 20, 5, 5);
 	myPlayer.SetPlayerChunkLocation(0, 0);
+
+	Inventory inventory(25);
 
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
@@ -74,7 +77,7 @@ int main() {
 				case UserInputValidation::Action::PICKUP:
 					if (manager.GetPlayerLocationTile().GetItem() != nullptr)		//Check if item is on Tile
 					{
-						manager.GetPlayerLocationTile().PickUpItem();
+						inventory.addItem(manager.GetPlayerLocationTile().PickUpItem()); //Adds the picked up item to the invetory
 						cout << "Item was picked up.\n";
 					}
 					else
@@ -97,6 +100,9 @@ int main() {
 					break;
 				case UserInputValidation::Action::HEALTH:
 					cout << "You are at " << myPlayer.GetPlayerHealth() << " health.";
+					break;
+				case UserInputValidation::Action::INV:
+					inventory.displayInventory();
 					break;
 			}
 		}
