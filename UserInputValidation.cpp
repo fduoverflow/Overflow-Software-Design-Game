@@ -62,6 +62,7 @@ bool UserInputValidation::CheckValidAction(Action action)
 	case Action::MAP:
 	case Action::PICKUP:
 	case Action::HEALTH:
+	case Action::INV:
 	case Action::INSPECT:
 		return true;
 	case Action::ERROR:
@@ -102,6 +103,10 @@ UserInputValidation::Action UserInputValidation::StringToAction(string input)
 	else if (input == "HEALTH")
 	{
 		return Action::HEALTH;
+	}
+	else if (input == "INV")
+	{
+		return Action::INV;
 	}
 	else
 	{
