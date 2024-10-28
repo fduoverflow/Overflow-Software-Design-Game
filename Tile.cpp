@@ -48,6 +48,7 @@ Tile::Tile(int r, int c, int tileID)
 	southTile = nullptr;
 	eastTile = nullptr;
 	westTile = nullptr;
+	questFlag = "";
 }
 Tile::Tile(int r, int c, Item* newItem, int tileID)
 {
@@ -59,6 +60,7 @@ Tile::Tile(int r, int c, Item* newItem, int tileID)
 	southTile = nullptr;
 	eastTile = nullptr;
 	westTile = nullptr;
+	questFlag = "";
 }
 Tile::Tile()
 {
@@ -70,6 +72,7 @@ Tile::Tile()
 	southTile = nullptr;
 	eastTile = nullptr;
 	westTile = nullptr;
+	questFlag = "";
 }
 
 //Main variables getters and setters
@@ -164,4 +167,14 @@ void Tile::DisplayTile()
 {
 	ConsoleColors::SetColor(BLOCK_TYPES[ID].color);
 	cout << TILE_DISPLAY;
+}
+
+void Tile::SetQuestFlag(string q)
+{
+	questFlag = q;
+}
+
+string Tile::GetQuestFlag()
+{
+	return questFlag;
 }

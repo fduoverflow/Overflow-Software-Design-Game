@@ -27,7 +27,8 @@ private:
 	Tile* eastTile;
 	Tile* westTile;
 
-
+	// Marks if a tile is a flag for a quest
+	string questFlag;
 public:
 	//Description Setter/Getters
 	void DisplayTile();
@@ -43,6 +44,10 @@ public:
 	//Item Setter/Getters, passed by value
 	Item* GetItem();
 	void SetItem(Item *newItem);
+
+	// questFlag Setters/Getters
+	string GetQuestFlag();
+	void SetQuestFlag(string questFlag);
 
 	//Pickup item
 	Item& PickUpItem();
