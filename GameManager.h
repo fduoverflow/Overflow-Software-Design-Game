@@ -9,7 +9,7 @@
 class GameManager
 {
 private:
-	Player* player;
+	Player* myPlayer;
 	Map* map;
 	Quest* firstQuest;
 	Item* spellBook;
