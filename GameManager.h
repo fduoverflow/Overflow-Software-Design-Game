@@ -9,7 +9,7 @@
 class GameManager
 {
 private:
-	Player* player;
+	Player* myPlayer;
 	Map* map;
 	Quest* firstQuest;
 	Item* spellBook;
@@ -32,6 +32,10 @@ public:
 	Tile& GetPlayerLocationTile();
 	void InitilizeTutorialQuest(); // First Quest -- Retrieve spellbook from house after talking to Scrummius (owl)
 	void TutorialQuestComplete();
+
+	//Quest getters and setters
+	Quest* GetFirstQuest();
+	void SetFirstQuest(Quest* newQuest);		//May not need but it's here just in case.
 
 };
 

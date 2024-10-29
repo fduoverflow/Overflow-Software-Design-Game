@@ -17,11 +17,16 @@ const int STARTING_AREA_NUM_ROWS = 5;
 const int STARTING_AREA_NUM_COLS = 6;
 
 int main() {
+	//Initialize map
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
 	Player myPlayer("link", 100, 15, 15);
 	myPlayer.SetPlayerChunkLocation(1, 1);
 	Inventory inventory(25);
+
+	//String to hold large npc dialogue. May move to somewhere else later.
+	string scrummiusDialogue = "Hellooo! My name is Scrummius the Owl, and I am quite pleased to meet yooou! What is your name?\nYooou said your name is " + myPlayer.GetPlayerName() +
+		" and Lord Vallonious has taken your pet, Gapplin? I don't believe you. But if I did I would say yooou are going to need a spell book if you are going tooo face him. Head west from your house and enter the old chateau. I believe yooou may find what you're looking for in there... liar.";
 
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
@@ -32,8 +37,12 @@ int main() {
 	worldMap.GetChunkAt(0, 0).GetTileAt(4, 5).SetItem(new Item("Ring", "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5));
 	worldMap.GetChunkAt(0, 0).GetTileAt(5, 6).SetItem(new Item("Wand", "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
 
+	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
+	worldMap.GetChunkAt(1,1).GetTileAt(15, 12).SetNPC(new NPC("Scrummius", scrummiusDialogue));
+
 	// Test code to Initialize First Quest until Scrummius is Implemmented
-	manager.InitilizeTutorialQuest();
+	//manager.InitilizeTutorialQuest();
+
 	//Set game loop variables
 	bool isGameOver = false;
 	string moveInput;
@@ -44,16 +53,21 @@ int main() {
 		manager.Display();
 		
 		//Display item if there is one on Tile
+		if (manager.GetPlayerLocationTile().GetNPC() != nullptr)
+		{
+			cout << "\nThere is an NPC here: " + manager.GetPlayerLocationTile().GetNPC()->GetName();
+			cout << "\nType Talk to speak to them.";
+		}
+
+		//Display item if there is one on Tile
 		if (manager.GetPlayerLocationTile().GetItem() != nullptr)
 		{
 			cout << "\nThere is an item here: " + manager.GetPlayerLocationTile().GetItem()->GetName();
 			cout << "\nType PickUp to pick up item.";
 			cout << "\nType Inspect to look at item description.";
 		}
-		if (manager.GetPlayerLocationTile().GetQuestFlag() == "First Quest")
-		{
-		}
 
+		//Display player location info
 		cout << "\nChunk X: " << myPlayer.GetPlayerChunkLocationX();
 		cout << "\nChunk Y: " << myPlayer.GetPlayerChunkLocationY();
 		cout << "\nRow: " << myPlayer.GetPlayerLocationY();
@@ -76,6 +90,18 @@ int main() {
 		{
 			switch (valid.GetPlayerAction())
 			{
+				case UserInputValidation::Action::TALK:
+					if (manager.GetPlayerLocationTile().GetNPC() != nullptr)		//Check if NPC is on Tile
+					{
+						manager.GetPlayerLocationTile().GetNPC()->Talk();
+						
+						//Initialize first quest if NPC is Scummius and check to make sure Player can not restart same quest.
+						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Scrummius" && manager.GetFirstQuest()->GetQuestStart() != true && manager.GetFirstQuest()->GetQuestComplete() != true)
+						{
+							manager.InitilizeTutorialQuest();
+						}
+					}
+					break;
 				case UserInputValidation::Action::PICKUP:
 					if (manager.GetPlayerLocationTile().GetItem() != nullptr)		//Check if item is on Tile
 					{

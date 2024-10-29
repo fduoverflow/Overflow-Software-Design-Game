@@ -64,6 +64,7 @@ bool UserInputValidation::CheckValidAction(Action action)
 	case Action::HEALTH:
 	case Action::INV:
 	case Action::INSPECT:
+	case Action::TALK:
 		return true;
 	case Action::ERROR:
 	default:
@@ -107,6 +108,10 @@ UserInputValidation::Action UserInputValidation::StringToAction(string input)
 	else if (input == "INV")
 	{
 		return Action::INV;
+	}
+	else if (input == "TALK")
+	{
+		return Action::TALK;
 	}
 	else
 	{
