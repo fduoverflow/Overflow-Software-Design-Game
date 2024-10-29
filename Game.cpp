@@ -26,7 +26,7 @@ int main() {
 
 	//String to hold large npc dialogue. May move to somewhere else later.
 	string scrummiusDialogue = "Hellooo! My name is Scrummius the Owl, and I am quite pleased to meet yooou! What is your name?\nYooou said your name is " + myPlayer.GetPlayerName() +
-		" and Lord Vallonious has taken your pet, Gapplin? I don’t believe you. But if I did I would say yooou are going to need a spell book if you are going tooo face him. Head west from your house and enter the old château. I believe yooou may find what you’re looking for in there… liar.";
+		" and Lord Vallonious has taken your pet, Gapplin? I don't believe you. But if I did I would say yooou are going to need a spell book if you are going tooo face him. Head west from your house and enter the old chateau. I believe yooou may find what you're looking for in there... liar.";
 
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
