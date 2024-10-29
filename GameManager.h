@@ -19,6 +19,9 @@ public:
 	*/
 	void MovePlayer(UserInputValidation::Move);
 
+	// Displays the map and anything within it
+	void Display();
+
 	/*
 	* Returns the Tile address at player's current location.
 	*/

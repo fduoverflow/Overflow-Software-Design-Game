@@ -34,6 +34,7 @@ void GameManager::MovePlayer(UserInputValidation::Move dir) {
 	int newChunkX = player->GetPlayerChunkLocationX() + x, newChunkY = player->GetPlayerChunkLocationY() + y;
 	// If new move is within the chunk bounds, check that the new tile is valid and move there
 	if (-1 < newPosX && newPosX < 16 && -1 < newPosY && newPosY < 16) {
+		// Update the tile that the player is on
 		player->SetPlayerLocation(newPosX, newPosY);
 	}
 	// If new move is not within chunk bounds
@@ -48,4 +49,8 @@ void GameManager::MovePlayer(UserInputValidation::Move dir) {
 Tile& GameManager::GetPlayerLocationTile()
 {
 	return map->GetChunkAt(player->GetPlayerChunkLocationX(), player->GetPlayerChunkLocationY()).GetTileAt(player->GetPlayerLocationX(), player->GetPlayerLocationY());
+}
+
+void GameManager::Display() {
+	map->Display(player->GetPlayerChunkLocationX(), player->GetPlayerChunkLocationY(), player->GetPlayerLocationX(), player->GetPlayerLocationY());
 }

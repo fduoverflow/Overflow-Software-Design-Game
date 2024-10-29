@@ -37,7 +37,7 @@ int main() {
 	while (!isGameOver) {
 
 		//Display current chunk
-		worldMap.DisplayChunkAt(myPlayer.GetPlayerChunkLocationX(), myPlayer.GetPlayerChunkLocationY());
+		manager.Display();
 		
 		//Display item if there is one on Tile
 		if (manager.GetPlayerLocationTile().GetItem() != nullptr)

@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "Tile.h"
 #include "ConsoleColors.h"
 using namespace std;
@@ -164,4 +164,10 @@ void Tile::DisplayTile()
 {
 	ConsoleColors::SetColor(BLOCK_TYPES[ID].color);
 	cout << TILE_DISPLAY;
+}
+
+void Tile::DisplayPlayerTile()
+{
+	ConsoleColors::SetColor(BLOCK_TYPES[ID].color);
+	ConsoleColors::wprint(L"🧙‍♂️");
 }

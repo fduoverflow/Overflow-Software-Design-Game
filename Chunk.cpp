@@ -79,7 +79,7 @@ void Chunk::DisplayPlayerChunk(int playerX, int playerY)
 		for (int column = 0; column < COLUMN_SIZE; column++)
 		{
 			if (column == playerX && row == playerY)
-				ConsoleColors::SetColor(PINK);
+				tiles[row][column].DisplayPlayerTile();
 			else
 				tiles[row][column].DisplayTile();
 		}
