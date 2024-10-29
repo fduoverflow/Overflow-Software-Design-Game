@@ -17,6 +17,7 @@ const int STARTING_AREA_NUM_ROWS = 5;
 const int STARTING_AREA_NUM_COLS = 6;
 
 int main() {
+	//Initialize map
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
 	Player myPlayer("link", 100, 15, 15);
@@ -32,8 +33,12 @@ int main() {
 	worldMap.GetChunkAt(0, 0).GetTileAt(4, 5).SetItem(new Item("Ring", "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5));
 	worldMap.GetChunkAt(0, 0).GetTileAt(5, 6).SetItem(new Item("Wand", "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
 
+	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
+	worldMap.GetChunkAt(0, 0).GetTileAt(5, 2).SetNPC(new NPC("Scrummius", scrummiusDialogue));
+
 	// Test code to Initialize First Quest until Scrummius is Implemmented
-	manager.InitilizeTutorialQuest();
+	//manager.InitilizeTutorialQuest();
+
 	//Set game loop variables
 	bool isGameOver = false;
 	string moveInput;
@@ -50,10 +55,8 @@ int main() {
 			cout << "\nType PickUp to pick up item.";
 			cout << "\nType Inspect to look at item description.";
 		}
-		if (manager.GetPlayerLocationTile().GetQuestFlag() == "First Quest")
-		{
-		}
 
+		//Display player location info
 		cout << "\nChunk X: " << myPlayer.GetPlayerChunkLocationX();
 		cout << "\nChunk Y: " << myPlayer.GetPlayerChunkLocationY();
 		cout << "\nRow: " << myPlayer.GetPlayerLocationY();
@@ -76,6 +79,18 @@ int main() {
 		{
 			switch (valid.GetPlayerAction())
 			{
+				case UserInputValidation::Action::TALK:
+					if (manager.GetPlayerLocationTile().GetNPC() != nullptr)		//Check if NPC is on Tile
+					{
+						manager.GetPlayerLocationTile().GetNPC()->Talk();
+						
+						//Initialize first quest if NPC is Scummius and check to make sure Player can not restart same quest.
+						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Scrummius" && manager.GetFirstQuest()->GetQuestStart() != true && manager.GetFirstQuest()->GetQuestComplete() != true)
+						{
+							manager.InitilizeTutorialQuest();
+						}
+					}
+					break;
 				case UserInputValidation::Action::PICKUP:
 					if (manager.GetPlayerLocationTile().GetItem() != nullptr)		//Check if item is on Tile
 					{

@@ -30,7 +30,7 @@ class UserInputValidation
 		enum class Action
 		{
 			// Common player actions - Error occurs when invalid input is entered 
-			RULES, INV, MAP, PICKUP, INSPECT, ERROR, HEALTH
+			RULES, INV, MAP, PICKUP, INSPECT, ERROR, HEALTH, TALK
 		};
 		// Call Setters inside check functions in .cpp
 		// Only set player moves/actions to valid ones

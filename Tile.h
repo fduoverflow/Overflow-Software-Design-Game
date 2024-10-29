@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Item.h"
+#include "NPC.h"
 using namespace std;
 
 const string TILE_DISPLAY = "  ";
@@ -18,6 +19,10 @@ private:
 	int ID;
 	int row;
 	int col;
+
+	// Marks if a tile is a flag for a quest
+	string questFlag;
+
 	//Item in Tile
 	Item* myItem;
 
@@ -27,8 +32,9 @@ private:
 	Tile* eastTile;
 	Tile* westTile;
 
-	// Marks if a tile is a flag for a quest
-	string questFlag;
+	//NPC on tile
+	NPC* myNPC;
+
 public:
 	//Description Setter/Getters
 	void DisplayTile();
@@ -42,9 +48,13 @@ public:
 	int GetColumn();
 	void SetColumn(int c);
   
-	//Item Setter/Getters, passed by value
+	//Item Setter/Getters, passed by reference
 	Item* GetItem();
 	void SetItem(Item *newItem);
+
+	//NPC Setter/Getters, passed by reference
+	NPC* GetNPC();
+	void SetNPC(NPC* newNPC);
 
 	// questFlag Setters/Getters
 	string GetQuestFlag();

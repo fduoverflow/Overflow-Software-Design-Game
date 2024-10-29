@@ -1,6 +1,6 @@
 #include "GameManager.h"
 
-
+//Constructors.
 GameManager::GameManager() 
 {
 	firstQuest = new Quest();
@@ -12,6 +12,9 @@ GameManager::GameManager(Player* p, Map* m) {
 	firstQuest = new Quest();
 }
 
+/*
+* Move player to adjacent Tile in given direction.
+*/
 void GameManager::MovePlayer(UserInputValidation::Move dir) {
 	int x = 0, y = 0;	// Transposition magnitude per direction
 	switch (dir)
@@ -48,12 +51,17 @@ void GameManager::MovePlayer(UserInputValidation::Move dir) {
 		cout << "sorry pookie can't move here :(";
 }
 
+/*
+* Returns Tile object at current player location.
+*/
 Tile& GameManager::GetPlayerLocationTile()
 {
 	return map->GetChunkAt(player->GetPlayerChunkLocationX(), player->GetPlayerChunkLocationY()).GetTileAt(player->GetPlayerLocationX(), player->GetPlayerLocationY());
 }
 
-
+/*
+* Initializes first quest by updating start bool and providing quest components.
+*/
 void GameManager::InitilizeTutorialQuest()
 {
 	//Setting the first quest to start as true -- Talking to Scrummius will trigger this
@@ -73,10 +81,27 @@ void GameManager::InitilizeTutorialQuest()
 	map->GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(spellBook);
 }
 
+/*
+* Update fist quest flags to complete status and update NPC dialogue.
+*/
 void GameManager::TutorialQuestComplete()
 {
+	//String to hold large npc dialogue. May move to somewhere else later.
+	string scrummiusDialogue = 
+		"That was fast. I bet yooou just wanted that book for yourself. Either way, now yooou must get to the city if you want tooo make it to Lord Vallonious‘ lair. Like that’s gonna happen. First, get throoough the forest by heading east. It will lead yooou straight there!";
 	firstQuest->SetQuestStart(false);
 	firstQuest->SetQuestComplete(true);
+	map->GetChunkAt(0, 0).GetTileAt(5, 2).GetNPC()->SetDialogue(scrummiusDialogue);
+}
+
+//First Quest getters and setters
+Quest* GameManager::GetFirstQuest()
+{
+	return firstQuest;
+}
+void GameManager::SetFirstQuest(Quest* newQuest)
+{
+	firstQuest = newQuest;
 }
 
 void GameManager::Display() {
