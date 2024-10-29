@@ -24,6 +24,10 @@ int main() {
 	myPlayer.SetPlayerChunkLocation(1, 1);
 	Inventory inventory(25);
 
+	//String to hold large npc dialogue. May move to somewhere else later.
+	string scrummiusDialogue = "Hellooo! My name is Scrummius the Owl, and I am quite pleased to meet yooou! What is your name?\nYooou said your name is " + myPlayer.GetPlayerName() +
+		" and Lord Vallonious has taken your pet, Gapplin? I don’t believe you. But if I did I would say yooou are going to need a spell book if you are going tooo face him. Head west from your house and enter the old château. I believe yooou may find what you’re looking for in there… liar.";
+
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
 
@@ -34,7 +38,7 @@ int main() {
 	worldMap.GetChunkAt(0, 0).GetTileAt(5, 6).SetItem(new Item("Wand", "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
 
 	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
-	worldMap.GetChunkAt(0, 0).GetTileAt(5, 2).SetNPC(new NPC("Scrummius", scrummiusDialogue));
+	worldMap.GetChunkAt(1,1).GetTileAt(15, 12).SetNPC(new NPC("Scrummius", scrummiusDialogue));
 
 	// Test code to Initialize First Quest until Scrummius is Implemmented
 	//manager.InitilizeTutorialQuest();
@@ -48,6 +52,13 @@ int main() {
 		//Display current chunk
 		manager.Display();
 		
+		//Display item if there is one on Tile
+		if (manager.GetPlayerLocationTile().GetNPC() != nullptr)
+		{
+			cout << "\nThere is an NPC here: " + manager.GetPlayerLocationTile().GetNPC()->GetName();
+			cout << "\nType Talk to speak to them.";
+		}
+
 		//Display item if there is one on Tile
 		if (manager.GetPlayerLocationTile().GetItem() != nullptr)
 		{
