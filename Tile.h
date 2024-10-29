@@ -32,6 +32,7 @@ private:
 public:
 	//Description Setter/Getters
 	void DisplayTile();
+	void DisplayPlayerTile();
 
 	//Row Setter/Getters
 	int GetRow();

@@ -8,7 +8,7 @@ const string CHUNK_MAP_DISPLAY = "  ";
 
 // Default Constructor
 Chunk::Chunk() {
-	type = VALID;
+	type = INVALID;
 	for (int row = 0; row < ROW_SIZE; row++)
 	{
 		for (int column = 0; column < COLUMN_SIZE; column++)
@@ -79,7 +79,7 @@ void Chunk::DisplayPlayerChunk(int playerX, int playerY)
 		for (int column = 0; column < COLUMN_SIZE; column++)
 		{
 			if (column == playerX && row == playerY)
-				ConsoleColors::SetColor(PINK);
+				tiles[row][column].DisplayPlayerTile();
 			else
 				tiles[row][column].DisplayTile();
 		}
@@ -131,4 +131,9 @@ void Chunk::SetTileAt(int r, int c, Tile tile) {
 ChunkType Chunk::getType()
 {
 	return type;
+}
+
+// Sets Chunk type
+void Chunk::setType(ChunkType t) {
+	type = t;
 }

@@ -29,5 +29,6 @@ class Chunk
 		Tile& GetTileAt(int r, int c);
 		void SetTileAt(int r, int c, Tile t);
 		ChunkType getType();
+		void setType(ChunkType);
 };
 

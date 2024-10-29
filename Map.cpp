@@ -53,6 +53,7 @@ Map::Map(string fileName, int rows, int columns) {
 			mapRow = stoi(line.substr(line.find(',') + 1));
 
 			currentChunk = Chunk(); // creates a new chunk
+			currentChunk.setType(VALID); // registers the chunk as a playable chunk
 			chunkRowCount++; // increases chunkRowCount so the line satisfies the below if statement
 			continue;
 		}

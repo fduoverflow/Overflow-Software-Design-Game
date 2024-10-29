@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "Tile.h"
 #include "ConsoleColors.h"
 using namespace std;
@@ -169,6 +169,7 @@ void Tile::DisplayTile()
 	cout << TILE_DISPLAY;
 }
 
+
 void Tile::SetQuestFlag(string q)
 {
 	questFlag = q;
@@ -177,4 +178,9 @@ void Tile::SetQuestFlag(string q)
 string Tile::GetQuestFlag()
 {
 	return questFlag;
+}
+void Tile::DisplayPlayerTile()
+{
+	ConsoleColors::SetColor(BLOCK_TYPES[ID].color);
+	ConsoleColors::wprint(L"🧙‍♂️");
 }

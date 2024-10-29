@@ -1,4 +1,7 @@
 #pragma once
+#include <string>
+
+using namespace std;
 
 enum Color {
 	LIME_GREEN = 70,
@@ -28,5 +31,6 @@ static class ConsoleColors
 		static int EnableColor();
 		static void DisableColor();
 		static void SetColor(Color);
+		static void wprint(wstring);
 };
 
