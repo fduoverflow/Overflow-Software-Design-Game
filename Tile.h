@@ -2,6 +2,7 @@
 #include <string>
 #include "Item.h"
 #include "NPC.h"
+#include "Enemy.h"
 using namespace std;
 
 const string TILE_DISPLAY = "  ";
@@ -35,6 +36,9 @@ private:
 	//NPC on tile
 	NPC* myNPC;
 
+	//Enemy on tile
+	Enemy* myEnemy;
+
 public:
 	//Description Setter/Getters
 	void DisplayTile();
@@ -55,6 +59,10 @@ public:
 	//NPC Setter/Getters, passed by reference
 	NPC* GetNPC();
 	void SetNPC(NPC* newNPC);
+
+	//Enemy Setter/Getters, passed by reference
+	Enemy* GetEnemy();
+	void SetEnemy(Enemy* newEnemy);
 
 	// questFlag Setters/Getters
 	string GetQuestFlag();
