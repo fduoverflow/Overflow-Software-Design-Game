@@ -47,10 +47,10 @@ int main() {
 	bool isGameOver = false;
 	string moveInput;
 
-	while (!isGameOver) {
+	//Display current chunk once before entering play loop
+	manager.Display();
 
-		//Display current chunk
-		manager.Display();
+	while (!isGameOver) {
 		
 		//Display NPC if there is one on Tile
 		if (manager.GetPlayerLocationTile().GetNPC() != nullptr)
@@ -84,6 +84,9 @@ int main() {
 
 		// Clears the console screen
 		system("cls");
+
+		//Display current chunk
+		manager.Display();
 
 		//User Input Validation
 		UserInputValidation valid;
@@ -152,6 +155,12 @@ int main() {
 		{
 			//Move player
 			manager.MovePlayer(valid.GetPlayerMove());
+
+			// Clears the console screen
+			system("cls");
+
+			//Display current chunk
+			manager.Display();
 		}
 		else if (!isAction && !isMove)							//Moved action error messages here because they were printing when the other action was used. Ex: "Invalid action" printed when inputing WASD.
 		{
