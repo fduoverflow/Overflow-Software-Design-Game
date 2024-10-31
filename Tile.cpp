@@ -116,6 +116,16 @@ void Tile::SetNPC(NPC* newNPC)
 	myNPC = newNPC;
 }
 
+//Enemy getters and setters
+Enemy* Tile::GetEnemy()
+{
+	return myEnemy;
+}
+void Tile::SetEnemy(Enemy* newEnemy)
+{
+	myEnemy = newEnemy;
+}
+
 /*
 * Pick up item method used to remove Item from Tile and return to Player.
 * Item is set to default state of EMPTY to signify it has been removed.
@@ -182,16 +192,22 @@ void Tile::DisplayTile()
 	cout << TILE_DISPLAY;
 }
 
-
+/*
+* If Tile is used for a quest, set its trigger flag as a string here.
+*/
 void Tile::SetQuestFlag(string q)
 {
 	questFlag = q;
 }
-
+//Quest flag getter
 string Tile::GetQuestFlag()
 {
 	return questFlag;
 }
+
+/*
+* Display mage emoji on player location.
+*/
 void Tile::DisplayPlayerTile()
 {
 	ConsoleColors::SetColor(BLOCK_TYPES[ID].color);

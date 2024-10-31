@@ -33,9 +33,9 @@ int main() {
 
 	//Place items near player's starting tile
 	//worldMap.GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(new Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
-	worldMap.GetChunkAt(0, 0).GetTileAt(6, 5).SetItem(new Item("Key", "This key might unlock a door somewhere.", Item::Type::KEY, 0));
-	worldMap.GetChunkAt(0, 0).GetTileAt(4, 5).SetItem(new Item("Ring", "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5));
-	worldMap.GetChunkAt(0, 0).GetTileAt(5, 6).SetItem(new Item("Wand", "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
+	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", "This key might unlock a door somewhere.", Item::Type::KEY, 0));
+	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5));
+	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
 
 	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
 	worldMap.GetChunkAt(1,1).GetTileAt(15, 12).SetNPC(new NPC("Scrummius", scrummiusDialogue));
@@ -47,16 +47,23 @@ int main() {
 	bool isGameOver = false;
 	string moveInput;
 
-	while (!isGameOver) {
+	//Display current chunk once before entering play loop
+	manager.Display();
 
-		//Display current chunk
-		manager.Display();
+	while (!isGameOver) {
 		
-		//Display item if there is one on Tile
+		//Display NPC if there is one on Tile
 		if (manager.GetPlayerLocationTile().GetNPC() != nullptr)
 		{
 			cout << "\nThere is an NPC here: " + manager.GetPlayerLocationTile().GetNPC()->GetName();
 			cout << "\nType Talk to speak to them.";
+		}
+
+		//Display Enemy if there is one on Tile. When battle system is implemented, it will launch from here.
+		if (manager.GetPlayerLocationTile().GetEnemy() != nullptr)
+		{
+			cout << "\nYou have encountered an enemy! The enemy here is: " + manager.GetPlayerLocationTile().GetEnemy()->GetName();
+			cout << "\nGet ready to battle!";
 		}
 
 		//Display item if there is one on Tile
@@ -77,6 +84,9 @@ int main() {
 
 		// Clears the console screen
 		system("cls");
+
+		//Display current chunk
+		manager.Display();
 
 		//User Input Validation
 		UserInputValidation valid;
@@ -107,11 +117,10 @@ int main() {
 					{
 						if (manager.GetPlayerLocationTile().GetItem()->GetName() == "Scrummius' Spell Book") // KEY item for First Quest-- flag trigger for completion of first quest
 						{
-							// Marking First Quest as Complete
+							// Marking First Quest as Complete and spawn in Dust Golem on tiles that correspond to the door tiles (7,7) and (7,8)
 							manager.TutorialQuestComplete();
-
-							// Spawn in Dust Golem on tiles that correspond to the door tiles (7,7) and (7,8) -- once quest is complete
 							cout << "You hear a gust of wind coming from the doorway...\n";
+
 						}
 						inventory.addItem(manager.GetPlayerLocationTile().PickUpItem()); //Adds the picked up item to the invetory
 						cout << "Item was picked up.\n";
@@ -146,6 +155,12 @@ int main() {
 		{
 			//Move player
 			manager.MovePlayer(valid.GetPlayerMove());
+
+			// Clears the console screen
+			system("cls");
+
+			//Display current chunk
+			manager.Display();
 		}
 		else if (!isAction && !isMove)							//Moved action error messages here because they were printing when the other action was used. Ex: "Invalid action" printed when inputing WASD.
 		{
