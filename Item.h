@@ -27,23 +27,25 @@ class Item
 
 		//Constructors
 		Item();
-		Item(string n, string desc, Type t, int val);
+		Item(string n, string desc, Type t, int val, int q);
 
 		//Getters and setters
 		string GetName();
 		string GetDescription();
 		Type GetType();
 		int GetValue();
+		int GetQuantity();
 		void setName(string n);
 		void setDescription(string desc);
 		void setType(Type t);
 		void setValue(int val);
+		void setQuantity(int q);
 
 	private:
 		string name;
 		string description;
 		Type myType;
 		int value;				//This value can be used to represent amount of HP healed, damage a weapon does, armor provided, etc... depending on the item Type.
-	
+		int quantity;
 };
 
