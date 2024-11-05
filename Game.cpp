@@ -34,6 +34,7 @@ int main() {
 	//Place items near player's starting tile
 	//worldMap.GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(new Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
 	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", "This key might unlock a door somewhere.", Item::Type::KEY, 0, 1));
+	worldMap.GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Key", "This key might unlock a door somewhere.", Item::Type::KEY, 0, 1));
 	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5, 1));
 	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25, 1));
 

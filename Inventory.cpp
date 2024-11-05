@@ -48,8 +48,7 @@ void Inventory::addItem(Item& item) {
     // Adds items if duplicated by changing quantity
     for (int i = 0; i < size; i++) {
         if (contents[i].GetType() == item.GetType() && contents[i].GetName() == item.GetName()) {
-            int quantity = contents[i].GetQuantity();
-            contents[i].setQuantity(quantity++); // Increase quantity if duplicate
+            contents[i].setQuantity(contents[i].GetQuantity()+1); // Increase quantity if duplicate
             cout << "Increased quantity of: " << item.GetName() << " to " << contents[i].GetQuantity() << endl;
             return;
         }
