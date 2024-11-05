@@ -24,9 +24,10 @@ int main() {
 	myPlayer.SetPlayerChunkLocation(1, 1);
 	Inventory inventory(25);
 
-	//String to hold large npc dialogue. May move to somewhere else later.
+	//Strings to hold large npc dialogue. May move to somewhere else later.
 	string scrummiusDialogue = "Hellooo! My name is Scrummius the Owl, and I am quite pleased to meet yooou! What is your name?\nYooou said your name is " + myPlayer.GetPlayerName() +
 		" and Lord Vallonious has taken your pet, Gapplin? I don't believe you. But if I did I would say yooou are going to need a spell book if you are going tooo face him. Head west from your house and enter the old chateau. I believe yooou may find what you're looking for in there... liar.";
+	string herosTreeDialogue = "Greetings. I am the Hero's Tree. Thou must pass the Branches of Heroes to continue your adventure. These branches have chronicled the tales of these lands and to clear them, you must answer their three questions.";
 
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
@@ -40,8 +41,8 @@ int main() {
 	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
 	worldMap.GetChunkAt(1,1).GetTileAt(15, 12).SetNPC(new NPC("Scrummius", scrummiusDialogue));
 
-	// Test code to Initialize First Quest until Scrummius is Implemmented
-	//manager.InitilizeTutorialQuest();
+	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
+	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", herosTreeDialogue));
 
 	//Set game loop variables
 	bool isGameOver = false;
@@ -109,6 +110,17 @@ int main() {
 						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Scrummius" && manager.GetFirstQuest()->GetQuestStart() != true && manager.GetFirstQuest()->GetQuestComplete() != true)
 						{
 							manager.InitilizeTutorialQuest();
+						}
+
+						//Check if NPC is Hero's Tree and if puzzle is complete then start the puzzle.
+						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Hero's Tree" && manager.GetBranchesQuest()->GetQuestComplete() != true)
+						{
+							cout << "\nType LEAVE to exit puzzle.\n";
+
+							if (manager.BranchesOfHerosPuzzle())					//Starts puzzle and returns true or false if player solves or leaves puzzle
+							{
+								manager.GetPlayerLocationTile().GetNPC()->SetDialogue("Congrats on completing the Branches of Heroes! Thine next destination should be further to the east.");
+							}
 						}
 					}
 					break;

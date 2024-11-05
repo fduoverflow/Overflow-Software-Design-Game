@@ -1,15 +1,34 @@
 #include "GameManager.h"
+#include <algorithm>
 
-//Constructors.
+/*
+* Default constructor
+*/
 GameManager::GameManager() 
 {
+	//Initialize quests
 	firstQuest = new Quest();
+	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 }
-
-GameManager::GameManager(Player* p, Map* m) {
+/*
+* Constructor with passed player and map.
+*/
+GameManager::GameManager(Player* p, Map* m) 
+{
+	//Pass player and map
 	myPlayer = p;
 	map = m;
+
+	//Initialize quests
 	firstQuest = new Quest();
+	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
+}
+
+/*
+* Display map and anything within it.
+*/
+void GameManager::Display() {
+	map->Display(myPlayer->GetPlayerChunkLocationX(), myPlayer->GetPlayerChunkLocationY(), myPlayer->GetPlayerLocationX(), myPlayer->GetPlayerLocationY());
 }
 
 /*
@@ -112,7 +131,77 @@ void GameManager::SetFirstQuest(Quest* newQuest)
 	firstQuest = newQuest;
 }
 
-void GameManager::Display() {
-	map->Display(myPlayer->GetPlayerChunkLocationX(), myPlayer->GetPlayerChunkLocationY(), myPlayer->GetPlayerLocationX(), myPlayer->GetPlayerLocationY());
+//Branches of Heros Puzzle Quest getters and setters
+Quest* GameManager::GetBranchesQuest()
+{
+	return branchesOfHeroesQuest;
+}
+void GameManager::SetBranchesQuest(Quest* newQuest)
+{
+	branchesOfHeroesQuest = newQuest;
 }
 
+/*
+* Puzzle at the end of the Forest.
+* Keeps the player in the puzzle unless LEAVE command is inputted or they have solved the puzzle.
+* Returns true if puzzle is solved and false if the player chose to leave.
+*/
+bool GameManager::BranchesOfHerosPuzzle()
+{
+	//Control bool, input string, and input validation variable.
+	bool isInPuzzle = true;
+	string playerAnswer;
+	UserInputValidation validator;
+
+	//Reset cin to use std::getLine(). This is to allow for user input that includes spaces.
+	cin.ignore();
+
+	//Puzzle loop.
+	while (isInPuzzle)
+	{
+		//Question 1.
+		cout << "What is the item Scrummius told thee to gather?\n";
+		getline(cin, playerAnswer);
+
+		//Check answer.
+		transform(playerAnswer.begin(), playerAnswer.end(), playerAnswer.begin(), ::toupper);
+		if (playerAnswer == "SPELLBOOK")
+		{
+			cout << "Correct. ";
+
+			//Question 2.
+			cout << "What was the first enemy that thou encountered?\n";
+			getline(cin, playerAnswer);
+
+			//Check answer.
+			transform(playerAnswer.begin(), playerAnswer.end(), playerAnswer.begin(), ::toupper);
+			if (playerAnswer == "DUST GOLEM")
+			{
+				cout << "Correct. ";
+
+				//Question 3.
+				cout << "How many stepping stones did thou hop on to cross the river?\n";
+				getline(cin, playerAnswer);
+
+				//Check answer and exit puzzle on right answer.
+				transform(playerAnswer.begin(), playerAnswer.end(), playerAnswer.begin(), ::toupper);
+				if (playerAnswer == "3 STONES")
+				{
+					cout << "Correct. Thou has proven thine self. Proceed along thine adventure!\n";
+					branchesOfHeroesQuest->SetQuestComplete(true);
+					return true;
+				}
+			}
+		}
+
+		//Check for leave command
+		validator.ActionChecker(playerAnswer);
+		if (validator.GetPlayerAction() == UserInputValidation::Action::LEAVE)
+		{
+			return false;
+		}
+
+		//Wrong answer message.
+		cout << "Wrong. Thou must start from the begining. ";
+	}
+}
