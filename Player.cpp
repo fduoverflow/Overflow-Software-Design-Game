@@ -17,6 +17,8 @@ Player::Player()
 	playerTileLocation[0] = 0;
 	playerTileLocation[1] = 0;
 	playerHealth = 0;
+	playerAttack = "";
+	playerAttackDamage = 1; // Default damage is 1
 }
 
 //Player Location Setter/Getter

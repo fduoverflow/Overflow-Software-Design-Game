@@ -64,6 +64,9 @@ int main() {
 		{
 			cout << "\nYou have encountered an enemy! The enemy here is: " + manager.GetPlayerLocationTile().GetEnemy()->GetName();
 			cout << "\nGet ready to battle!";
+
+			// Need to add inputs here for a battle
+			// Battle will not end until player/enemy runs or player/enemy loses all health (while loop)
 		}
 
 		//Display item if there is one on Tile

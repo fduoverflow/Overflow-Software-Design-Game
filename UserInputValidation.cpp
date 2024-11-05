@@ -65,6 +65,9 @@ bool UserInputValidation::CheckValidAction(Action action)
 	case Action::INV:
 	case Action::INSPECT:
 	case Action::TALK:
+	case Action::ATTACK:
+	case Action::DEFLECT:
+	case Action::RUN:
 		return true;
 	case Action::ERROR:
 	default:
@@ -112,6 +115,18 @@ UserInputValidation::Action UserInputValidation::StringToAction(string input)
 	else if (input == "TALK")
 	{
 		return Action::TALK;
+	}
+	else if (input == "ATTACK")
+	{
+		return Action::ATTACK;
+	}
+	else if (input == "DEFLECT")
+	{
+		return Action::DEFLECT;
+	}
+	else if (input == "RUN")
+	{
+		return Action::RUN;
 	}
 	else
 	{
