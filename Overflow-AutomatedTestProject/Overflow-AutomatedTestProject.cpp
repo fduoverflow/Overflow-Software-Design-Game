@@ -43,7 +43,7 @@ namespace OverflowAutomatedTestProject
 				};
 
 				// Array with the test scenarios
-				Element elements[9] = {
+				Element elements[10] = {
 					// {"Rules", UserInputValidation::Action::RULES}, -- would fail, RULES not implemented
 					{"Map", UserInputValidation::Action::MAP},
 					{"inv", UserInputValidation::Action::INV},
@@ -53,7 +53,8 @@ namespace OverflowAutomatedTestProject
 					{"TALK", UserInputValidation::Action::TALK},
 					{"InSpEcT ", UserInputValidation::Action::INSPECT},  // trailing white space - fails
 					{" Health", UserInputValidation::Action::HEALTH},    // leading white space - fails
-					{ "garbage", UserInputValidation::Action::ERROR }    // rework code to support errors - Action checker fails here
+					{"garbage", UserInputValidation::Action::ERROR},    // previously failed, now fixed with conditional logic
+					{"A", UserInputValidation::Action::ERROR}
 				};
 			};
 
