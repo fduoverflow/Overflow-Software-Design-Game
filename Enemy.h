@@ -17,6 +17,10 @@ class Enemy
 		//Item that the enemy drops on defeat
 		Item* myItem;
 												//May want to consider adding an Attack/Defense/EnemyAction object to allow enemies to have actions that can do varying amounts of damage in a variety of types.
+
+		// Enemy Attack Name and Attack Damage
+		string enemyAttack;
+		int enemyAttackDamage;
 	public:
 		//Constructors
 		Enemy();
@@ -34,5 +38,12 @@ class Enemy
 		//Item Setter/Getters, passed by reference
 		Item* GetItem();
 		void SetItem(Item* newItem);
+
+		// Enemy Attack Name/Attack Damage Setters/Getters
+		string GetEnemyAttack();
+		void SetEnemyAttack(string);
+
+		int GetEnemyAttackDamage();
+		void SetEnemyAttackDamage(int);
 };
 

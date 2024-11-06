@@ -59,3 +59,23 @@ void Enemy::SetItem(Item* newItem)
 {
 	myItem = newItem;
 }
+
+string Enemy::GetEnemyAttack()
+{
+	return enemyAttack;
+}
+
+void Enemy::SetEnemyAttack(string e_attk)
+{
+	enemyAttack = e_attk;
+}
+
+int Enemy::GetEnemyAttackDamage()
+{
+	return enemyAttackDamage;
+}
+
+void Enemy::SetEnemyAttackDamage(int e_dmg)
+{
+	enemyAttackDamage = e_dmg;
+}

@@ -13,6 +13,7 @@ private:
 	Map* map;
 	Quest* firstQuest;
 	Item* spellBook;
+	Enemy* dustGolem; // first enemy -- 2 tiles wide (only enemy in GameManager as it is 2 tiles wide)
 public:
 	//Constructors
 	GameManager();
@@ -36,6 +37,9 @@ public:
 	//Quest getters and setters
 	Quest* GetFirstQuest();
 	void SetFirstQuest(Quest* newQuest);		//May not need but it's here just in case.
+
+	//Dust Golem Setter
+	void DestroyDustGolem();
 
 };
 

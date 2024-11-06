@@ -67,6 +67,47 @@ int main() {
 
 			// Need to add inputs here for a battle
 			// Battle will not end until player/enemy runs or player/enemy loses all health (while loop)
+			string battleAction;
+			while (manager.GetPlayerLocationTile().GetEnemy() != nullptr && manager.GetPlayerLocationTile().GetEnemy()->GetHealth() > 0)
+			{
+				// Player turn
+				cout << "Enter Attack, Deflect, or Run for your action: ";
+				cin >> battleAction;
+				UserInputValidation checker;
+				bool validAction = checker.ActionChecker(battleAction);
+
+				if (validAction)
+				{
+					int playerAttackDamage = myPlayer.GetPlayerAttackDamage();
+					switch (checker.GetPlayerAction())
+					{
+						case UserInputValidation::Action::ATTACK:
+							// Doing damage to the enemy
+							manager.GetPlayerLocationTile().GetEnemy()->SetHealth(manager.GetPlayerLocationTile().GetEnemy()->GetHealth() - playerAttackDamage);
+							cout << "Enemy Health: " << manager.GetPlayerLocationTile().GetEnemy()->GetHealth() << "\n";
+							if (manager.GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
+							{
+								cout << manager.GetPlayerLocationTile().GetEnemy()->GetName() << " has been defeated!\n";
+								if (manager.GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
+								{
+									manager.DestroyDustGolem();
+								}
+								manager.GetPlayerLocationTile().SetEnemy(nullptr);
+								system("cls");
+								manager.Display();
+								break;
+							}
+							break;
+						case UserInputValidation::Action::DEFLECT:
+							break;
+						case UserInputValidation::Action::RUN:
+							break;
+					}
+				}
+				
+
+				// Enemy turn, then begin loop again
+			}
 		}
 
 		//Display item if there is one on Tile
