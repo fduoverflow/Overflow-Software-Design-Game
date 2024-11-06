@@ -38,6 +38,7 @@ class UserInputValidation
 		bool CheckValidAction(Action);
 		bool MoveChecker(string);
 		bool ActionChecker(string);
+		bool ActionChecker(string, bool);
 		
 
 		// Player Move Setter/Getters
@@ -60,5 +61,6 @@ class UserInputValidation
 	private:
 		Move playerMove;
 		Action playerAction;
+		void NormalizeString(string& input);  // helper function to remove white space & convert to a standard case, input is updated in-place
 };
 

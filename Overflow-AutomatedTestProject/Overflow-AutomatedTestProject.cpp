@@ -42,7 +42,7 @@ namespace OverflowAutomatedTestProject
 					UserInputValidation::Action move;
 				};
 
-				// Array of two elements of the inner struct
+				// Array with the test scenarios
 				Element elements[9] = {
 					// {"Rules", UserInputValidation::Action::RULES}, -- would fail, RULES not implemented
 					{"Map", UserInputValidation::Action::MAP},
@@ -51,9 +51,9 @@ namespace OverflowAutomatedTestProject
 					{"InSpEcT", UserInputValidation::Action::INSPECT},
 					{"Health", UserInputValidation::Action::HEALTH},
 					{"TALK", UserInputValidation::Action::TALK},
-					{"garbage", UserInputValidation::Action::ERROR},     // rework code to support errors - Action checker fails here
 					{"InSpEcT ", UserInputValidation::Action::INSPECT},  // trailing white space - fails
-					{" Health", UserInputValidation::Action::HEALTH}    // leading white space - fails
+					{" Health", UserInputValidation::Action::HEALTH},    // leading white space - fails
+					{ "garbage", UserInputValidation::Action::ERROR }    // rework code to support errors - Action checker fails here
 				};
 			};
 
@@ -63,7 +63,13 @@ namespace OverflowAutomatedTestProject
 			for (const auto& element : myInputStruct.elements) {
 				message = "Checking " + element.text + "\n";
 				Logger::WriteMessage(message.c_str());
-				Assert::IsTrue(action.ActionChecker(element.text), L"Action checker returned False");
+
+				// ActionChecker will return false if an invalid command (enum = ERROR), otherwise true for valid commands
+				if (element.move == UserInputValidation::Action::ERROR)
+					Assert::IsFalse(action.ActionChecker(element.text,true), L"Predicted false, Action checker returned true");
+				else
+					Assert::IsTrue(action.ActionChecker(element.text,true), L"Predicted valid, Action checker returned False");
+				// Verify the enum matches the command
 				Assert::IsTrue(action.GetPlayerAction() == element.move, L"Stored action does not match predicted action");
 			}
 		}
@@ -104,6 +110,8 @@ namespace OverflowAutomatedTestProject
 			for (const auto& element : myInputStruct.elements) {
 				message = "Checking " + element.text + "\n";
 				Logger::WriteMessage(message.c_str());
+
+				// the first assert will fail if an invalid move is processed, see action logic for fix
 				Assert::IsTrue(action.MoveChecker(element.text), L"Move checker returned False");
 				Assert::IsTrue(action.GetPlayerMove() == element.move, L"Stored move does not match predicted action");
 			}
