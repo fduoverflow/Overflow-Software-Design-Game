@@ -68,5 +68,50 @@ namespace OverflowAutomatedTestProject
 			}
 		}
 
+		/**
+		 * Single character moves
+		 *  W = 'W',	A = 'A',	S = 'S',	D = 'D',
+		 * For invalid inputs
+		 *  X = 'X'
+		 */
+
+		TEST_METHOD(OverflowAllMoveTest)
+		{
+			std::string message;
+			Logger::WriteMessage("Testing moves\n");
+
+			// define the structure and test cases to compare
+			struct inputStruct {
+				// Create a struct to hold both elements of the array
+				struct Element {
+					std::string text;
+					UserInputValidation::Move move;
+				};
+
+				// Array of two elements of the inner struct
+				Element elements[5] = {
+					{"W", UserInputValidation::Move::W},
+					{"a", UserInputValidation::Move::A},
+					{"s", UserInputValidation::Move::S},
+					{"d", UserInputValidation::Move::D},
+					{"z", UserInputValidation::Move::X} // error case - will fail
+				};
+			};
+
+			// run through the tests, assert any issues
+			UserInputValidation action;
+			inputStruct myInputStruct;
+			for (const auto& element : myInputStruct.elements) {
+				message = "Checking " + element.text + "\n";
+				Logger::WriteMessage(message.c_str());
+				Assert::IsTrue(action.MoveChecker(element.text), L"Move checker returned False");
+				Assert::IsTrue(action.GetPlayerMove() == element.move, L"Stored move does not match predicted action");
+			}
+		}
+		TEST_METHOD(OverflowActionEdgeCases)
+		{
+			Logger::WriteMessage("Action edge cases - no tests yet - to be defined\n");
+		}
+
 	};
 }
