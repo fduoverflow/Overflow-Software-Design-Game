@@ -59,54 +59,59 @@ int main() {
 			cout << "\nType Talk to speak to them.";
 		}
 
-		//Display Enemy if there is one on Tile. When battle system is implemented, it will launch from here.
-		if (manager.GetPlayerLocationTile().GetEnemy() != nullptr)
+		//Try catch for exceptions thrown when player lands on a tile that used to contain an Enemy which has since been delted.
+		try
 		{
-			cout << "\nYou have encountered an enemy! The enemy here is: " + manager.GetPlayerLocationTile().GetEnemy()->GetName();
-			cout << "\nGet ready to battle!";
-
-			// Need to add inputs here for a battle
-			// Battle will not end until player/enemy runs or player/enemy loses all health (while loop)
-			string battleAction;
-			while (manager.GetPlayerLocationTile().GetEnemy() != nullptr && manager.GetPlayerLocationTile().GetEnemy()->GetHealth() > 0)
+			//Display Enemy if there is one on Tile. When battle system is implemented, it will launch from here.
+			if (manager.GetPlayerLocationTile().GetEnemy() != nullptr)
 			{
-				// Player turn
-				cout << "Enter Attack, Deflect, or Run for your action: ";
-				cin >> battleAction;
-				UserInputValidation checker;
-				bool validAction = checker.ActionChecker(battleAction);
+				cout << "\nYou have encountered an enemy! The enemy here is: " + manager.GetPlayerLocationTile().GetEnemy()->GetName();
+				cout << "\nGet ready to battle!";
 
-				if (validAction)
+				// Need to add inputs here for a battle
+				// Battle will not end until player/enemy runs or player/enemy loses all health (while loop)
+				string battleAction;
+				while (manager.GetPlayerLocationTile().GetEnemy() != nullptr && manager.GetPlayerLocationTile().GetEnemy()->GetHealth() > 0)
 				{
-					int playerAttackDamage = myPlayer.GetPlayerAttackDamage();
-					switch (checker.GetPlayerAction())
-					{
-						case UserInputValidation::Action::ATTACK:
-							// Doing damage to the enemy
-							manager.GetPlayerLocationTile().GetEnemy()->SetHealth(manager.GetPlayerLocationTile().GetEnemy()->GetHealth() - playerAttackDamage);
-							cout << "Enemy Health: " << manager.GetPlayerLocationTile().GetEnemy()->GetHealth() << "\n";
-							if (manager.GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
-							{
-								cout << manager.GetPlayerLocationTile().GetEnemy()->GetName() << " has been defeated!\n";
-								if (manager.GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
-								{
-									manager.DestroyDustGolem();
-								}
-								manager.GetPlayerLocationTile().SetEnemy(nullptr);
-								//manager.Display();
-								break;
-							}
-							break;
-						case UserInputValidation::Action::DEFLECT:
-							break;
-						case UserInputValidation::Action::RUN:
-							break;
-					}
-				}
-				
+					// Player turn
+					cout << "Enter Attack, Deflect, or Run for your action: ";
+					cin >> battleAction;
+					UserInputValidation checker;
+					bool validAction = checker.ActionChecker(battleAction);
 
-				// Enemy turn, then begin loop again
-			}
+					if (validAction)
+					{
+						int playerAttackDamage = myPlayer.GetPlayerAttackDamage();																																	  
+						switch (checker.GetPlayerAction())																																							  
+						{																																															  
+						case UserInputValidation::Action::ATTACK:																																					  
+							// Doing damage to the enemy																																							  
+							manager.GetPlayerLocationTile().GetEnemy()->SetHealth(manager.GetPlayerLocationTile().GetEnemy()->GetHealth() - playerAttackDamage);													  
+							cout << "Enemy Health: " << manager.GetPlayerLocationTile().GetEnemy()->GetHealth() << "\n";																							  
+							if (manager.GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)																														  
+							{																																														  
+								cout << manager.GetPlayerLocationTile().GetEnemy()->GetName() << " has been defeated!\n";																							  
+								delete manager.GetPlayerLocationTile().GetEnemy();											//Delete Enemy object so that other pointers no longer reference it.					  
+								manager.GetPlayerLocationTile().SetEnemy(nullptr);																												  
+								break;																																												  
+							}																																														  
+							break;																																													  
+						case UserInputValidation::Action::DEFLECT:																																					  
+							break;																																													  
+						case UserInputValidation::Action::RUN:																																						  
+							break;																																													  
+						}																																															  
+					}																																																  
+																																																					  
+																																																					  
+					// Enemy turn, then begin loop again																																							  
+				}																																																	  
+			}																																																		  
+		}
+		catch (...)
+		{
+			//Found a tile with an enemy that was deleted. Reseting Enemy pointer to nullptr.
+			manager.GetPlayerLocationTile().SetEnemy(nullptr);
 		}
 
 		//Display item if there is one on Tile

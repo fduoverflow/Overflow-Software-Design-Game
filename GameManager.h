@@ -13,6 +13,7 @@ private:
 	Map* map;
 	Quest* firstQuest;
 	Item* spellBook;
+
 public:
 	//Constructors
 	GameManager();
@@ -36,9 +37,5 @@ public:
 	//Quest getters and setters
 	Quest* GetFirstQuest();
 	void SetFirstQuest(Quest* newQuest);		//May not need but it's here just in case.
-
-	//Dust Golem Setter
-	void DestroyDustGolem();
-
 };
 

@@ -97,9 +97,9 @@ void GameManager::TutorialQuestComplete()
 	//Update npc dialgue
 	map->GetChunkAt(1,1).GetTileAt(15,12).GetNPC()->SetDialogue(scrummiusDialogue);
 
-	//Spawn enemies that appear at end of this quest.
+	//Spawn Enemy that takes up two tiles. Use this method to generate enemies that can occupy multiple tiles.
 	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetEnemy(new Enemy("Dust Golem", 2, new Item("Potion", "Use this potion to restore your HP", Item::Type::HEALING, 5)));
-	map->GetChunkAt(0, 1).GetTileAt(7, 8).SetEnemy(new Enemy("Dust Golem", 2, new Item("Potion", "Use this potion to restore your HP", Item::Type::HEALING, 5)));
+	map->GetChunkAt(0, 1).GetTileAt(7, 8).SetEnemy(map->GetChunkAt(0, 1).GetTileAt(7, 7).GetEnemy());
 }
 
 //First Quest getters and setters
@@ -114,12 +114,5 @@ void GameManager::SetFirstQuest(Quest* newQuest)
 
 void GameManager::Display() {
 	map->Display(myPlayer->GetPlayerChunkLocationX(), myPlayer->GetPlayerChunkLocationY(), myPlayer->GetPlayerLocationX(), myPlayer->GetPlayerLocationY());
-}
-
-void GameManager::DestroyDustGolem()
-{
-	//dustGolem = nullptr;
-	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetEnemy(nullptr);
-	map->GetChunkAt(0, 1).GetTileAt(7, 8).SetEnemy(nullptr);
 }
 
