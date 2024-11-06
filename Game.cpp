@@ -93,8 +93,7 @@ int main() {
 									manager.DestroyDustGolem();
 								}
 								manager.GetPlayerLocationTile().SetEnemy(nullptr);
-								system("cls");
-								manager.Display();
+								//manager.Display();
 								break;
 							}
 							break;

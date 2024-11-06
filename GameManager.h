@@ -13,7 +13,6 @@ private:
 	Map* map;
 	Quest* firstQuest;
 	Item* spellBook;
-	Enemy* dustGolem; // first enemy -- 2 tiles wide (only enemy in GameManager as it is 2 tiles wide)
 public:
 	//Constructors
 	GameManager();

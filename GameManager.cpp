@@ -4,14 +4,12 @@
 GameManager::GameManager() 
 {
 	firstQuest = new Quest();
-	dustGolem = new Enemy("Dust Golem", 8, new Item("Potion", "Use this potion to restore your HP", Item::Type::HEALING, 5));
 }
 
 GameManager::GameManager(Player* p, Map* m) {
 	myPlayer = p;
 	map = m;
 	firstQuest = new Quest();
-	dustGolem = new Enemy("Dust Golem", 8, new Item("Potion", "Use this potion to restore your HP", Item::Type::HEALING, 5));
 }
 
 /*
@@ -100,8 +98,8 @@ void GameManager::TutorialQuestComplete()
 	map->GetChunkAt(1,1).GetTileAt(15,12).GetNPC()->SetDialogue(scrummiusDialogue);
 
 	//Spawn enemies that appear at end of this quest.
-	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetEnemy(dustGolem);
-	map->GetChunkAt(0, 1).GetTileAt(7, 8).SetEnemy(dustGolem);
+	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetEnemy(new Enemy("Dust Golem", 2, new Item("Potion", "Use this potion to restore your HP", Item::Type::HEALING, 5)));
+	map->GetChunkAt(0, 1).GetTileAt(7, 8).SetEnemy(new Enemy("Dust Golem", 2, new Item("Potion", "Use this potion to restore your HP", Item::Type::HEALING, 5)));
 }
 
 //First Quest getters and setters
@@ -120,6 +118,8 @@ void GameManager::Display() {
 
 void GameManager::DestroyDustGolem()
 {
-	dustGolem = nullptr;
+	//dustGolem = nullptr;
+	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetEnemy(nullptr);
+	map->GetChunkAt(0, 1).GetTileAt(7, 8).SetEnemy(nullptr);
 }
 
