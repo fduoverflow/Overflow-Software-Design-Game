@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
 #include <string>
 #include "UserInputValidation.h"
@@ -16,11 +16,15 @@ private:
 	int playerHealth;
 	int playerChunkLoc[2];		//Player chunk location stored as row and column
 	int playerTileLocation[2];		//Tile that the player is located on
+	wstring playerIcon = L"🧙‍♂️";
 
 public:
 	//Player Name Setter/Getter
 	string GetPlayerName();
 	void SetPlayerName(string name);
+
+	// Player Icon Getter
+	wstring GetPlayerIcon();
 
 	//Player Health Setter/Getter
 	int GetPlayerHealth();
