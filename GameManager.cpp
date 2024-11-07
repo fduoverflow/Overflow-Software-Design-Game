@@ -116,3 +116,65 @@ void GameManager::Display() {
 	map->Display(myPlayer->GetPlayerChunkLocationX(), myPlayer->GetPlayerChunkLocationY(), myPlayer->GetPlayerLocationX(), myPlayer->GetPlayerLocationY());
 }
 
+/*
+This function will manage how battles will work and will be called in Game.cpp when a battle starts
+3 player actions: ATTACK, DEFLECT, RUN
+Enemy actions: ATTACK and DEFLECT
+*/
+void GameManager::GameBattleManager(GameManager manager, Player myPlayer)
+{
+	// if the player chooses run and run succeeds, it should stop the battle, but not get rid of the enemy
+	bool isActionRun = false;
+	while (manager.GetPlayerLocationTile().GetEnemy() != nullptr && manager.GetPlayerLocationTile().GetEnemy()->GetHealth() > 0 && isActionRun == false)
+	{
+		// Player turn
+		string battleAction;
+		cout << "Enter Attack, Deflect, or Run for your action: ";
+		cin >> battleAction;
+		UserInputValidation checker;
+		bool validAction = checker.ActionChecker(battleAction);
+
+		if (validAction)
+		{
+			int playerAttackDamage = myPlayer.GetPlayerAttackDamage();
+			switch (checker.GetPlayerAction())
+			{
+			// Player chooses the ATTACK Action and will do damage to the enemy			
+			case UserInputValidation::Action::ATTACK:
+																																								  
+				manager.GetPlayerLocationTile().GetEnemy()->SetHealth(manager.GetPlayerLocationTile().GetEnemy()->GetHealth() - playerAttackDamage);
+				cout << "Enemy Health: " << manager.GetPlayerLocationTile().GetEnemy()->GetHealth() << "\n";
+
+				// Occurs when the enemy is defeated by reaching 0 or less health
+				if (manager.GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
+				{
+					cout << manager.GetPlayerLocationTile().GetEnemy()->GetName() << " has been defeated!\n";
+					delete manager.GetPlayerLocationTile().GetEnemy();	//Delete Enemy object so that other pointers no longer reference it.					  
+					manager.GetPlayerLocationTile().SetEnemy(nullptr);
+					break;
+				}
+				break;
+			case UserInputValidation::Action::DEFLECT:
+
+				break;
+			case UserInputValidation::Action::RUN:
+
+				// Providing a seed value
+				srand((unsigned)time(NULL));
+
+				// Get a random number from 1 to 10
+				int runChance = 1 + (rand() % 9);
+				if (runChance <= 5)
+				{
+					cout << "You ran away safely, but the " << manager.GetPlayerLocationTile().GetEnemy()->GetName() << " still remains...\n";
+					isActionRun = true;
+				}
+				break;
+			}
+		}
+
+
+		// Enemy turn, then begin loop again																																							  
+	}
+}
+
