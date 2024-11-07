@@ -4,8 +4,6 @@
 
 using namespace std;
 
-const string CHUNK_MAP_DISPLAY = "  ";
-
 // Default Constructor
 Chunk::Chunk() {
 	type = INVALID;

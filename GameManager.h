@@ -25,6 +25,7 @@ public:
 
 	// Displays the map and anything within it
 	void Display();
+	void DisplayMap();
 
 	/*
 	* Returns the Tile address at player's current location.

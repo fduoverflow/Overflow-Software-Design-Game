@@ -141,7 +141,7 @@ int main() {
 					}
 					break;
 				case UserInputValidation::Action::MAP:
-					worldMap.DisplayMap();
+					manager.DisplayMap();
 					break;
 				case UserInputValidation::Action::HEALTH:
 					cout << "You are at " << myPlayer.GetPlayerHealth() << " health.";

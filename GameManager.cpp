@@ -116,3 +116,11 @@ void GameManager::Display() {
 	map->Display(myPlayer->GetPlayerChunkLocationX(), myPlayer->GetPlayerChunkLocationY(), myPlayer->GetPlayerLocationX(), myPlayer->GetPlayerLocationY());
 }
 
+/*
+* Display Map.
+* Only displays VALID Chunks.
+*/
+void GameManager::DisplayMap()
+{
+	map->DisplayMap(myPlayer->GetPlayerChunkLocationX(), myPlayer->GetPlayerChunkLocationY(), myPlayer->GetPlayerIcon());
+}
