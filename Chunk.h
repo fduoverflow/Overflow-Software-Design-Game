@@ -28,8 +28,8 @@ class Chunk
 		void DisplayChunk();
 		void DisplayPlayerChunk(int, int);
 		void DisplayChunkInMap();
-		Tile& GetTileAt(int r, int c);
-		void SetTileAt(int r, int c, Tile t);
+		Tile& GetTileAt(int x, int y);
+		void SetTileAt(int x, int y, Tile t);
 		ChunkType getType();
 		void setType(ChunkType);
 };

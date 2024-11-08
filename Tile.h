@@ -27,12 +27,6 @@ private:
 	//Item in Tile
 	Item* myItem;
 
-	//Adjacent Tiles
-	Tile* northTile;
-	Tile* southTile;
-	Tile* eastTile;
-	Tile* westTile;
-
 	//NPC on tile
 	NPC* myNPC;
 
@@ -70,16 +64,6 @@ public:
 
 	//Pickup item
 	Item& PickUpItem();
-
-	//Adacent Tile Setter/Getters
-	Tile& GetNorthTile();
-	Tile& GetSouthTile();
-	Tile& GetEastTile();
-	Tile& GetWestTile();
-	void SetNorthTile(Tile &targetTile);
-	void SetSouthTile(Tile &targetTile);
-	void SetEastTile(Tile &targetTile);
-	void SetWestTile(Tile &targetTile);
 
 	//Constructors
 	Tile(int r, int c, int tileID);
