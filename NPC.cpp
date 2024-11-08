@@ -3,9 +3,10 @@
 
 // Constructor definition
 // Initializes the NPC with a specified name and dialogue
-NPC::NPC(string n, string d)
+NPC::NPC(string n, display i, string d)
 {
     name = n;
+    icon = i;
     dialogue = d;
 }
 
@@ -30,6 +31,11 @@ string NPC::GetName()
 void NPC::SetName(string n)
 {
     name = n;
+}
+
+//Icon getter
+display NPC::GetIcon() {
+    return icon;
 }
 
 //dialogue getters and setters

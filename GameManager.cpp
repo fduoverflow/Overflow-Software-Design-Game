@@ -1,4 +1,4 @@
-#include "GameManager.h"
+﻿#include "GameManager.h"
 
 //Constructors.
 GameManager::GameManager() 
@@ -73,7 +73,7 @@ void GameManager::InitilizeTutorialQuest()
 	string objective = "Go to the house and gather the spellbook!";
 
 	// Spell book is a key item that is gathered after the first quest-- not a weapon for now
-	spellBook = new Item("Scrummius' Spell Book","A certain peculiar owl's spellbook, who knows what secrets it may hold...",Item::Type::KEY, 0);
+	spellBook = new Item("Scrummius' Spell Book", { L"📖", 3 }, "A certain peculiar owl's spellbook, who knows what secrets it may hold...", Item::Type::KEY, 0);
 	firstQuest = new Quest(name, desc, objective, spellBook);
 
 	// Place the spellbook in location -- door: (7,7) and (7,8)
@@ -88,7 +88,7 @@ void GameManager::TutorialQuestComplete()
 {
 	//String to hold large npc dialogue. May move to somewhere else later.
 	string scrummiusDialogue = 
-		"That was fast. I bet yooou just wanted that book for yourself. Either way, now yooou must get to the city if you want tooo make it to Lord Vallonious� lair. Like that�s gonna happen. First, get throoough the forest by heading east. It will lead yooou straight there!";
+		"That was fast. I bet yooou just wanted that book for yourself. Either way, now yooou must get to the city if you want tooo make it to Lord Vallonious‘ lair. Like that’s gonna happen. First, get throoough the forest by heading east. It will lead yooou straight there!";
 	
 	//Mark first quest as done
 	firstQuest->SetQuestStart(false);
@@ -98,8 +98,8 @@ void GameManager::TutorialQuestComplete()
 	map->GetChunkAt(1,1).GetTileAt(15,12).GetNPC()->SetDialogue(scrummiusDialogue);
 
 	//Spawn enemies that appear at end of this quest.
-	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetEnemy(new Enemy("Dust Golem", 8, new Item("Potion", "Use this potion to restore your HP", Item::Type::HEALING, 5)));
-	map->GetChunkAt(0, 1).GetTileAt(7, 8).SetEnemy(new Enemy("Dust Golem", 8, new Item("Potion", "Use this potion to restore your HP", Item::Type::HEALING, 5)));
+	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetEnemy(new Enemy("Dust Golem", 8, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5)));
+	map->GetChunkAt(0, 1).GetTileAt(7, 8).SetEnemy(new Enemy("Dust Golem", 8, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5)));
 }
 
 //First Quest getters and setters

@@ -62,7 +62,7 @@ void ConsoleColors::SetColor(Color color) {
     cout << "\033[48;5;" << color << "m" << flush;
 }
 
-void ConsoleColors::wprint(wstring message)
+void ConsoleColors::wprint(wstring message, int size)
 {
     /*  wprint prints a string that can have any emoji or Unicode characters.
         When creating a wstring, put an L in front of it.
@@ -72,7 +72,7 @@ void ConsoleColors::wprint(wstring message)
 #ifdef _WIN32
     HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
     DWORD n_written;
-    WriteConsoleW(handle, message.c_str(), (DWORD)message.size()-3, &n_written, NULL);
+    WriteConsoleW(handle, message.c_str(), size, &n_written, NULL);
 #else
     std::wcout << message;
 #endif
