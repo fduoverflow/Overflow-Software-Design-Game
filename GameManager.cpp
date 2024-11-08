@@ -98,7 +98,9 @@ void GameManager::TutorialQuestComplete()
 	map->GetChunkAt(1,1).GetTileAt(15,12).GetNPC()->SetDialogue(scrummiusDialogue);
 
 	//Spawn Enemy that takes up two tiles. Use this method to generate enemies that can occupy multiple tiles.
-	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetEnemy(new Enemy("Dust Golem", 2, new Item("Potion", "Use this potion to restore your HP", Item::Type::HEALING, 5)));
+	// Setting the Dust Golem
+	// Dust Golem has 8 HP, drops a potion, it's attack name is Arm Swing and that attack does 2 HP
+	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetEnemy(new Enemy("Dust Golem", 8, new Item("Potion", "Use this potion to restore your HP", Item::Type::HEALING, 5),"Arm Swing",2));
 	map->GetChunkAt(0, 1).GetTileAt(7, 8).SetEnemy(map->GetChunkAt(0, 1).GetTileAt(7, 7).GetEnemy());
 }
 
@@ -121,60 +123,179 @@ This function will manage how battles will work and will be called in Game.cpp w
 3 player actions: ATTACK, DEFLECT, RUN
 Enemy actions: ATTACK and DEFLECT
 */
-void GameManager::GameBattleManager(GameManager manager, Player myPlayer)
+void GameManager::GameBattleManager(Player &myPlayer)
 {
 	// if the player chooses run and run succeeds, it should stop the battle, but not get rid of the enemy
 	bool isActionRun = false;
-	while (manager.GetPlayerLocationTile().GetEnemy() != nullptr && manager.GetPlayerLocationTile().GetEnemy()->GetHealth() > 0 && isActionRun == false)
+	while (GetPlayerLocationTile().GetEnemy() != nullptr && GetPlayerLocationTile().GetEnemy()->GetHealth() > 0 && isActionRun == false)
 	{
 		// Player turn
+		// Asking for user input for their action
 		string battleAction;
 		cout << "Enter Attack, Deflect, or Run for your action: ";
 		cin >> battleAction;
-		UserInputValidation checker;
-		bool validAction = checker.ActionChecker(battleAction);
 
+		cout << endl;
+
+		// Check if the input is a valid action
+		UserInputValidation playerChecker;
+		bool validAction = playerChecker.ActionChecker(battleAction);
+
+		// Get the player and enemy name
+		string enemyName = GetPlayerLocationTile().GetEnemy()->GetName();
+		string playerName = myPlayer.GetPlayerName();
+
+		// Get enemy Health
+		int startEnemyHealth = GetPlayerLocationTile().GetEnemy()->GetHealth();
+		int currentEnemyHealth = startEnemyHealth;
+
+		// Get player name and attack damage
+		int playerAttackDamage = myPlayer.GetPlayerAttackDamage();
+		string playerAttackName = myPlayer.GetPlayerAttack();
+
+		// Get enemy attack and attack damage
+		string enemyAttackName = GetPlayerLocationTile().GetEnemy()->GetEnemyAttack();
+		int enemyAttackDamage = GetPlayerLocationTile().GetEnemy()->GetEnemyAttackDamage();
+		int currentPlayerHealth = myPlayer.GetPlayerHealth();
+
+		// Get a random number from 1 to 10
+		srand((unsigned)time(nullptr)); // seed value
+		int runChance = 1 + (rand() % 9);
+
+		// If the player chose a valid action, process their action
 		if (validAction)
 		{
-			int playerAttackDamage = myPlayer.GetPlayerAttackDamage();
-			switch (checker.GetPlayerAction())
+			switch (playerChecker.GetPlayerAction())
 			{
+			
 			// Player chooses the ATTACK Action and will do damage to the enemy			
 			case UserInputValidation::Action::ATTACK:
-																																								  
-				manager.GetPlayerLocationTile().GetEnemy()->SetHealth(manager.GetPlayerLocationTile().GetEnemy()->GetHealth() - playerAttackDamage);
-				cout << "Enemy Health: " << manager.GetPlayerLocationTile().GetEnemy()->GetHealth() << "\n";
+													
+				cout << playerName << " uses " << playerAttackName << " and deals " << playerAttackDamage << " HP!\n";
+				GetPlayerLocationTile().GetEnemy()->SetHealth(currentEnemyHealth - playerAttackDamage);
 
-				// Occurs when the enemy is defeated by reaching 0 or less health
-				if (manager.GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
-				{
-					cout << manager.GetPlayerLocationTile().GetEnemy()->GetName() << " has been defeated!\n";
-					delete manager.GetPlayerLocationTile().GetEnemy();	//Delete Enemy object so that other pointers no longer reference it.					  
-					manager.GetPlayerLocationTile().SetEnemy(nullptr);
-					break;
-				}
+				currentEnemyHealth = GetPlayerLocationTile().GetEnemy()->GetHealth();
+				cout << enemyName << " Health: " << currentEnemyHealth << "\n\n";
 				break;
 			case UserInputValidation::Action::DEFLECT:
+				cout << playerName << " deflects!\n";
+				myPlayer.SetPlayerHealth(currentPlayerHealth - (enemyAttackDamage / 2));
+				currentPlayerHealth = myPlayer.GetPlayerHealth();
 
+				GetPlayerLocationTile().GetEnemy()->SetHealth(currentEnemyHealth - (enemyAttackDamage / 2));
+				currentEnemyHealth = GetPlayerLocationTile().GetEnemy()->GetHealth();
+
+				cout << enemyName << " Health: " << currentEnemyHealth << "\n";
+				cout << playerName << " Health: " << currentPlayerHealth << "\n\n";
 				break;
 			case UserInputValidation::Action::RUN:
-
-				// Providing a seed value
-				srand((unsigned)time(NULL));
-
-				// Get a random number from 1 to 10
-				int runChance = 1 + (rand() % 9);
+				
+				
 				if (runChance <= 5)
 				{
-					cout << "You ran away safely, but the " << manager.GetPlayerLocationTile().GetEnemy()->GetName() << " still remains...\n";
+					cout << "You ran away safely, but the " << GetPlayerLocationTile().GetEnemy()->GetName() << " still remains...\n";
 					isActionRun = true;
 				}
+				else
+				{
+					cout << "You were not able to run away...\n";
+				}
 				break;
-			}
+			}		
+		}
+		else
+		{
+			// player must enter a valid action, or their turn is lost
+			cout << "Oops, you entered a wrong command. You lost your turn...\n\n";
+		}
+		// Occurs when the enemy is defeated by reaching 0 or less health
+		if (GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
+		{
+			cout << enemyName << " has been defeated!\n";
+			delete GetPlayerLocationTile().GetEnemy();	//Delete Enemy object so that other pointers no longer reference it.					  
+			GetPlayerLocationTile().SetEnemy(nullptr);
+			return;
 		}
 
+		// Get the enemy action
+		UserInputValidation::Action enemyTurn = ProcessEnemyTurn(currentEnemyHealth, startEnemyHealth);
 
-		// Enemy turn, then begin loop again																																							  
+		// Enemy actions limited to ATTACK and DEFLECT-- updating the health accordingly
+		switch (enemyTurn)
+		{
+			case UserInputValidation::Action::ATTACK:
+				cout << enemyName << " uses " << enemyAttackName << " and deals " << enemyAttackDamage << " HP!\n";
+
+				myPlayer.SetPlayerHealth(currentPlayerHealth - enemyAttackDamage);
+				currentPlayerHealth = myPlayer.GetPlayerHealth();
+
+				cout << playerName << " Health: " << currentPlayerHealth << "\n\n";
+				break;
+			case UserInputValidation::Action::DEFLECT:
+				cout << enemyName << " deflects!\n";
+
+				myPlayer.SetPlayerHealth(currentPlayerHealth - (playerAttackDamage / 2));
+				currentPlayerHealth = myPlayer.GetPlayerHealth();
+
+				GetPlayerLocationTile().GetEnemy()->SetHealth(currentEnemyHealth - (playerAttackDamage / 2));
+				currentEnemyHealth = GetPlayerLocationTile().GetEnemy()->GetHealth();
+
+				cout << enemyName << " Health: " << currentEnemyHealth << "\n";
+				cout << playerName << " Health: " << currentPlayerHealth << "\n\n";
+				break;
+			default:
+				break;
+		}
+	}
+}
+
+/*
+This method will process the enemies turn
+It is called in the GameBattleManager method to process the enemy's turn
+return the proper enemy action based on the ratios highlighted
+*/
+UserInputValidation::Action GameManager::ProcessEnemyTurn(int currentEnemyHealth, int startEnemyhealth)
+{
+	/*
+	If enemy health is between 100% - 75%: Attack chance is 95%, Deflect Chance is 5%
+	If enemy health is between 75% - 50%: Attack chance is 70%, Deflect Chance is 30%
+	If enemy health is between 50% - 25%: Attack chance is 60%, Deflect Chance is 50%
+	If enemy health is between 25% - 0%: Attack chance is 50%, Deflect chance is 50%
+	*/
+	double healthPercentage = currentEnemyHealth / startEnemyhealth;
+
+	int attackChance = 50;  // Default chance in case of error
+	int deflectChance = 50; // Default chance in case of error
+
+	// RNG for enemy action -- based on enemy health percentage
+	srand((unsigned)time(nullptr));
+	int randomEnemyAction = 1 + (rand() % 100);
+
+	// Map health percentage to categories and set attack/deflect chances
+	if (healthPercentage >= 0.75) {
+		attackChance = 95;
+		deflectChance = 5;
+	}
+	else if (healthPercentage >= 0.5) {
+		attackChance = 70;
+		deflectChance = 30;
+	}
+	else if (healthPercentage >= 0.25) {
+		attackChance = 60;
+		deflectChance = 40;
+	}
+	else {
+		attackChance = 50;
+		deflectChance = 50;
+	}
+
+	// Return enemy action based on attack and deflect chances
+	if (randomEnemyAction <= attackChance) {
+		return UserInputValidation::Action::ATTACK;
+	}
+	else 
+	{
+		return UserInputValidation::Action::DEFLECT;
 	}
 }
 

@@ -29,6 +29,14 @@ Enemy::Enemy(string n, int hp, Item* newItem)
 	health = hp;
 	myItem = newItem;
 }
+Enemy::Enemy(string n, int hp, Item* newItem, string attkName, int attkDmg)
+{
+	name = n;
+	health = hp;
+	myItem = newItem;
+	enemyAttack = attkName;
+	enemyAttackDamage = attkDmg;
+}
 
 //Name getters and setters
 string Enemy::GetName()

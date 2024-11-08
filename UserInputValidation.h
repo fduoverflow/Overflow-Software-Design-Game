@@ -46,7 +46,11 @@ class UserInputValidation
 
 		// Player Actions Setter/Getters
 		Action GetPlayerAction();
-		void SetPlayerAction(Action); 
+		void SetPlayerAction(Action);
+		
+		// Enemy Actions Setter/Getters
+		Action GetEnemyAction();
+		void SetEnemyAction(Action);
 
 		// Check length of user input-- movement is only WASD
 		bool CheckMoveInputLength(string);
@@ -60,5 +64,6 @@ class UserInputValidation
 	private:
 		Move playerMove;
 		Action playerAction;
+		Action enemyAction;
 };
 

@@ -21,7 +21,7 @@ int main() {
 	//Initialize map
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
-	Player myPlayer("link", 100, 15, 15);
+	Player myPlayer("link", 20, 15, 15);
 	myPlayer.SetPlayerChunkLocation(1, 1);
 	Inventory inventory(25);
 
@@ -69,9 +69,9 @@ int main() {
 				cout << "\nYou have encountered an enemy! The enemy here is: " + manager.GetPlayerLocationTile().GetEnemy()->GetName();
 				cout << "\nGet ready to battle!\n";
 
-				// Need to add inputs here for a battle
-				// Battle will not end until player/enemy runs or player/enemy loses all health (while loop)
-				manager.GameBattleManager(manager, myPlayer);
+				// Call the GameBattleManager to handle the battle that is happening
+				// GameBattleManager is a method of the GameManager class
+				manager.GameBattleManager(myPlayer);
 			}																																																		  
 		}
 		catch (...)

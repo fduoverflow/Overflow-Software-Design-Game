@@ -38,6 +38,7 @@ public:
 	Quest* GetFirstQuest();
 	void SetFirstQuest(Quest* newQuest);		//May not need but it's here just in case.
 
-	void GameBattleManager(GameManager, Player); // Function that will manage how battles work and the interactions between the ATTACK, DEFLECT, and RUN actions
+	void GameBattleManager(Player&); // Function that will manage how battles work and the interactions between the ATTACK, DEFLECT, and RUN actions
+	UserInputValidation::Action ProcessEnemyTurn(int currentEnemyHealth, int startEnemyhealth);
 };
 

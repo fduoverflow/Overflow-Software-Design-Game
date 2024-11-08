@@ -26,6 +26,7 @@ class Enemy
 		Enemy();
 		Enemy(string n, int hp);
 		Enemy(string n, int hp, Item* newItem);
+		Enemy(string n, int hp, Item* newItem, string attkName, int attkDmg);
 
 		//Name getters and setters
 		string GetName();
