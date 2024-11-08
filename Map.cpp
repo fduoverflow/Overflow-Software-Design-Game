@@ -109,7 +109,7 @@ void Map::DisplayMap(int x, int y, wstring icon)
 			else
 				ConsoleColors::SetColor(LIME_GREEN);
 			if (x == column && y == row)
-				ConsoleColors::wprint(icon);
+				ConsoleColors::wprint(icon, 3);
 			else
 				cout << CHUNK_MAP_DISPLAY;
 		}

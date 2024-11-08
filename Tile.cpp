@@ -189,7 +189,16 @@ void Tile::SetWestTile(Tile& targetTile)
 void Tile::DisplayTile()
 {
 	ConsoleColors::SetColor(BLOCK_TYPES[ID].color);
-	cout << TILE_DISPLAY;
+	if (myNPC != nullptr) {
+		display i = myNPC->GetIcon();
+		ConsoleColors::wprint(i.emoji, i.size);
+	}
+	else if (myItem != nullptr) {
+		icon i = myItem->GetIcon();
+		ConsoleColors::wprint(i.emoji, i.size);
+	}
+	else
+		cout << TILE_DISPLAY;
 }
 
 /*
@@ -211,5 +220,5 @@ string Tile::GetQuestFlag()
 void Tile::DisplayPlayerTile()
 {
 	ConsoleColors::SetColor(BLOCK_TYPES[ID].color);
-	ConsoleColors::wprint(L"🧙‍♂️");
+	ConsoleColors::wprint(L"🧙‍♂️", 2);
 }
