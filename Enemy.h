@@ -4,6 +4,11 @@
 
 using namespace std;
 
+struct enemyDisplay {
+	wstring emoji;
+	int size;
+};
+
 /*
 * Enemy class will be used to define combat opponents for the player to fight against.
 */
@@ -16,17 +21,18 @@ class Enemy
 
 		//Item that the enemy drops on defeat
 		Item* myItem;
-												//May want to consider adding an Attack/Defense/EnemyAction object to allow enemies to have actions that can do varying amounts of damage in a variety of types.
 
 		// Enemy Attack Name and Attack Damage
 		string enemyAttack;
 		int enemyAttackDamage;
+
+		enemyDisplay myIcon;
 	public:
 		//Constructors
 		Enemy();
-		Enemy(string n, int hp);
-		Enemy(string n, int hp, Item* newItem);
-		Enemy(string n, int hp, Item* newItem, string attkName, int attkDmg);
+		Enemy(string n, enemyDisplay i, int hp);
+		Enemy(string n, enemyDisplay i, int hp, Item* newItem);
+		Enemy(string n, enemyDisplay i, int hp, Item* newItem, string attkName, int attkDmg);
 
 		//Name getters and setters
 		string GetName();
@@ -39,6 +45,9 @@ class Enemy
 		//Item Setter/Getters, passed by reference
 		Item* GetItem();
 		void SetItem(Item* newItem);
+
+		//Display getter
+		enemyDisplay GetIcon();
 
 		// Enemy Attack Name/Attack Damage Setters/Getters
 		string GetEnemyAttack();

@@ -197,6 +197,10 @@ void Tile::DisplayTile()
 		icon i = myItem->GetIcon();
 		ConsoleColors::wprint(i.emoji, i.size);
 	}
+	else if (myEnemy != nullptr) {
+		enemyDisplay i = myEnemy->GetIcon();
+		ConsoleColors::wprint(i.emoji, i.size);
+	}
 	else
 		cout << TILE_DISPLAY;
 }
