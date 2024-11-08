@@ -299,3 +299,11 @@ UserInputValidation::Action GameManager::ProcessEnemyTurn(int currentEnemyHealth
 	}
 }
 
+/*
+* Display Map.
+* Only displays VALID Chunks.
+*/
+void GameManager::DisplayMap()
+{
+	map->DisplayMap(myPlayer->GetPlayerChunkLocationX(), myPlayer->GetPlayerChunkLocationY(), myPlayer->GetPlayerIcon());
+}

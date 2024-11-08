@@ -57,6 +57,11 @@ void Player::SetPlayerName(string name)
 	playerName = name;
 }
 
+// Player Icon Getter
+wstring Player::GetPlayerIcon() {
+	return playerIcon;
+}
+
 //Player Health Setter/Getter
 int Player::GetPlayerHealth()
 {

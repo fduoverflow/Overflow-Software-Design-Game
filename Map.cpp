@@ -98,13 +98,21 @@ void Map::DisplayChunkAt(int chunkX, int chunkY) {
 * Display Map.
 * Only displays VALID Chunks.
 */
-void Map::DisplayMap()
+void Map::DisplayMap(int x, int y, wstring icon)
 {
 	ConsoleColors::EnableColor();
 	for (int row = 0; row < numRows; row++) {
 		Chunk *chunksInRow = chunks[row];
-		for (int column = 0; column < numColumns; column++)
-			chunksInRow[column].DisplayChunkInMap();
+		for (int column = 0; column < numColumns; column++) {
+			if (chunksInRow[column].getType() == INVALID)
+				ConsoleColors::SetColor(GRAY);
+			else
+				ConsoleColors::SetColor(LIME_GREEN);
+			if (x == column && y == row)
+				ConsoleColors::wprint(icon);
+			else
+				cout << CHUNK_MAP_DISPLAY;
+		}
 		cout << endl;
 	}
 	ConsoleColors::DisableColor();

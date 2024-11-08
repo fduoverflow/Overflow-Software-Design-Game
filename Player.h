@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
 #include <string>
 #include "UserInputValidation.h"
@@ -18,11 +18,15 @@ private:
 	int playerTileLocation[2];		// Tile that the player is located on
 	string playerAttack;			// Player Attack Name
 	int playerAttackDamage;			// Player Attack damage number
+	wstring playerIcon = L"🧙‍♂️";
 
 public:
 	//Player Name Setter/Getter
 	string GetPlayerName();
 	void SetPlayerName(string name);
+
+	// Player Icon Getter
+	wstring GetPlayerIcon();
 
 	//Player Health Setter/Getter
 	int GetPlayerHealth();
