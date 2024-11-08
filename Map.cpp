@@ -65,7 +65,7 @@ Map::Map(string fileName, int rows, int columns) {
 			int chunkColumnCount = 0;
 			while (ss >> ID) {
 				Tile currentTile(0, 0, ID);
-				currentChunk.SetTileAt(chunkRowCount, chunkColumnCount, currentTile);
+				currentChunk.SetTileAt(chunkColumnCount, chunkRowCount, currentTile);
 				chunkColumnCount++;
 			}
 			// Places the completed chunk into the map and resets chunkRowCount if we've reached the last row
@@ -109,7 +109,7 @@ void Map::DisplayMap(int x, int y, wstring icon)
 			else
 				ConsoleColors::SetColor(LIME_GREEN);
 			if (x == column && y == row)
-				ConsoleColors::wprint(icon, 3);
+				ConsoleColors::wprint(icon, 2);
 			else
 				cout << CHUNK_MAP_DISPLAY;
 		}
