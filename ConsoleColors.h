@@ -31,6 +31,6 @@ static class ConsoleColors
 		static int EnableColor();
 		static void DisableColor();
 		static void SetColor(Color);
-		static void wprint(wstring);
+		static void wprint(wstring, int);
 };
 

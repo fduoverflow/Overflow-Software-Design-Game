@@ -3,6 +3,13 @@
 
 using namespace std;
 
+// Structure for visualizing objects and characters
+// Where to place this so its universal?
+struct icon {
+	wstring emoji;
+	int size;
+};
+
 /*
 * Item class represents items that the Player can use.
 * Each item will have a name, description, and type.
@@ -27,13 +34,14 @@ class Item
 
 		//Constructors
 		Item();
-		Item(string n, string desc, Type t, int val);
+		Item(string n, icon i, string desc, Type t, int val);
 
 		//Getters and setters
 		string GetName();
 		string GetDescription();
 		Type GetType();
 		int GetValue();
+		icon GetIcon();
 		void setName(string n);
 		void setDescription(string desc);
 		void setType(Type t);
@@ -44,6 +52,6 @@ class Item
 		string description;
 		Type myType;
 		int value;				//This value can be used to represent amount of HP healed, damage a weapon does, armor provided, etc... depending on the item Type.
-	
+		icon myIcon;
 };
 
