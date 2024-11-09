@@ -29,10 +29,12 @@ public:
 	void Display();
 	void DisplayMap();
 
-	/*
-	* Returns the Tile address at player's current location.
-	*/
+	//Returns the Tile address at player's current location.
 	Tile& GetPlayerLocationTile();
+
+	//Return the Chunk address at player's current location.
+	Chunk& GetPlayerLocationChunk();
+
 	void InitilizeTutorialQuest(); // First Quest -- Retrieve spellbook from house after talking to Scrummius (owl)
 	void TutorialQuestComplete();
 

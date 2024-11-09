@@ -103,3 +103,16 @@ ChunkType Chunk::getType()
 void Chunk::setType(ChunkType t) {
 	type = t;
 }
+
+
+void Chunk::EnemyDefeted(Enemy* defetedEnemy)
+{
+	for (int row = 0; row < ROW_SIZE; row++)
+	{
+		for (int column = 0; column < COLUMN_SIZE; column++)
+		{
+			if (tiles[row][column].GetEnemy() != nullptr && tiles[row][column].GetEnemy() == defetedEnemy)
+				tiles[row][column].SetEnemy(nullptr);
+		}
+	}
+}
