@@ -165,7 +165,7 @@ bool GameManager::BranchesOfHerosPuzzle()
 
 		//Check answer.
 		transform(playerAnswer.begin(), playerAnswer.end(), playerAnswer.begin(), ::toupper);
-		if (playerAnswer == "SPELLBOOK")
+		if (playerAnswer == "SPELLBOOK" || playerAnswer == "SPELL BOOK")
 		{
 			cout << "Correct. ";
 
@@ -175,7 +175,7 @@ bool GameManager::BranchesOfHerosPuzzle()
 
 			//Check answer.
 			transform(playerAnswer.begin(), playerAnswer.end(), playerAnswer.begin(), ::toupper);
-			if (playerAnswer == "DUST GOLEM")
+			if (playerAnswer == "DUST GOLEM" || playerAnswer == "DUSTGOLEM")
 			{
 				cout << "Correct. ";
 
@@ -185,7 +185,7 @@ bool GameManager::BranchesOfHerosPuzzle()
 
 				//Check answer and exit puzzle on right answer.
 				transform(playerAnswer.begin(), playerAnswer.end(), playerAnswer.begin(), ::toupper);
-				if (playerAnswer == "3 STONES")
+				if (playerAnswer == "3 STONES" || playerAnswer == "3" || playerAnswer == "THREE STONES" || playerAnswer == "THREE")
 				{
 					cout << "Correct. Thou has proven thine self. Proceed along thine adventure!\n";
 					branchesOfHeroesQuest->SetQuestComplete(true);
