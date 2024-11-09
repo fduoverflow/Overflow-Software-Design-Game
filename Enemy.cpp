@@ -13,32 +13,29 @@ Enemy::Enemy()
 /*
 * Initalize an Enemy with a name and HP value without an item drop.
 */
-Enemy::Enemy(string n, enemyDisplay i, int hp)
+Enemy::Enemy(string n, int hp)
 {
 	name = n;
 	health = hp;
 	myItem = nullptr;
-	myIcon = i;
 }
 
 /*
 * Initalize an Enemy with a name and HP value with an item drop.
 */
-Enemy::Enemy(string n, enemyDisplay i, int hp, Item* newItem)
+Enemy::Enemy(string n, int hp, Item* newItem)
 {
 	name = n;
 	health = hp;
 	myItem = newItem;
-	myIcon = i;
 }
-Enemy::Enemy(string n, enemyDisplay i, int hp, Item* newItem, string attkName, int attkDmg)
+Enemy::Enemy(string n, int hp, Item* newItem, string attkName, int attkDmg)
 {
 	name = n;
 	health = hp;
 	myItem = newItem;
 	enemyAttack = attkName;
 	enemyAttackDamage = attkDmg;
-	myIcon = i;
 }
 
 //Name getters and setters
@@ -69,12 +66,6 @@ Item* Enemy::GetItem()
 void Enemy::SetItem(Item* newItem)
 {
 	myItem = newItem;
-}
-
-//Icon getter
-enemyDisplay Enemy::GetIcon()
-{
-	return myIcon;
 }
 
 string Enemy::GetEnemyAttack()
