@@ -61,24 +61,16 @@ int main() {
 			cout << "\nType Talk to speak to them.";
 		}
 
-		//Try catch for exceptions thrown when player lands on a tile that used to contain an Enemy which has since been delted.
-		try
+		
+		//Display Enemy if there is one on Tile. When battle system is implemented, it will launch from here.
+		if (manager.GetPlayerLocationTile().GetEnemy() != nullptr)
 		{
-			//Display Enemy if there is one on Tile. When battle system is implemented, it will launch from here.
-			if (manager.GetPlayerLocationTile().GetEnemy() != nullptr)
-			{
-				cout << "\nYou have encountered an enemy! The enemy here is: " + manager.GetPlayerLocationTile().GetEnemy()->GetName();
-				cout << "\nGet ready to battle!\n";
+			cout << "\nYou have encountered an enemy! The enemy here is: " + manager.GetPlayerLocationTile().GetEnemy()->GetName();
+			cout << "\nGet ready to battle!\n";
 
-				// Call the GameBattleManager to handle the battle that is happening
-				// GameBattleManager is a method of the GameManager class
-				manager.GameBattleManager(myPlayer);
-			}																																																		  
-		}
-		catch (...)
-		{
-			//Found a tile with an enemy that was deleted. Reseting Enemy pointer to nullptr.
-			manager.GetPlayerLocationTile().SetEnemy(nullptr);
+			// Call the GameBattleManager to handle the battle that is happening
+			// GameBattleManager is a method of the GameManager class
+			manager.GameBattleManager(myPlayer);
 		}
 
 		//Display item if there is one on Tile

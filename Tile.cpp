@@ -45,6 +45,7 @@ Tile::Tile(int r, int c, int tileID)
 	ID = tileID;
 	myItem = nullptr;
 	myNPC = nullptr;
+	myEnemy = nullptr;
 	questFlag = "";
 }
 Tile::Tile(int r, int c, Item* newItem, int tileID)
@@ -54,6 +55,7 @@ Tile::Tile(int r, int c, Item* newItem, int tileID)
 	ID = tileID;
 	myItem = newItem;
 	myNPC = nullptr;
+	myEnemy = nullptr;
 	questFlag = "";
 }
 Tile::Tile()
@@ -63,6 +65,7 @@ Tile::Tile()
 	ID = 0;
 	myItem = nullptr;
 	myNPC = nullptr;
+	myEnemy = nullptr;
 	questFlag = "";
 }
 
@@ -134,6 +137,10 @@ void Tile::DisplayTile()
 	}
 	else if (myItem != nullptr) {
 		icon i = myItem->GetIcon();
+		ConsoleColors::wprint(i.emoji, i.size);
+	}
+	else if (myEnemy != nullptr) {
+		enemyDisplay i = myEnemy->GetIcon();
 		ConsoleColors::wprint(i.emoji, i.size);
 	}
 	else

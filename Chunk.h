@@ -32,5 +32,8 @@ class Chunk
 		void SetTileAt(int x, int y, Tile t);
 		ChunkType getType();
 		void setType(ChunkType);
+
+		//Update Enemy pointers when an Enemy is defeated
+		void EnemyDefeted(Enemy* defetedEnemy);
 };
 
