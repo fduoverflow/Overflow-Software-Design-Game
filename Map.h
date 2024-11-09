@@ -18,7 +18,7 @@ class Map
 		Map(Chunk**, int, int);
 		Map(string, int, int);
 		//Accessor methods
-		void DisplayMap();
+		void DisplayMap(int, int, wstring);
 		void Display(int, int, int, int);
 		void DisplayChunkAt(int, int);
 		Chunk& GetChunkAt(int r, int c);

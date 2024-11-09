@@ -1,4 +1,5 @@
-#include <iostream>
+﻿#include <iostream>
+#include <cstdlib>
 #include "ConsoleColors.h"
 #include "GameManager.h"
 #include "Map.h"
@@ -20,7 +21,7 @@ int main() {
 	//Initialize map
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
-	Player myPlayer("link", 100, 15, 15);
+	Player myPlayer("link", 20, 15, 15);
 	myPlayer.SetPlayerChunkLocation(1, 1);
 	Inventory inventory(25);
 
@@ -34,12 +35,12 @@ int main() {
 
 	//Place items near player's starting tile
 	//worldMap.GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(new Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
-	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", "This key might unlock a door somewhere.", Item::Type::KEY, 0));
-	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5));
-	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
+	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0));
+	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", { L"💍", 3 }, "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5));
+	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", { L"🪄", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
 
 	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
-	worldMap.GetChunkAt(1,1).GetTileAt(15, 12).SetNPC(new NPC("Scrummius", scrummiusDialogue));
+	worldMap.GetChunkAt(1, 1).GetTileAt(15, 12).SetNPC(new NPC("Scrummius", {L"🦉", 3}, scrummiusDialogue));
 
 	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
 	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", herosTreeDialogue));
@@ -60,11 +61,24 @@ int main() {
 			cout << "\nType Talk to speak to them.";
 		}
 
-		//Display Enemy if there is one on Tile. When battle system is implemented, it will launch from here.
-		if (manager.GetPlayerLocationTile().GetEnemy() != nullptr)
+		//Try catch for exceptions thrown when player lands on a tile that used to contain an Enemy which has since been delted.
+		try
 		{
-			cout << "\nYou have encountered an enemy! The enemy here is: " + manager.GetPlayerLocationTile().GetEnemy()->GetName();
-			cout << "\nGet ready to battle!";
+			//Display Enemy if there is one on Tile. When battle system is implemented, it will launch from here.
+			if (manager.GetPlayerLocationTile().GetEnemy() != nullptr)
+			{
+				cout << "\nYou have encountered an enemy! The enemy here is: " + manager.GetPlayerLocationTile().GetEnemy()->GetName();
+				cout << "\nGet ready to battle!\n";
+
+				// Call the GameBattleManager to handle the battle that is happening
+				// GameBattleManager is a method of the GameManager class
+				manager.GameBattleManager(myPlayer);
+			}																																																		  
+		}
+		catch (...)
+		{
+			//Found a tile with an enemy that was deleted. Reseting Enemy pointer to nullptr.
+			manager.GetPlayerLocationTile().SetEnemy(nullptr);
 		}
 
 		//Display item if there is one on Tile
@@ -153,7 +167,7 @@ int main() {
 					}
 					break;
 				case UserInputValidation::Action::MAP:
-					worldMap.DisplayMap();
+					manager.DisplayMap();
 					break;
 				case UserInputValidation::Action::HEALTH:
 					cout << "You are at " << myPlayer.GetPlayerHealth() << " health.";

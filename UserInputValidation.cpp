@@ -44,6 +44,19 @@ UserInputValidation::Action UserInputValidation::GetPlayerAction()
 	return playerAction;
 }
 
+// Treating the enemy actions the same way we would treat a player's action
+// Enemy actions are for battles and are limited to ATTACK and DEFLECT
+
+void UserInputValidation::SetEnemyAction(Action e)
+{
+	enemyAction = e;
+}
+UserInputValidation::Action UserInputValidation::GetEnemyAction()
+{
+	return enemyAction;
+}
+
+
 bool UserInputValidation::CheckMoveInputLength(string move)
 {
 	// Checks that the input move is one character (WASD)
@@ -65,6 +78,9 @@ bool UserInputValidation::CheckValidAction(Action action)
 	case Action::INV:
 	case Action::INSPECT:
 	case Action::TALK:
+	case Action::ATTACK:
+	case Action::DEFLECT:
+	case Action::RUN:
 	case Action::LEAVE:
 		return true;
 	case Action::ERROR:
@@ -113,6 +129,18 @@ UserInputValidation::Action UserInputValidation::StringToAction(string input)
 	else if (input == "TALK")
 	{
 		return Action::TALK;
+	}
+	else if (input == "ATTACK")
+	{
+		return Action::ATTACK;
+	}
+	else if (input == "DEFLECT")
+	{
+		return Action::DEFLECT;
+	}
+	else if (input == "RUN")
+	{
+		return Action::RUN;
 	}
 	else if (input == "LEAVE")
 	{

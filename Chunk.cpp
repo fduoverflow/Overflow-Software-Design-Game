@@ -4,8 +4,6 @@
 
 using namespace std;
 
-const string CHUNK_MAP_DISPLAY = "  ";
-
 // Default Constructor
 Chunk::Chunk() {
 	type = INVALID;
@@ -16,21 +14,6 @@ Chunk::Chunk() {
 			tiles[row][column] = Tile();
 		}
 	}
-	for (int row = 0; row < ROW_SIZE; row++)
-	{
-		for (int column = 0; column < COLUMN_SIZE; column++)
-		{
-			//Check if adjacent tiles exist then connect. Incrementing and decrementing by 1 to reach adjacent tiles.
-			if (row > 0)
-				tiles[row][column].SetNorthTile(tiles[row - 1][column]);
-			if (row < ROW_SIZE - 1)
-				tiles[row][column].SetSouthTile(tiles[row + 1][column]);
-			if (column < COLUMN_SIZE - 1)
-				tiles[row][column].SetEastTile(tiles[row][column + 1]);
-			if (column > 0)
-				tiles[row][column].SetWestTile(tiles[row][column - 1]);
-		}
-	}
 }
 
 /*
@@ -39,31 +22,14 @@ Chunk::Chunk() {
 Chunk::Chunk(ChunkType chunkType) 
 {
 	type = chunkType;
-	if (type == VALID) 
+	if (type == VALID)
 	{
 		//Fill array
-		for (int row = 0; row < ROW_SIZE; row++) 
-		{
-			for (int column = 0; column < COLUMN_SIZE; column++) 
-			{
-				tiles[row][column] = Tile();
-			}
-		}
-
-		//Connect tiles in chunk to each other
 		for (int row = 0; row < ROW_SIZE; row++)
 		{
 			for (int column = 0; column < COLUMN_SIZE; column++)
 			{
-				//Check if adjacent tiles exist then connect. Incrementing and decrementing by 1 to reach adjacent tiles.
-				if(row > 0)
-					tiles[row][column].SetNorthTile(tiles[row - 1][column]);
-				if(row < ROW_SIZE - 1)
-					tiles[row][column].SetSouthTile(tiles[row + 1][column]);
-				if(column < COLUMN_SIZE - 1)
-					tiles[row][column].SetEastTile(tiles[row][column + 1]);
-				if(column > 0)
-					tiles[row][column].SetWestTile(tiles[row][column - 1]);
+				tiles[row][column] = Tile();
 			}
 		}
 	}
@@ -118,13 +84,13 @@ void Chunk::DisplayChunkInMap() {
 * Currently does not check for valid parameters.
 * Needed to change method to pass Tile by reference so that changes to the array can be made in other classes.
 */
-Tile& Chunk::GetTileAt(int r, int c)
+Tile& Chunk::GetTileAt(int x, int y)
 {
-	return tiles[r][c];
+	return tiles[y][x];
 }
 
-void Chunk::SetTileAt(int r, int c, Tile tile) {
-	tiles[r][c] = tile;
+void Chunk::SetTileAt(int x, int y, Tile tile) {
+	tiles[y][x] = tile;
 }
 
 //Return Chunk type
