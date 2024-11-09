@@ -13,6 +13,7 @@ private:
 	Map* map;
 	Quest* firstQuest;
 	Item* spellBook;
+
 public:
 	//Constructors
 	GameManager();
@@ -38,5 +39,7 @@ public:
 	Quest* GetFirstQuest();
 	void SetFirstQuest(Quest* newQuest);		//May not need but it's here just in case.
 
+	void GameBattleManager(Player&); // Function that will manage how battles work and the interactions between the ATTACK, DEFLECT, and RUN actions
+	UserInputValidation::Action ProcessEnemyTurn(int currentEnemyHealth, int startEnemyhealth);
 };
 

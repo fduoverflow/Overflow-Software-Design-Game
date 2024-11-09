@@ -14,8 +14,10 @@ private:
 	string outOfBoundsMessage = "\nThe player can not move to that location.\n";
 	string movingChunkMessage = "\nMoving to new Chunk.\n";
 	int playerHealth;
-	int playerChunkLoc[2];		//Player chunk location stored as row and column
-	int playerTileLocation[2];		//Tile that the player is located on
+	int playerChunkLoc[2];			// Player chunk location stored as row and column
+	int playerTileLocation[2];		// Tile that the player is located on
+	string playerAttack;			// Player Attack Name
+	int playerAttackDamage;			// Player Attack damage number
 	wstring playerIcon = L"🧙‍♂️";
 
 public:
@@ -29,6 +31,13 @@ public:
 	//Player Health Setter/Getter
 	int GetPlayerHealth();
 	void SetPlayerHealth(int health);
+
+	//Player Attacks Setters/Getters
+	string GetPlayerAttack();
+	void SetPlayerAttack(string playerAttack);
+
+	int GetPlayerAttackDamage();
+	void SetPlayerAttackDamage(int playerAttackDamage);
 
 	//Player Location Setter/Getter
 	int GetPlayerLocationX();
