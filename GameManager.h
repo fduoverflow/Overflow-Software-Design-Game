@@ -12,6 +12,7 @@ private:
 	Player* myPlayer;
 	Map* map;
 	Quest* firstQuest;
+	Quest* branchesOfHeroesQuest;
 	Item* spellBook;
 
 public:
@@ -38,8 +39,13 @@ public:
 	//Quest getters and setters
 	Quest* GetFirstQuest();
 	void SetFirstQuest(Quest* newQuest);		//May not need but it's here just in case.
+	Quest* GetBranchesQuest();
+	void SetBranchesQuest(Quest* newQuest);		//May not need but it's here just in case.
 
 	void GameBattleManager(Player&); // Function that will manage how battles work and the interactions between the ATTACK, DEFLECT, and RUN actions
 	UserInputValidation::Action ProcessEnemyTurn(int currentEnemyHealth, int startEnemyhealth);
+
+	//Puzzles methods that the player will encounter.
+	bool BranchesOfHerosPuzzle();
 };
 
