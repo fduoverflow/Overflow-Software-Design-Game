@@ -43,7 +43,7 @@ int main() {
 	worldMap.GetChunkAt(1, 1).GetTileAt(15, 12).SetNPC(new NPC("Scrummius", {L"🦉", 3}, scrummiusDialogue));
 
 	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
-	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", herosTreeDialogue));
+	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
 
 	//Set game loop variables
 	bool isGameOver = false;
