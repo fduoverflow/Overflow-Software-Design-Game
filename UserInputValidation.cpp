@@ -82,6 +82,7 @@ bool UserInputValidation::CheckValidAction(Action action)
 	case Action::DEFLECT:
 	case Action::RUN:
 	case Action::LEAVE:
+	case Action::RULES:
 		return true;
 	case Action::ERROR:
 	default:
@@ -145,6 +146,10 @@ UserInputValidation::Action UserInputValidation::StringToAction(string input)
 	else if (input == "LEAVE")
 	{
 		return Action::LEAVE;
+	}
+	else if (input == "RULES")
+	{
+		return Action::RULES;
 	}
 	else
 	{
