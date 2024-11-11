@@ -66,7 +66,8 @@ int main() {
 		if (manager.GetPlayerLocationTile().GetEnemy() != nullptr)
 		{
 			cout << "\nYou have encountered an enemy! The enemy here is: " + manager.GetPlayerLocationTile().GetEnemy()->GetName();
-			cout << "\nGet ready to battle!\n";
+			cout << "\nEnemy Description:" << manager.GetPlayerLocationTile().GetEnemy()->GetEnemyDescription() << "\n";
+			cout << "\nGet ready to battle!\n\n";
 
 			// Call the GameBattleManager to handle the battle that is happening
 			// GameBattleManager is a method of the GameManager class
