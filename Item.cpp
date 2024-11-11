@@ -11,7 +11,7 @@ Item::Item()
 	value = 0;
 	quantity = 0;
 }
-Item::Item(string n, icon i, string desc, Type t, int val)
+Item::Item(string n, icon i, string desc, Type t, int val, int q)
 {
 	name = n;
 	myIcon = i;
