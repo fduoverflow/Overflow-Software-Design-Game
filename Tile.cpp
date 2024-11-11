@@ -45,10 +45,7 @@ Tile::Tile(int r, int c, int tileID)
 	ID = tileID;
 	myItem = nullptr;
 	myNPC = nullptr;
-	northTile = nullptr;
-	southTile = nullptr;
-	eastTile = nullptr;
-	westTile = nullptr;
+	myEnemy = nullptr;
 	questFlag = "";
 }
 Tile::Tile(int r, int c, Item* newItem, int tileID)
@@ -58,10 +55,7 @@ Tile::Tile(int r, int c, Item* newItem, int tileID)
 	ID = tileID;
 	myItem = newItem;
 	myNPC = nullptr;
-	northTile = nullptr;
-	southTile = nullptr;
-	eastTile = nullptr;
-	westTile = nullptr;
+	myEnemy = nullptr;
 	questFlag = "";
 }
 Tile::Tile()
@@ -71,10 +65,7 @@ Tile::Tile()
 	ID = 0;
 	myItem = nullptr;
 	myNPC = nullptr;
-	northTile = nullptr;
-	southTile = nullptr;
-	eastTile = nullptr;
-	westTile = nullptr;
+	myEnemy = nullptr;
 	questFlag = "";
 }
 
@@ -137,59 +128,23 @@ Item& Tile::PickUpItem()
 	return *temp;
 }
 
-/*
-* Adjacent tiles getters and setters
-* Getters throw int 404 as exception when out of bounds.
-* Getters pass reference to allow other classes to change Tile values.
-*/
-Tile& Tile::GetNorthTile()
-{
-	if (northTile != nullptr)
-		return *northTile;
-	else
-		throw 404;
-}
-Tile& Tile::GetSouthTile()
-{
-	if (southTile != nullptr)
-		return *southTile;
-	else
-		throw 404;
-}
-Tile& Tile::GetEastTile()
-{
-	if (eastTile != nullptr)
-		return *eastTile;
-	else
-		throw 404;
-}
-Tile& Tile::GetWestTile()
-{
-	if (westTile != nullptr)
-		return *westTile;
-	else
-		throw 404;
-}
-void Tile::SetNorthTile(Tile& targetTile)
-{
-	northTile = &targetTile;
-}
-void Tile::SetSouthTile(Tile& targetTile)
-{
-	southTile = &targetTile;
-}
-void Tile::SetEastTile(Tile& targetTile)
-{
-	eastTile = &targetTile;
-}
-void Tile::SetWestTile(Tile& targetTile)
-{
-	westTile = &targetTile;
-}
 void Tile::DisplayTile()
 {
 	ConsoleColors::SetColor(BLOCK_TYPES[ID].color);
-	cout << TILE_DISPLAY;
+	if (myNPC != nullptr) {
+		display i = myNPC->GetIcon();
+		ConsoleColors::wprint(i.emoji, i.size);
+	}
+	else if (myItem != nullptr) {
+		icon i = myItem->GetIcon();
+		ConsoleColors::wprint(i.emoji, i.size);
+	}
+	else if (myEnemy != nullptr) {
+		enemyDisplay i = myEnemy->GetIcon();
+		ConsoleColors::wprint(i.emoji, i.size);
+	}
+	else
+		cout << TILE_DISPLAY;
 }
 
 /*
@@ -211,5 +166,5 @@ string Tile::GetQuestFlag()
 void Tile::DisplayPlayerTile()
 {
 	ConsoleColors::SetColor(BLOCK_TYPES[ID].color);
-	ConsoleColors::wprint(L"🧙‍♂️");
+	ConsoleColors::wprint(L"🧙‍♂️", 2);
 }

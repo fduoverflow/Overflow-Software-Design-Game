@@ -11,9 +11,10 @@ Item::Item()
 	value = 0;
 	quantity = 0;
 }
-Item::Item(string n, string desc, Type t, int val, int q)
+Item::Item(string n, icon i, string desc, Type t, int val)
 {
 	name = n;
+	myIcon = i;
 	description = desc;
 	myType = t;
 	value = val;
@@ -24,6 +25,9 @@ Item::Item(string n, string desc, Type t, int val, int q)
 string Item::GetName()
 {
 	return name;
+}
+icon Item::GetIcon() {
+	return myIcon;
 }
 string Item::GetDescription()
 {

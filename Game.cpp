@@ -1,4 +1,5 @@
-#include <iostream>
+﻿#include <iostream>
+#include <cstdlib>
 #include "ConsoleColors.h"
 #include "GameManager.h"
 #include "Map.h"
@@ -20,29 +21,30 @@ int main() {
 	//Initialize map
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
-	Player myPlayer("link", 100, 15, 15);
+	Player myPlayer("link", 20, 15, 15);
 	myPlayer.SetPlayerChunkLocation(1, 1);
 	Inventory inventory(25);
 
-	//String to hold large npc dialogue. May move to somewhere else later.
+	//Strings to hold large npc dialogue. May move to somewhere else later.
 	string scrummiusDialogue = "Hellooo! My name is Scrummius the Owl, and I am quite pleased to meet yooou! What is your name?\nYooou said your name is " + myPlayer.GetPlayerName() +
 		" and Lord Vallonious has taken your pet, Gapplin? I don't believe you. But if I did I would say yooou are going to need a spell book if you are going tooo face him. Head west from your house and enter the old chateau. I believe yooou may find what you're looking for in there... liar.";
+	string herosTreeDialogue = "Greetings. I am the Hero's Tree. Thou must pass the Branches of Heroes to continue your adventure. These branches have chronicled the tales of these lands and to clear them, you must answer their three questions.";
 
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
 
 	//Place items near player's starting tile
 	//worldMap.GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(new Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
-	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", "This key might unlock a door somewhere.", Item::Type::KEY, 0, 1));
-	worldMap.GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Key", "This key might unlock a door somewhere.", Item::Type::KEY, 0, 1));
-	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5, 1));
-	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25, 1));
+	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0));
+	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", { L"💍", 3 }, "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5));
+	worldMap.GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0));
+	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", { L"🪄", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
 
 	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
-	worldMap.GetChunkAt(1,1).GetTileAt(15, 12).SetNPC(new NPC("Scrummius", scrummiusDialogue));
+	worldMap.GetChunkAt(1, 1).GetTileAt(15, 12).SetNPC(new NPC("Scrummius", {L"🦉", 3}, scrummiusDialogue));
 
-	// Test code to Initialize First Quest until Scrummius is Implemmented
-	//manager.InitilizeTutorialQuest();
+	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
+	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
 
 	//Set game loop variables
 	bool isGameOver = false;
@@ -60,11 +62,16 @@ int main() {
 			cout << "\nType Talk to speak to them.";
 		}
 
+		
 		//Display Enemy if there is one on Tile. When battle system is implemented, it will launch from here.
 		if (manager.GetPlayerLocationTile().GetEnemy() != nullptr)
 		{
 			cout << "\nYou have encountered an enemy! The enemy here is: " + manager.GetPlayerLocationTile().GetEnemy()->GetName();
-			cout << "\nGet ready to battle!";
+			cout << "\nGet ready to battle!\n";
+
+			// Call the GameBattleManager to handle the battle that is happening
+			// GameBattleManager is a method of the GameManager class
+			manager.GameBattleManager(myPlayer);
 		}
 
 		//Display item if there is one on Tile
@@ -111,6 +118,17 @@ int main() {
 						{
 							manager.InitilizeTutorialQuest();
 						}
+
+						//Check if NPC is Hero's Tree and if puzzle is complete then start the puzzle.
+						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Hero's Tree" && manager.GetBranchesQuest()->GetQuestComplete() != true)
+						{
+							cout << "\nType LEAVE to exit puzzle.\n";
+
+							if (manager.BranchesOfHerosPuzzle())					//Starts puzzle and returns true or false if player solves or leaves puzzle
+							{
+								manager.GetPlayerLocationTile().GetNPC()->SetDialogue("Congrats on completing the Branches of Heroes! Thine next destination should be further to the east.");
+							}
+						}
 					}
 					break;
 				case UserInputValidation::Action::PICKUP:
@@ -142,7 +160,7 @@ int main() {
 					}
 					break;
 				case UserInputValidation::Action::MAP:
-					worldMap.DisplayMap();
+					manager.DisplayMap();
 					break;
 				case UserInputValidation::Action::HEALTH:
 					cout << "You are at " << myPlayer.GetPlayerHealth() << " health.";
