@@ -21,9 +21,13 @@ int main() {
 	//Initialize map
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
+	//Initialize player and inventory
 	Player myPlayer("link", 20, 15, 15);
 	myPlayer.SetPlayerChunkLocation(1, 1);
 	Inventory inventory(25);
+
+	//Initialize UI
+	UserInterface myUI;
 
 	//Strings to hold large npc dialogue. May move to somewhere else later.
 	string scrummiusDialogue = "Hellooo! My name is Scrummius the Owl, and I am quite pleased to meet yooou! What is your name?\nYooou said your name is " + myPlayer.GetPlayerName() +
@@ -52,6 +56,10 @@ int main() {
 
 	//Display current chunk once before entering play loop
 	manager.Display();
+
+	//Display rules and story.
+	myUI.DisplayIntroMessage();
+	myUI.DisplayRules();
 
 	while (!isGameOver) {
 		
@@ -167,6 +175,9 @@ int main() {
 					break;
 				case UserInputValidation::Action::INV:
 					inventory.displayInventory();
+					break;
+				case UserInputValidation::Action::RULES:
+					myUI.DisplayRules();
 					break;
 			}
 		}

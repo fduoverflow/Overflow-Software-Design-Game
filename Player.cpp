@@ -9,7 +9,7 @@ Player::Player(string name, int health, int tileX, int tileY)
 	playerTileLocation[1] = tileY;
 	playerHealth = health;
 	playerAttack = "Knuckle Sandwich"; // Initial player attack is just their fists (until they get the spellbook)
-	playerAttackDamage = 1; // When player is initialized, any attack they have can only do 1 dmg
+	playerAttackDamage = 2; // When player is initialized, any attack they have can only do 1 dmg
 }
 Player::Player()
 {
@@ -18,7 +18,7 @@ Player::Player()
 	playerTileLocation[1] = 0;
 	playerHealth = 0;
 	playerAttack = "";
-	playerAttackDamage = 1; // Default damage is 1
+	playerAttackDamage = 2; // Default damage is 1
 }
 
 //Player Location Setter/Getter
