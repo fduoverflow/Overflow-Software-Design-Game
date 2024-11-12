@@ -34,7 +34,10 @@ class Enemy
 		Enemy();
 		Enemy(string n, enemyDisplay i, int hp);
 		Enemy(string n, enemyDisplay i, int hp, Item* newItem);
+
+		//One Constructor has an item drop and one does not-- can add variation to the game
 		Enemy(string n, enemyDisplay i, int hp, Item* newItem, string attkName, int attkDmg);
+		Enemy(string n, enemyDisplay i, int hp, string attkName, int attkDmg);
 
 		//Name getters and setters
 		string GetName();
