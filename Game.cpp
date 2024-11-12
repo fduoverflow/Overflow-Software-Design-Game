@@ -22,7 +22,7 @@ int main() {
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
 	//Initialize player and inventory
-	Player myPlayer("link", 20, 15, 15);
+	Player myPlayer("link", 20, 5, 4);
 	myPlayer.SetPlayerChunkLocation(1, 1);
 	Inventory inventory(25);
 

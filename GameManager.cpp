@@ -1,6 +1,8 @@
 ﻿#include "GameManager.h"
 #include <algorithm>
 
+using namespace std;
+
 /*
 * Default constructor
 */
@@ -52,22 +54,32 @@ void GameManager::MovePlayer(UserInputValidation::Move dir) {
 		break;
 	}
 	int posX = myPlayer->GetPlayerLocationX(), posY = myPlayer->GetPlayerLocationY();
+	int chunkX = myPlayer->GetPlayerChunkLocationX(), chunkY = myPlayer->GetPlayerChunkLocationY();
 
 	// Check where the player would be if they moved to the new location, and if that location would be valid
 	int newPosX = posX + x, newPosY = posY + y;
-	int newChunkX = myPlayer->GetPlayerChunkLocationX() + x, newChunkY = myPlayer->GetPlayerChunkLocationY() + y;
+	int newChunkX = chunkX + x, newChunkY = chunkY + y;
 	// If new move is within the chunk bounds, check that the new tile is valid and move there
 	if (-1 < newPosX && newPosX < 16 && -1 < newPosY && newPosY < 16) {
-		// Update the tile that the player is on
-		myPlayer->SetPlayerLocation(newPosX, newPosY);
+		if (!WillCollide(chunkX, chunkY, newPosX, newPosY))
+			// Update the tile that the player is on
+			myPlayer->SetPlayerLocation(newPosX, newPosY);
 	}
 	// If new move is not within chunk bounds
 	else if (newChunkX > -1 && newChunkY > -1 && newChunkX < map->GetNumColumns() && newChunkY < map->GetNumRows() && map->GetChunkAt(newChunkX, newChunkY).getType() == VALID) {
-		myPlayer->SetPlayerChunkLocation(newChunkX, newChunkY);
-		myPlayer->SetPlayerLocation((newPosX % 16 + 16) % 16, (newPosY % 16 + 16) % 16);
+		newPosX = (newPosX % 16 + 16) % 16, newPosY = (newPosY % 16 + 16) % 16;
+		if (!WillCollide(newChunkX, newChunkY, newPosX, newPosY)) {
+			myPlayer->SetPlayerChunkLocation(newChunkX, newChunkY);
+			myPlayer->SetPlayerLocation(newPosX, newPosY);
+		}
 	}
 	else
 		cout << "sorry pookie can't move here :(";
+}
+
+// Checks whether of not the new player position is collidable
+bool GameManager::WillCollide(int cX, int cY, int pX, int pY) {
+	return BLOCK_TYPES[map->GetChunkAt(cX, cY).GetTileAt(pX, pY).GetID()].collides;
 }
 
 /*

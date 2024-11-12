@@ -14,6 +14,7 @@ private:
 	Quest* firstQuest;
 	Quest* branchesOfHeroesQuest;
 	Item* spellBook;
+	bool WillCollide(int, int, int, int);	// Checks whether of not the new player position is collidable
 
 public:
 	//Constructors
