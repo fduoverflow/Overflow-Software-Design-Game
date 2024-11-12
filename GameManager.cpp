@@ -100,7 +100,7 @@ void GameManager::InitilizeTutorialQuest()
 	string objective = "Go to the house and gather the spellbook!";
 
 	// Spell book is a key item that is gathered after the first quest-- not a weapon for now
-	spellBook = new Item("Scrummius' Spell Book", { L"📖", 3 }, "A certain peculiar owl's spellbook, who knows what secrets it may hold...", Item::Type::KEY, 0);
+	spellBook = new Item("Scrummius' Spell Book", { L"📖", 3 }, "A certain peculiar owl's spellbook, who knows what secrets it may hold...", Item::Type::KEY, 0,1);
 	firstQuest = new Quest(name, desc, objective, spellBook);
 
 	// Place the spellbook in location -- door: (7,7) and (7,8)
@@ -127,7 +127,7 @@ void GameManager::TutorialQuestComplete()
 	//Spawn Enemy that takes up two tiles. Use this method to generate enemies that can occupy multiple tiles.
 	// Setting the Dust Golem
 	// Dust Golem has 8 HP, drops a potion, it's attack name is Arm Swing and that attack does 2 HP
-	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetEnemy(new Enemy("Dust Golem", { L"🗿", 3 }, 8, new Item("Potion", {L"🧋", 3}, "Use this potion to restore your HP", Item::Type::HEALING, 5), "Arm Swing", 2));
+	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetEnemy(new Enemy("Dust Golem", { L"🗿", 3 }, 8, new Item("Potion", {L"🧋", 3}, "Use this potion to restore your HP", Item::Type::HEALING, 5,1), "Arm Swing", 2));
 	map->GetChunkAt(0, 1).GetTileAt(7, 8).SetEnemy(map->GetChunkAt(0, 1).GetTileAt(7, 7).GetEnemy());
 }
 
