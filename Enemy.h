@@ -29,6 +29,9 @@ class Enemy
 		//Enemy icon
 		enemyDisplay icon;
 
+		// Unique ID for each enemy
+		int enemyID;
+
 	public:
 		//Constructors
 		Enemy();
@@ -38,6 +41,10 @@ class Enemy
 		//One Constructor has an item drop and one does not-- can add variation to the game
 		Enemy(string n, enemyDisplay i, int hp, Item* newItem, string attkName, int attkDmg);
 		Enemy(string n, enemyDisplay i, int hp, string attkName, int attkDmg);
+
+		//Constructors to be used if the same enemy will be used multiple times -- adds a unique ID so each enemy, while the same enemy, is treated as a differenent entity
+		//Enemy(string n, enemyDisplay i, int hp, Item* newItem, string attkName, int attkDmg);
+		//Enemy(string n, enemyDisplay i, int hp, string attkName, int attkDmg);
 
 		//Name getters and setters
 		string GetName();

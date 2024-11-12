@@ -49,6 +49,7 @@ Enemy::Enemy(string n, enemyDisplay i, int hp, string attkName, int attkDmg)
 	icon = i;
 }
 
+
 //Name getters and setters
 string Enemy::GetName()
 {
