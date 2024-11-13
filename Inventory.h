@@ -11,4 +11,7 @@ public:
 	Inventory(int s);		// Constructor that takes in the size of the inventory
 	void displayInventory(); // Displays the inventory
 	void addItem(Item& item); //Adds item to inventory
+
+	// Public getter for isEmpty
+	bool IsEmpty() const { return isEmpty; }
 };
