@@ -56,7 +56,7 @@ int main() {
 	//worldMap.GetChunkAt(1, 1).GetTileAt(9, 16).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3));
 
 	// Intilalize the Wizard Squirrel Enemy
-	worldMap.GetChunkAt(1, 1).GetTileAt(9, 12).SetEnemy(new Enemy("Wizard Squirrel", { L"🍄", 3 }, 15, new Item("Leaf Sword", { L"🧋", 3 }, "Sword that does does 3 damage.", Item::Type::WEAPON, 5, 1), "Nut Throw", 2));
+	worldMap.GetChunkAt(1, 1).GetTileAt(9, 12).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Leaf Sword", { L"🗡️", 3 }, "Sword that does does 3 damage.", Item::Type::WEAPON, 5, 1), "Nut Throw", 2));
 
 
 	//Set game loop variables
