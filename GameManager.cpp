@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <regex>
 
+using namespace std;
+
 /*
 * Default constructor
 */
@@ -61,22 +63,32 @@ void GameManager::MovePlayer(UserInputValidation::Move dir) {
 		break;
 	}
 	int posX = myPlayer->GetPlayerLocationX(), posY = myPlayer->GetPlayerLocationY();
+	int chunkX = myPlayer->GetPlayerChunkLocationX(), chunkY = myPlayer->GetPlayerChunkLocationY();
 
 	// Check where the player would be if they moved to the new location, and if that location would be valid
 	int newPosX = posX + x, newPosY = posY + y;
-	int newChunkX = myPlayer->GetPlayerChunkLocationX() + x, newChunkY = myPlayer->GetPlayerChunkLocationY() + y;
+	int newChunkX = chunkX + x, newChunkY = chunkY + y;
 	// If new move is within the chunk bounds, check that the new tile is valid and move there
 	if (-1 < newPosX && newPosX < 16 && -1 < newPosY && newPosY < 16) {
-		// Update the tile that the player is on
-		myPlayer->SetPlayerLocation(newPosX, newPosY);
+		if (!WillCollide(chunkX, chunkY, newPosX, newPosY))
+			// Update the tile that the player is on
+			myPlayer->SetPlayerLocation(newPosX, newPosY);
 	}
 	// If new move is not within chunk bounds
 	else if (newChunkX > -1 && newChunkY > -1 && newChunkX < map->GetNumColumns() && newChunkY < map->GetNumRows() && map->GetChunkAt(newChunkX, newChunkY).getType() == VALID) {
-		myPlayer->SetPlayerChunkLocation(newChunkX, newChunkY);
-		myPlayer->SetPlayerLocation((newPosX % 16 + 16) % 16, (newPosY % 16 + 16) % 16);
+		newPosX = (newPosX % 16 + 16) % 16, newPosY = (newPosY % 16 + 16) % 16;
+		if (!WillCollide(newChunkX, newChunkY, newPosX, newPosY)) {
+			myPlayer->SetPlayerChunkLocation(newChunkX, newChunkY);
+			myPlayer->SetPlayerLocation(newPosX, newPosY);
+		}
 	}
 	else
 		cout << "sorry pookie can't move here :(";
+}
+
+// Checks whether of not the new player position is collidable
+bool GameManager::WillCollide(int cX, int cY, int pX, int pY) {
+	return BLOCK_TYPES[map->GetChunkAt(cX, cY).GetTileAt(pX, pY).GetID()].collides;
 }
 
 /*
@@ -115,6 +127,10 @@ void GameManager::InitilizeTutorialQuest()
 	// Place the spellbook in location -- door: (7,7) and (7,8)
 	// Spell book is in chunk (0,1) and tile (4,4)
 	map->GetChunkAt(0, 1).GetTileAt(4,4).SetItem(spellBook);
+
+	// Sets the doors to be unlocked in the house by changing the tile ID
+	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetID(3);
+	map->GetChunkAt(0, 1).GetTileAt(7, 8).SetID(3);
 }
 
 /*
@@ -131,7 +147,7 @@ void GameManager::TutorialQuestComplete()
 	firstQuest->SetQuestComplete(true);
 
 	//Update npc dialgue
-	map->GetChunkAt(1,1).GetTileAt(15,12).GetNPC()->SetDialogue(scrummiusDialogue);
+	map->GetChunkAt(1,1).GetTileAt(1,7).GetNPC()->SetDialogue(scrummiusDialogue);
 
 	//Spawn Enemy that takes up two tiles. Use this method to generate enemies that can occupy multiple tiles.
 	// Setting the Dust Golem
@@ -216,6 +232,12 @@ bool GameManager::BranchesOfHerosPuzzle()
 				{
 					cout << "Correct. Thou has proven thine self. Proceed along thine adventure!\n";
 					branchesOfHeroesQuest->SetQuestComplete(true);
+
+					//Add stones to map to allow player to cross the water.
+					map->GetChunkAt(5, 3).GetTileAt(7, 8).SetID(2);
+					map->GetChunkAt(5, 3).GetTileAt(8, 8).SetID(2);
+					map->GetChunkAt(5, 3).GetTileAt(9, 8).SetID(2);
+
 					return true;
 				}
 			}
@@ -287,6 +309,21 @@ bool GameManager::ThreeStonesPuzzle()
 				{
 					cout << "Correct. Three stepping stones have appeared to allow you to cross the river.\n";
 					threeStonesQuest->SetQuestComplete(true);
+
+					//Add stones to map to allow player to cross the river.
+					map->GetChunkAt(3, 1).GetTileAt(2, 7).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(2, 8).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(2, 9).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(6, 7).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(6, 8).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(6, 9).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(10, 7).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(10, 8).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(10, 9).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(14, 7).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(14, 8).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(14, 9).SetID(2);
+
 					return true;
 				}
 			}

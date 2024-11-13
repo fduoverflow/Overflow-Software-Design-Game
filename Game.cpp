@@ -22,7 +22,7 @@ int main() {
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
 	//Initialize player and inventory
-	Player myPlayer("link", 20, 15, 15);
+	Player myPlayer("link", 20, 5, 4);
 	myPlayer.SetPlayerChunkLocation(1, 1);
 	Inventory inventory(25);
 
@@ -46,7 +46,7 @@ int main() {
 	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", { L"🪄", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25,1));
 
 	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
-	worldMap.GetChunkAt(1, 1).GetTileAt(15, 12).SetNPC(new NPC("Scrummius", {L"🦉", 3}, scrummiusDialogue));
+	worldMap.GetChunkAt(1, 1).GetTileAt(1, 7).SetNPC(new NPC("Scrummius", {L"🦉", 3}, scrummiusDialogue));
 
 	//Initialize 3 Stones NPC to offer the 3 Stepping Stone Questions puzzle.
 	worldMap.GetChunkAt(3, 1).GetTileAt(2, 6).SetNPC(new NPC("Three Stones", { L"🪨", 3 }, threeStonesDialogue));

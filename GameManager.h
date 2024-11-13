@@ -15,6 +15,7 @@ private:
 	Quest* branchesOfHeroesQuest;
 	Quest* threeStonesQuest;
 	Item* spellBook;
+	bool WillCollide(int, int, int, int);	// Checks whether of not the new player position is collidable
 
 	//Bool to check if player has completed tutorial battle.
 	bool isFirstBattleDone;
