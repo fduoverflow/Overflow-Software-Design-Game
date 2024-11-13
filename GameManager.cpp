@@ -118,6 +118,10 @@ void GameManager::InitilizeTutorialQuest()
 	// Place the spellbook in location -- door: (7,7) and (7,8)
 	// Spell book is in chunk (0,1) and tile (4,4)
 	map->GetChunkAt(0, 1).GetTileAt(4,4).SetItem(spellBook);
+
+	// Sets the doors to be unlocked in the house by changing the tile ID
+	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetID(3);
+	map->GetChunkAt(0, 1).GetTileAt(7, 8).SetID(3);
 }
 
 /*

@@ -58,6 +58,11 @@ int Tile::GetID() {
 	return ID;
 }
 
+// Sets the ID to a different typeof tile
+void Tile::SetID(int i) {
+	ID = i;
+}
+
 //Item getters and setters
 Item* Tile::GetItem()
 {

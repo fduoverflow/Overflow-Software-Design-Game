@@ -35,8 +35,8 @@ const Block BLOCK_TYPES[NUM_BLOCK_TYPES] = {
 	{"Friendly", "", BABY_BLUE, true},
 	{"Friendly", "", LIGHT_GREEN, true},
 	{"Mystery Item", "", LAVENDER, true},
-	{"Old House", "", LIGHT_YELLOW, true},
-	{"Old House", "", DARK_YELLOW, true},
+	{"Old House", "", LIGHT_YELLOW, false},
+	{"Old House", "", DARK_YELLOW, false},
 	{"House Window", "", DARK_PURPLE, true},
 	{"House Door", "", DARK_RED, true},
 	{"Sign", "", BROWN, true}
@@ -81,8 +81,9 @@ public:
 	int GetColumn();
 	void SetColumn(int c);
 
-	// ID Getter
+	// ID Getter/Setter
 	int GetID();
+	void SetID(int);
   
 	//Item Setter/Getters, passed by reference
 	Item* GetItem();
