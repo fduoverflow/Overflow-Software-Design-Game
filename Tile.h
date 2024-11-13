@@ -27,7 +27,7 @@ const Block BLOCK_TYPES[NUM_BLOCK_TYPES] = {
 	{"Dirt", "what a nice pattern!", TAN, false},
 	{"Bush", "there's pointy thorns in this bush. you probably shouldn't walk through it...", LIME_GREEN, true},
 	{"Fence", "", WHITE, true},
-	{"Enemy", "", RED, true},
+	{"Enemy", "", RED, false},
 	{"Campfire", "", ORANGE, true},
 	{"Shopkeeper", "", PINK, true},
 	{"Scrummius", "", PURPLE, true},
