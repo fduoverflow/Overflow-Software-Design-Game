@@ -138,7 +138,7 @@ void GameManager::TutorialQuestComplete()
 	firstQuest->SetQuestComplete(true);
 
 	//Update npc dialgue
-	map->GetChunkAt(1,1).GetTileAt(15,12).GetNPC()->SetDialogue(scrummiusDialogue);
+	map->GetChunkAt(1,1).GetTileAt(1,7).GetNPC()->SetDialogue(scrummiusDialogue);
 
 	//Spawn Enemy that takes up two tiles. Use this method to generate enemies that can occupy multiple tiles.
 	// Setting the Dust Golem
