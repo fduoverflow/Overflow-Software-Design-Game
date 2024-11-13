@@ -29,12 +29,14 @@ class Enemy
 		//Enemy icon
 		enemyDisplay icon;
 
+		string enemyDescription;
+
 	public:
 		//Constructors
 		Enemy();
 		Enemy(string n, enemyDisplay i, int hp);
 		Enemy(string n, enemyDisplay i, int hp, Item* newItem);
-		Enemy(string n, enemyDisplay i, int hp, Item* newItem, string attkName, int attkDmg);
+		Enemy(string n, enemyDisplay i, int hp, Item* newItem, string attkName, int attkDmg, string enemyDesc);
 
 		//Name getters and setters
 		string GetName();
@@ -54,6 +56,10 @@ class Enemy
 
 		int GetEnemyAttackDamage();
 		void SetEnemyAttackDamage(int);
+
+		// Enemy Description Setters/Getters -- player needs to know who they are fighting
+		string GetEnemyDescription();
+		void SetEnemyDescription(string);
 
 		//Display getter
 		enemyDisplay GetIcon();

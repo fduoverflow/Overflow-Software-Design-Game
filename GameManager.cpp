@@ -11,6 +11,9 @@ GameManager::GameManager()
 	firstQuest = new Quest();
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
+
+	//Initialize tutorial battle checker
+	isFirstBattleDone = false;
 }
 /*
 * Constructor with passed player and map.
@@ -25,6 +28,9 @@ GameManager::GameManager(Player* p, Map* m)
 	firstQuest = new Quest();
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
+
+	//Initialize tutorial battle checker
+	isFirstBattleDone = false;
 }
 
 /*
@@ -130,7 +136,8 @@ void GameManager::TutorialQuestComplete()
 	//Spawn Enemy that takes up two tiles. Use this method to generate enemies that can occupy multiple tiles.
 	// Setting the Dust Golem
 	// Dust Golem has 8 HP, drops a potion, it's attack name is Arm Swing and that attack does 2 HP
-	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetEnemy(new Enemy("Dust Golem", { L"🗿", 3 }, 8, new Item("Potion", {L"🧋", 3}, "Use this potion to restore your HP", Item::Type::HEALING, 5,1), "Arm Swing", 2));
+	string dustGolemDesc = "A small golem powered by magic. It gathers the dust around him to attack!";
+	map->GetChunkAt(0, 1).GetTileAt(7, 7).SetEnemy(new Enemy("Dust Golem", { L"🗿", 3 }, 8, new Item("Potion", {L"🧋", 3}, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Arm Swing", 2, dustGolemDesc));
 	map->GetChunkAt(0, 1).GetTileAt(7, 8).SetEnemy(map->GetChunkAt(0, 1).GetTileAt(7, 7).GetEnemy());
 
 	//Update dialogue for Three Stones NPC
@@ -304,6 +311,20 @@ Enemy actions: ATTACK and DEFLECT
 */
 void GameManager::GameBattleManager(Player &myPlayer)
 {
+
+	//Check if the battle is the tutorial battle against the dust golem
+	if (!isFirstBattleDone && GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
+	{
+		cout << "Before the battle begins, you hear Lord Vallonious' voice in your head... FOOL this seems to be your first battle. Let me teach you the basics, so that our final battle may at least be a fair one.\n";
+		cout << "If you can not even defeat this simple Dust Golem, you hold no chance to defeat ME!\n\n";
+		cout << "You have 3 actions. ATTACK, DEFLECT, and RUN. Attack and Run are self explanatory... unless your feeble mind cannot comprehend these concepts...\n";
+		cout << "Deflect works like so: when an attack is deflected, the one who deflected takes half the damage, but so does the attacker.\n";
+		cout << "May your future battles be bountiful... I await in the Land of Scrum for our EPIC ENCOUNTER!\n\n";
+
+		//Update checker
+		isFirstBattleDone = true;
+	}
+
 	// if the player chooses run and run succeeds, it should stop the battle, but not get rid of the enemy
 	bool isActionRun = false;
 	while (GetPlayerLocationTile().GetEnemy() != nullptr && GetPlayerLocationTile().GetEnemy()->GetHealth() > 0 && isActionRun == false)

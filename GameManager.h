@@ -16,6 +16,9 @@ private:
 	Quest* threeStonesQuest;
 	Item* spellBook;
 
+	//Bool to check if player has completed tutorial battle.
+	bool isFirstBattleDone;
+
 public:
 	//Constructors
 	GameManager();
