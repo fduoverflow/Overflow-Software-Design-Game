@@ -9,14 +9,16 @@ Item::Item()
 	description = "";
 	myType = Type::EMPTY;
 	value = 0;
+	quantity = 0;
 }
-Item::Item(string n, icon i, string desc, Type t, int val)
+Item::Item(string n, icon i, string desc, Type t, int val, int q)
 {
 	name = n;
 	myIcon = i;
 	description = desc;
 	myType = t;
 	value = val;
+	quantity = q;
 }
 
 //Getters and setters
@@ -39,6 +41,10 @@ int Item::GetValue()
 {
 	return value;
 }
+int Item::GetQuantity()
+{
+	return quantity;
+}
 void Item::setName(string n)
 {
 	name = n;
@@ -54,4 +60,8 @@ void Item::setType(Type t)
 void Item::setValue(int val)
 {
 	value = val;
+}
+void Item::setQuantity(int q)
+{
+	quantity = q;
 }
