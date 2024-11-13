@@ -232,6 +232,12 @@ bool GameManager::BranchesOfHerosPuzzle()
 				{
 					cout << "Correct. Thou has proven thine self. Proceed along thine adventure!\n";
 					branchesOfHeroesQuest->SetQuestComplete(true);
+
+					//Add stones to map to allow player to cross the water.
+					map->GetChunkAt(5, 3).GetTileAt(7, 8).SetID(2);
+					map->GetChunkAt(5, 3).GetTileAt(8, 8).SetID(2);
+					map->GetChunkAt(5, 3).GetTileAt(9, 8).SetID(2);
+
 					return true;
 				}
 			}
@@ -303,6 +309,21 @@ bool GameManager::ThreeStonesPuzzle()
 				{
 					cout << "Correct. Three stepping stones have appeared to allow you to cross the river.\n";
 					threeStonesQuest->SetQuestComplete(true);
+
+					//Add stones to map to allow player to cross the river.
+					map->GetChunkAt(3, 1).GetTileAt(2, 7).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(2, 8).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(2, 9).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(6, 7).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(6, 8).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(6, 9).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(10, 7).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(10, 8).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(10, 9).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(14, 7).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(14, 8).SetID(2);
+					map->GetChunkAt(3, 1).GetTileAt(14, 9).SetID(2);
+
 					return true;
 				}
 			}
