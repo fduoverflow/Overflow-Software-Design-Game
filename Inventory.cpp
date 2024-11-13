@@ -23,7 +23,7 @@ void Inventory::displayInventory() {
     else {
         for (int i = 0; i < size; i++) {
             if (contents[i].GetType() != Item::Type::EMPTY) {                   // Display items
-                cout << "Name: " << contents[i].GetName() << endl;
+                cout << "\nName: " << contents[i].GetName() << endl;
                 cout << "Description: " << contents[i].GetDescription() << endl;
                 cout << "Type: ";
                 // Display the type of the item
@@ -38,15 +38,26 @@ void Inventory::displayInventory() {
                     break;
                 }
                 cout << "\nValue: " << contents[i].GetValue() << endl;
+                cout << "Quantity: " << contents[i].GetQuantity() << endl;
             }
         }
     }
 }
 
-void Inventory::addItem(Item& item) {                       // Adds items
+void Inventory::addItem(Item& item) {   
+    // Adds items if duplicated by changing quantity
+    for (int i = 0; i < size; i++) {
+        if (contents[i].GetType() == item.GetType() && contents[i].GetName() == item.GetName()) {
+            contents[i].setQuantity(contents[i].GetQuantity()+1); // Increase quantity if duplicate
+            cout << "Increased quantity of: " << item.GetName() << " to " << contents[i].GetQuantity() << endl;
+            return;
+        }
+    }
+    // Adds items if not duplicated
     for (int i = 0; i < size; i++) {
         if (contents[i].GetType() == Item::Type::EMPTY) {
             contents[i] = item;
+            contents[i].setQuantity(1);
             cout << "Added item: " << item.GetName() << endl;
             break;
         }

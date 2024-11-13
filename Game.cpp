@@ -33,18 +33,23 @@ int main() {
 	string scrummiusDialogue = "Hellooo! My name is Scrummius the Owl, and I am quite pleased to meet yooou! What is your name?\nYooou said your name is " + myPlayer.GetPlayerName() +
 		" and Lord Vallonious has taken your pet, Gapplin? I don't believe you. But if I did I would say yooou are going to need a spell book if you are going tooo face him. Head west from your house and enter the old chateau. I believe yooou may find what you're looking for in there... liar.";
 	string herosTreeDialogue = "Greetings. I am the Hero's Tree. Thou must pass the Branches of Heroes to continue your adventure. These branches have chronicled the tales of these lands and to clear them, you must answer their three questions.";
+	string threeStonesDialogue = "The river seems to be uncrossable at the current moment...";
 
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
 
 	//Place items near player's starting tile
 	//worldMap.GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(new Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
-	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0));
-	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", { L"💍", 3 }, "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5));
-	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", { L"🪄", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
+	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0,1));
+	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", { L"💍", 3 }, "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5,1));
+	worldMap.GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0,1));
+	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", { L"🪄", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25,1));
 
 	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
 	worldMap.GetChunkAt(1, 1).GetTileAt(1, 7).SetNPC(new NPC("Scrummius", {L"🦉", 3}, scrummiusDialogue));
+
+	//Initialize 3 Stones NPC to offer the 3 Stepping Stone Questions puzzle.
+	worldMap.GetChunkAt(3, 1).GetTileAt(2, 6).SetNPC(new NPC("Three Stones", { L"🪨", 3 }, threeStonesDialogue));
 
 	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
 	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
@@ -74,7 +79,8 @@ int main() {
 		if (manager.GetPlayerLocationTile().GetEnemy() != nullptr)
 		{
 			cout << "\nYou have encountered an enemy! The enemy here is: " + manager.GetPlayerLocationTile().GetEnemy()->GetName();
-			cout << "\nGet ready to battle!\n";
+			cout << "\nEnemy Description:" << manager.GetPlayerLocationTile().GetEnemy()->GetEnemyDescription() << "\n";
+			cout << "\nGet ready to battle!\n\n";
 
 			// Call the GameBattleManager to handle the battle that is happening
 			// GameBattleManager is a method of the GameManager class
@@ -126,7 +132,18 @@ int main() {
 							manager.InitilizeTutorialQuest();
 						}
 
-						//Check if NPC is Hero's Tree and if puzzle is complete then start the puzzle.
+						//Check if NPC is Three Stones and if puzzle is not complete then start the puzzle. Also checks to make sure player has already completed the first quest.
+						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Three Stones" && manager.GetThreeStonesQuest()->GetQuestComplete() != true && manager.GetFirstQuest()->GetQuestComplete() == true)
+						{
+							cout << "\nType LEAVE to exit puzzle.\n";
+
+							if (manager.ThreeStonesPuzzle())					//Starts puzzle and returns true or false if player solves or leaves puzzle
+							{
+								manager.GetPlayerLocationTile().GetNPC()->SetDialogue("The Three Stones Puzzle has been completed. You are free to cross the river.");
+							}
+						}
+
+						//Check if NPC is Hero's Tree and if puzzle is not complete then start the puzzle.
 						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Hero's Tree" && manager.GetBranchesQuest()->GetQuestComplete() != true)
 						{
 							cout << "\nType LEAVE to exit puzzle.\n";

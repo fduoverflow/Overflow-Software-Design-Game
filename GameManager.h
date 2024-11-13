@@ -13,8 +13,12 @@ private:
 	Map* map;
 	Quest* firstQuest;
 	Quest* branchesOfHeroesQuest;
+	Quest* threeStonesQuest;
 	Item* spellBook;
 	bool WillCollide(int, int, int, int);	// Checks whether of not the new player position is collidable
+
+	//Bool to check if player has completed tutorial battle.
+	bool isFirstBattleDone;
 
 public:
 	//Constructors
@@ -41,14 +45,17 @@ public:
 
 	//Quest getters and setters
 	Quest* GetFirstQuest();
-	void SetFirstQuest(Quest* newQuest);		//May not need but it's here just in case.
 	Quest* GetBranchesQuest();
-	void SetBranchesQuest(Quest* newQuest);		//May not need but it's here just in case.
+	Quest* GetThreeStonesQuest();
 
 	void GameBattleManager(Player&); // Function that will manage how battles work and the interactions between the ATTACK, DEFLECT, and RUN actions
 	UserInputValidation::Action ProcessEnemyTurn(int currentEnemyHealth, int startEnemyhealth);
 
 	//Puzzles methods that the player will encounter.
 	bool BranchesOfHerosPuzzle();
+	bool ThreeStonesPuzzle();
+
+	//Normalize string method
+	void NormalizeString(string& input);
 };
 
