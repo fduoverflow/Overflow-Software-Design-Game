@@ -9,6 +9,9 @@ GameManager::GameManager()
 	//Initialize quests
 	firstQuest = new Quest();
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
+
+	//Initialize tutorial battle checker
+	isFirstBattleDone = false;
 }
 /*
 * Constructor with passed player and map.
@@ -22,6 +25,9 @@ GameManager::GameManager(Player* p, Map* m)
 	//Initialize quests
 	firstQuest = new Quest();
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
+
+	//Initialize tutorial battle checker
+	isFirstBattleDone = false;
 }
 
 /*
@@ -226,19 +232,18 @@ void GameManager::GameBattleManager(Player &myPlayer)
 {
 
 	//Check if the battle is the tutorial battle against the dust golem
-	bool isFirstBattle = false;
-	if (GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
-	{
-		isFirstBattle = true;
-	}
-	if (isFirstBattle)
+	if (!isFirstBattleDone && GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
 	{
 		cout << "Before the battle begins, you hear Lord Vallonious' voice in your head... FOOL this seems to be your first battle. Let me teach you the basics, so that our final battle may at least be a fair one.\n";
 		cout << "If you can not even defeat this simple Dust Golem, you hold no chance to defeat ME!\n\n";
 		cout << "You have 3 actions. ATTACK, DEFLECT, and RUN. Attack and Run are self explanatory... unless your feeble mind cannot comprehend these concepts...\n";
 		cout << "Deflect works like so: when an attack is deflected, the one who deflected takes half the damage, but so does the attacker.\n";
 		cout << "May your future battles be bountiful... I await in the Land of Scrum for our EPIC ENCOUNTER!\n\n";
+
+		//Update checker
+		isFirstBattleDone = true;
 	}
+
 	// if the player chooses run and run succeeds, it should stop the battle, but not get rid of the enemy
 	bool isActionRun = false;
 	while (GetPlayerLocationTile().GetEnemy() != nullptr && GetPlayerLocationTile().GetEnemy()->GetHealth() > 0 && isActionRun == false)
