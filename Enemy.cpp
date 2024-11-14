@@ -31,7 +31,7 @@ Enemy::Enemy(string n, enemyDisplay i, int hp, Item* newItem)
 	myItem = newItem;
 	icon = i;
 }
-Enemy::Enemy(string n, enemyDisplay i, int hp, Item* newItem, string attkName, int attkDmg)
+Enemy::Enemy(string n, enemyDisplay i, int hp, Item* newItem, string attkName, int attkDmg, string enemyDesc)
 {
 	name = n;
 	health = hp;
@@ -39,6 +39,7 @@ Enemy::Enemy(string n, enemyDisplay i, int hp, Item* newItem, string attkName, i
 	enemyAttack = attkName;
 	enemyAttackDamage = attkDmg;
 	icon = i;
+	enemyDescription = enemyDesc;
 }
 Enemy::Enemy(string n, enemyDisplay i, int hp, string attkName, int attkDmg)
 {
@@ -99,6 +100,18 @@ void Enemy::SetEnemyAttackDamage(int e_dmg)
 {
 	enemyAttackDamage = e_dmg;
 }
+
+// Get/Set the description of the enemy so the player may know who they are fighting
+string Enemy::GetEnemyDescription()
+{
+	return enemyDescription;
+}
+void Enemy::SetEnemyDescription(string desc)
+{
+	enemyDescription = desc;
+}
+
+
 
 //Icon getter
 enemyDisplay Enemy::GetIcon() {
