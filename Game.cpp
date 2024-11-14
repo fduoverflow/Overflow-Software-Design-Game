@@ -59,7 +59,6 @@ int main() {
 	worldMap.GetChunkAt(1, 1).GetTileAt(9, 11).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3));
 	//worldMap.GetChunkAt(1, 1).GetTileAt(9, 16).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3));
 
-
 	//Set game loop variables
 	bool isGameOver = false;
 	string moveInput;
