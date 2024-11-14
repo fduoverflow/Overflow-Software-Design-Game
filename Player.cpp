@@ -5,8 +5,8 @@ using namespace std;
 Player::Player(string name, int health, int tileX, int tileY)
 {
 	playerName = name;
-	playerTileLocation[0] = tileX;
-	playerTileLocation[1] = tileY;
+	playerTileLocation[0] = tileY;
+	playerTileLocation[1] = tileX;
 	playerHealth = health;
 	playerAttack = "Knuckle Sandwich"; // Initial player attack is just their fists (until they get the spellbook)
 	playerAttackDamage = 2; // When player is initialized, any attack they have can only do 2 dmg

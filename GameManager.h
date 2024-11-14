@@ -21,9 +21,13 @@ private:
 	bool isFirstBattleDone;
 
 public:
-	//Constructors
+	// Constructors
 	GameManager();
 	GameManager(Player*, Map*);
+
+	// Moves to the next world, thus changing the map
+	// Sets the coordinates of the player on the new world
+	void MoveToWorld(Map*, int, int, int, int);
 
 	/*
 	* Moves player in given direction enum

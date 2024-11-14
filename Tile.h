@@ -17,7 +17,7 @@ struct Block {
 	bool collides;
 };
 
-const int NUM_BLOCK_TYPES = 19;
+const int NUM_BLOCK_TYPES = 23;
 
 
 const Block BLOCK_TYPES[NUM_BLOCK_TYPES] = {
@@ -39,7 +39,11 @@ const Block BLOCK_TYPES[NUM_BLOCK_TYPES] = {
 	{"Old House", "", DARK_YELLOW, false},
 	{"House Window", "", DARK_PURPLE, true},
 	{"House Door", "", DARK_RED, true},
-	{"Sign", "", BROWN, true}
+	{"Sign", "", BROWN, true},
+	{"Ocean", "", DARK_BLUE, true},
+	{"Doorway", "", BLACK, false},
+	{"Building Wall", "", DARK_GRAY, true},
+	{"Path","", LIGHT_GRAY, false}
 };
 
 /*

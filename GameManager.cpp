@@ -35,6 +35,13 @@ GameManager::GameManager(Player* p, Map* m)
 	isFirstBattleDone = false;
 }
 
+// Moves to the next work, thus changing the map
+void GameManager::MoveToWorld(Map* m, int cX, int cY, int tX, int tY) {
+	map = m;
+	myPlayer->SetPlayerChunkLocation(cX, cY);
+	myPlayer->SetPlayerLocation(tX, tY);
+}
+
 /*
 * Display map and anything within it.
 */
