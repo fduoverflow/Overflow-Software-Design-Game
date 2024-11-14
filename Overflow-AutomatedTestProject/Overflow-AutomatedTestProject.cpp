@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CppUnitTest.h"
 #include <iostream>
 #include <string>
@@ -32,8 +32,8 @@ namespace OverflowAutomatedTestProject
             Inventory inventory(5);
 
             // creating two dummy items
-            Item potion("Potion", "A healing potion", Item::Type::HEALING, 10);
-            Item key("Key", "A key for unlocking doors", Item::Type::KEY, 0);
+            Item potion("Potion", { L"🧋", 3 }, "A healing potion", Item::Type::HEALING, 10, 1);
+            Item key("Key", { L"🗝️", 3 }, "A key for unlocking doors", Item::Type::KEY, 0, 1);
 
             // now adding both items to the inventory
             inventory.addItem(potion);
@@ -56,9 +56,9 @@ namespace OverflowAutomatedTestProject
             Inventory inventory(2);
 
             // Creating three items
-            Item sword("Sword", "A sharp blade", Item::Type::WEAPON, 100);
-            Item shield("Shield", "A sturdy shield", Item::Type::EQUIPMENT, 50);
-            Item potion("Potion", "A healing potion", Item::Type::HEALING, 10);
+            Item sword("Sword", { L"🗡️", 3 }, "A sharp blade", Item::Type::WEAPON, 100, 1);
+            Item shield("Shield", { L"🛡️", 3 }, "A sturdy shield", Item::Type::EQUIPMENT, 50, 1);
+            Item potion("Potion", { L"🧋", 3 }, "A healing potion", Item::Type::HEALING, 10, 1);
 
             // Step 3: Add two items (inventory will be full)
             inventory.addItem(sword);
@@ -159,7 +159,7 @@ namespace OverflowAutomatedTestProject
             Logger::WriteMessage("Testing Enemy class basic functionality\n");
 
             // Enemy made with a constructor made with love <3
-            Enemy enemy("Goblin", 100);
+            Enemy enemy("Goblin", { L"👺", 3 }, 100);
 
             // basically checking enemy name and health
             Assert::AreEqual(std::string("Goblin"), enemy.GetName(), L"Enemy name mismatch");
