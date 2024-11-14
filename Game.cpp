@@ -22,8 +22,8 @@ int main() {
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
 	//Initialize player and inventory
-	Player myPlayer("link", 20, 5, 4);
-	myPlayer.SetPlayerChunkLocation(1, 1);
+	Player myPlayer("link", 20, 5, 4); // CHANGE BACK TO 5, 4
+	myPlayer.SetPlayerChunkLocation(1, 1); // CHANGE BACK TO 1, 1
 	Inventory inventory(25);
 
 	//Initialize UI
@@ -44,6 +44,10 @@ int main() {
 	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", { L"💍", 3 }, "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5,1));
 	worldMap.GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0,1));
 	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", { L"🪄", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25,1));
+
+	// Place teleporter into new world
+	worldMap.GetChunkAt(5, 3).GetTileAt(15, 8).SetItem(new Item("Gate", {L"🚪", 3}, "You're at the city gates; would you like to enter now?", Item::Type::TELEPORTER, 0, 0));
+
 
 	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
 	worldMap.GetChunkAt(1, 1).GetTileAt(1, 7).SetNPC(new NPC("Scrummius", {L"🦉", 3}, scrummiusDialogue));
@@ -90,9 +94,17 @@ int main() {
 		//Display item if there is one on Tile
 		if (manager.GetPlayerLocationTile().GetItem() != nullptr)
 		{
-			cout << "\nThere is an item here: " + manager.GetPlayerLocationTile().GetItem()->GetName();
-			cout << "\nType PickUp to pick up item.";
-			cout << "\nType Inspect to look at item description.";
+			Item *i = manager.GetPlayerLocationTile().GetItem();
+			// Checks if the player is at a teleporter
+			if (i->GetType() == Item::Type::TELEPORTER) {
+				cout << i->GetDescription() << endl;
+				cout << "Type Enter to advance." << endl;
+			}
+			else {
+				cout << "\nThere is an item here: " + manager.GetPlayerLocationTile().GetItem()->GetName();
+				cout << "\nType PickUp to pick up item.";
+				cout << "\nType Inspect to look at item description.";
+			}
 		}
 
 		//Display player location info
@@ -191,6 +203,17 @@ int main() {
 					break;
 				case UserInputValidation::Action::INV:
 					inventory.displayInventory();
+					break;
+				case UserInputValidation::Action::ENTER:
+					if (manager.GetPlayerLocationTile().GetItem() != nullptr && manager.GetPlayerLocationTile().GetItem()->GetType() == Item::Type::TELEPORTER)
+						// Creates the new world in here for now, and brings the player to it
+					{
+						manager.MoveToWorld(new Map("cityMap.txt", 3, 5), 0, 1, 2, 8);
+						system("cls");
+						manager.Display();
+					}
+					else
+						cout << "There is nothing to enter.\n";
 					break;
 				case UserInputValidation::Action::RULES:
 					myUI.DisplayRules();

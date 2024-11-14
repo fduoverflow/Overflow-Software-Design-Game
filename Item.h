@@ -28,6 +28,7 @@ class Item
 			KEY,
 			EQUIPMENT,
 			WEAPON,
+			TELEPORTER,
 
 			EMPTY		//Default type for empty item objects if the default constructor is called. Avoid using unless you need an empty item object.
 		};
