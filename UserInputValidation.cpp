@@ -1,6 +1,8 @@
 #include "UserInputValidation.h"
 #include <iostream>
 #include <algorithm>
+#include <regex>
+
 using namespace std;
 /*
 Checks if the player made a valid move
@@ -104,10 +106,19 @@ UserInputValidation::Move UserInputValidation::CharToMove(char input)
 		default: return Move::X;
 	}
 }
+
+// Normalize the user input
+//   remove white space & change to upper case
+//   modifies the user input string in place
+void UserInputValidation::NormalizeString(string& input) {
+	transform(input.begin(), input.end(), input.begin(), ::toupper);
+	input = std::regex_replace(input, std::regex("^\\s+|\\s+$"), "");
+}
+
 UserInputValidation::Action UserInputValidation::StringToAction(string input)
 {
-	//convert user input to uppercase
-	transform(input.begin(), input.end(), input.begin(), ::toupper);
+
+	NormalizeString(input);
 	if (input == "MAP")
 	{
 		return Action::MAP;
@@ -188,7 +199,6 @@ bool UserInputValidation::MoveChecker(string userInput)
 	return false;
 }
 
-
 bool UserInputValidation::ActionChecker(string userInput)
 {
 	Action action;
@@ -210,4 +220,18 @@ bool UserInputValidation::ActionChecker(string userInput)
 		SetPlayerAction(action);
 		return false;
 	}
+}
+
+// Refactored version of UserInputValidation
+//   removes need for CheckValidAction (and the duplication)
+//   hardcodes ERROR to signify an invalid input (bad)
+//    - better might be to use the original stringToAction() & have an error parameter updated
+
+bool UserInputValidation::ActionChecker(string userInput, bool refactor)
+{
+	Action action;
+	// Convert user input to usable Action ENUM
+	action = StringToAction(userInput);
+	SetPlayerAction(action);
+	return (action != Action::ERROR);   // if action == error, returns false, otherwise returns true
 }
