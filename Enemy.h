@@ -29,6 +29,8 @@ class Enemy
 		//Enemy icon
 		enemyDisplay icon;
 
+		string enemyDescription;
+
 		// Unique ID for each enemy
 		int enemyID;
 
@@ -37,6 +39,7 @@ class Enemy
 		Enemy();
 		Enemy(string n, enemyDisplay i, int hp);
 		Enemy(string n, enemyDisplay i, int hp, Item* newItem);
+		Enemy(string n, enemyDisplay i, int hp, Item* newItem, string attkName, int attkDmg, string enemyDesc);
 
 		//One Constructor has an item drop and one does not-- can add variation to the game
 		Enemy(string n, enemyDisplay i, int hp, Item* newItem, string attkName, int attkDmg);
@@ -64,6 +67,10 @@ class Enemy
 
 		int GetEnemyAttackDamage();
 		void SetEnemyAttackDamage(int);
+
+		// Enemy Description Setters/Getters -- player needs to know who they are fighting
+		string GetEnemyDescription();
+		void SetEnemyDescription(string);
 
 		//Display getter
 		enemyDisplay GetIcon();
