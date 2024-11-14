@@ -446,7 +446,7 @@ void GameManager::GameBattleManager(Player &myPlayer)
 			cout << "Oops, you entered a wrong command. You lost your turn...\n\n";
 		}
 
-		// Occurs when the enemy is defeated by reaching 0 or less health
+		// Occurs when the enemy is defeated by reaching 0 or less health after player action
 		if (GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
 		{
 			cout << enemyName << " has been defeated!\n";
@@ -484,6 +484,16 @@ void GameManager::GameBattleManager(Player &myPlayer)
 				break;
 			default:
 				break;
+		}
+
+		// Occurs when the enemy is defeated by reaching 0 or less health after enemy action
+		if (GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
+		{
+			cout << enemyName << " has been defeated!\n";
+			GetPlayerLocationChunk().EnemyDefeted(GetPlayerLocationTile().GetEnemy());
+			//delete GetPlayerLocationTile().GetEnemy();	//Delete Enemy object so that other pointers no longer reference it.					  
+			//GetPlayerLocationTile().SetEnemy(nullptr);
+			return;
 		}
 	}
 }
