@@ -8,6 +8,10 @@ string UserInterface::DisplayRules()
 {
     rules = "General tips for success:\n";
     rules += "1. Use WASD to move your character (W = up, A = left, S = down, D = right).\n";
+    rules += "1. Use MAP to view the overworld map.\n";
+    rules += "1. Use HEALTH to view your current health.\n";
+    rules += "1. Use INV to view what is in your inventory.\n";
+    rules += "1. Use RULES to view these rules again.\n";
     rules += "2. Gather equipment and food for survival.\n";
     rules += "3. Defeat bosses to progress.\n";
     rules += "4. Explore the world and interact with NPCs to receive quests.\n";
@@ -20,7 +24,7 @@ string UserInterface::DisplayRules()
 string UserInterface::DisplayIntroMessage()
 {
     introMessage = "Backstory:\n";
-    introMessage += "You are a wizard in the land of [insert name].\n";
+    introMessage += "You are a wizard in The World of Retrospecta.\n";
     introMessage += "While having a picnic with your pet Gapplin, the dragon wizard Vallonious swoops in and steals Gapplin.\n";
     introMessage += "Now, you must travel to the land of Scrum, gather the right equipment, and defeat Vallonious to rescue Gapplin.\n";
 

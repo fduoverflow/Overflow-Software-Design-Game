@@ -1,4 +1,5 @@
-#include <iostream>
+﻿#include <iostream>
+#include <cstdlib>
 #include "ConsoleColors.h"
 #include "GameManager.h"
 #include "Map.h"
@@ -20,28 +21,50 @@ int main() {
 	//Initialize map
 	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
-	Player myPlayer("link", 100, 15, 15);
-	myPlayer.SetPlayerChunkLocation(1, 1);
+	//Initialize player and inventory
+	Player myPlayer("link", 20, 5, 4); // CHANGE BACK TO 5, 4
+	myPlayer.SetPlayerChunkLocation(1, 1); // CHANGE BACK TO 1, 1
 	Inventory inventory(25);
 
-	//String to hold large npc dialogue. May move to somewhere else later.
+	//Initialize UI
+	UserInterface myUI;
+
+	//Strings to hold large npc dialogue. May move to somewhere else later.
 	string scrummiusDialogue = "Hellooo! My name is Scrummius the Owl, and I am quite pleased to meet yooou! What is your name?\nYooou said your name is " + myPlayer.GetPlayerName() +
 		" and Lord Vallonious has taken your pet, Gapplin? I don't believe you. But if I did I would say yooou are going to need a spell book if you are going tooo face him. Head west from your house and enter the old chateau. I believe yooou may find what you're looking for in there... liar.";
+	string herosTreeDialogue = "Greetings. I am the Hero's Tree. Thou must pass the Branches of Heroes to continue your adventure. These branches have chronicled the tales of these lands and to clear them, you must answer their three questions.";
+	string threeStonesDialogue = "The river seems to be uncrossable at the current moment...";
 
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
 
 	//Place items near player's starting tile
 	//worldMap.GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(new Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
-	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", "This key might unlock a door somewhere.", Item::Type::KEY, 0));
-	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5));
-	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25));
+	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0,1));
+	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", { L"💍", 3 }, "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5,1));
+	worldMap.GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0,1));
+	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", { L"🪄", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25,1));
+
+	// Place teleporter into new world
+	worldMap.GetChunkAt(5, 3).GetTileAt(15, 8).SetItem(new Item("Gate", {L"🚪", 3}, "You're at the city gates; would you like to enter now?", Item::Type::TELEPORTER, 0, 0));
+
 
 	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
-	worldMap.GetChunkAt(1,1).GetTileAt(15, 12).SetNPC(new NPC("Scrummius", scrummiusDialogue));
+	worldMap.GetChunkAt(1, 1).GetTileAt(1, 7).SetNPC(new NPC("Scrummius", {L"🦉", 3}, scrummiusDialogue));
 
-	// Test code to Initialize First Quest until Scrummius is Implemmented
-	//manager.InitilizeTutorialQuest();
+	//Initialize 3 Stones NPC to offer the 3 Stepping Stone Questions puzzle.
+	worldMap.GetChunkAt(3, 1).GetTileAt(2, 6).SetNPC(new NPC("Three Stones", { L"🪨", 3 }, threeStonesDialogue));
+
+	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
+	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
+
+	// Intilalize the Mushroom Warrior Enemy -- we can move all NPC / enemy implementions to it's own classes if needed
+	
+	worldMap.GetChunkAt(1, 1).GetTileAt(9, 11).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3));
+	//worldMap.GetChunkAt(1, 1).GetTileAt(9, 16).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3));
+
+	// Intilalize the Wizard Squirrel Enemy
+	worldMap.GetChunkAt(1, 1).GetTileAt(9, 12).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Leaf Sword", { L"🗡️", 3 }, "Sword that does does 3 damage.", Item::Type::WEAPON, 5, 1), "Nut Throw", 2, ""));
 
 	//Set game loop variables
 	bool isGameOver = false;
@@ -49,6 +72,10 @@ int main() {
 
 	//Display current chunk once before entering play loop
 	manager.Display();
+
+	//Display rules and story.
+	myUI.DisplayIntroMessage();
+	myUI.DisplayRules();
 
 	while (!isGameOver) {
 		
@@ -59,19 +86,33 @@ int main() {
 			cout << "\nType Talk to speak to them.";
 		}
 
+		
 		//Display Enemy if there is one on Tile. When battle system is implemented, it will launch from here.
 		if (manager.GetPlayerLocationTile().GetEnemy() != nullptr)
 		{
 			cout << "\nYou have encountered an enemy! The enemy here is: " + manager.GetPlayerLocationTile().GetEnemy()->GetName();
-			cout << "\nGet ready to battle!";
+			cout << "\nEnemy Description:" << manager.GetPlayerLocationTile().GetEnemy()->GetEnemyDescription() << "\n";
+			cout << "\nGet ready to battle!\n\n";
+
+			// Call the GameBattleManager to handle the battle that is happening
+			// GameBattleManager is a method of the GameManager class
+			manager.GameBattleManager(myPlayer);
 		}
 
 		//Display item if there is one on Tile
 		if (manager.GetPlayerLocationTile().GetItem() != nullptr)
 		{
-			cout << "\nThere is an item here: " + manager.GetPlayerLocationTile().GetItem()->GetName();
-			cout << "\nType PickUp to pick up item.";
-			cout << "\nType Inspect to look at item description.";
+			Item *i = manager.GetPlayerLocationTile().GetItem();
+			// Checks if the player is at a teleporter
+			if (i->GetType() == Item::Type::TELEPORTER) {
+				cout << i->GetDescription() << endl;
+				cout << "Type Enter to advance." << endl;
+			}
+			else {
+				cout << "\nThere is an item here: " + manager.GetPlayerLocationTile().GetItem()->GetName();
+				cout << "\nType PickUp to pick up item.";
+				cout << "\nType Inspect to look at item description.";
+			}
 		}
 
 		//Display player location info
@@ -110,6 +151,28 @@ int main() {
 						{
 							manager.InitilizeTutorialQuest();
 						}
+
+						//Check if NPC is Three Stones and if puzzle is not complete then start the puzzle. Also checks to make sure player has already completed the first quest.
+						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Three Stones" && manager.GetThreeStonesQuest()->GetQuestComplete() != true && manager.GetFirstQuest()->GetQuestComplete() == true)
+						{
+							cout << "\nType LEAVE to exit puzzle.\n";
+
+							if (manager.ThreeStonesPuzzle())					//Starts puzzle and returns true or false if player solves or leaves puzzle
+							{
+								manager.GetPlayerLocationTile().GetNPC()->SetDialogue("The Three Stones Puzzle has been completed. You are free to cross the river.");
+							}
+						}
+
+						//Check if NPC is Hero's Tree and if puzzle is not complete then start the puzzle.
+						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Hero's Tree" && manager.GetBranchesQuest()->GetQuestComplete() != true)
+						{
+							cout << "\nType LEAVE to exit puzzle.\n";
+
+							if (manager.BranchesOfHerosPuzzle())					//Starts puzzle and returns true or false if player solves or leaves puzzle
+							{
+								manager.GetPlayerLocationTile().GetNPC()->SetDialogue("Congrats on completing the Branches of Heroes! Thine next destination should be further to the east.");
+							}
+						}
 					}
 					break;
 				case UserInputValidation::Action::PICKUP:
@@ -141,13 +204,27 @@ int main() {
 					}
 					break;
 				case UserInputValidation::Action::MAP:
-					worldMap.DisplayMap();
+					manager.DisplayMap();
 					break;
 				case UserInputValidation::Action::HEALTH:
 					cout << "You are at " << myPlayer.GetPlayerHealth() << " health.";
 					break;
 				case UserInputValidation::Action::INV:
 					inventory.displayInventory();
+					break;
+				case UserInputValidation::Action::ENTER:
+					if (manager.GetPlayerLocationTile().GetItem() != nullptr && manager.GetPlayerLocationTile().GetItem()->GetType() == Item::Type::TELEPORTER)
+						// Creates the new world in here for now, and brings the player to it
+					{
+						manager.MoveToWorld(new Map("cityMap.txt", 3, 5), 0, 1, 2, 8);
+						system("cls");
+						manager.Display();
+					}
+					else
+						cout << "There is nothing to enter.\n";
+					break;
+				case UserInputValidation::Action::RULES:
+					myUI.DisplayRules();
 					break;
 			}
 		}

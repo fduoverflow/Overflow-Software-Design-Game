@@ -9,6 +9,7 @@ enum Color {
 	LIGHT_GREEN = 154,
 	BLACK = 239,
 	PINK = 211,
+	DARK_BLUE = 27,
 	LIGHT_BLUE = 4,
 	BABY_BLUE = 123,
 	BROWN = 94,
@@ -20,7 +21,9 @@ enum Color {
 	PURPLE = 141,
 	DARK_PURPLE = 55,
 	LAVENDER = 189,
+	LIGHT_GRAY = 252,
 	GRAY = 244,
+	DARK_GRAY = 240,
 	LIGHT_YELLOW = 227,
 	DARK_YELLOW = 220
 };
@@ -31,6 +34,6 @@ static class ConsoleColors
 		static int EnableColor();
 		static void DisableColor();
 		static void SetColor(Color);
-		static void wprint(wstring);
+		static void wprint(wstring, int);
 };
 

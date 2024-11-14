@@ -30,7 +30,7 @@ class UserInputValidation
 		enum class Action
 		{
 			// Common player actions - Error occurs when invalid input is entered 
-			RULES, INV, MAP, PICKUP, INSPECT, ERROR, HEALTH, TALK
+			RULES, INV, MAP, PICKUP, INSPECT, ERROR, HEALTH, TALK, ATTACK, DEFLECT, RUN, LEAVE, ENTER
 		};
 		// Call Setters inside check functions in .cpp
 		// Only set player moves/actions to valid ones
@@ -47,7 +47,11 @@ class UserInputValidation
 
 		// Player Actions Setter/Getters
 		Action GetPlayerAction();
-		void SetPlayerAction(Action); 
+		void SetPlayerAction(Action);
+		
+		// Enemy Actions Setter/Getters
+		Action GetEnemyAction();
+		void SetEnemyAction(Action);
 
 		// Check length of user input-- movement is only WASD
 		bool CheckMoveInputLength(string);
@@ -61,6 +65,7 @@ class UserInputValidation
 	private:
 		Move playerMove;
 		Action playerAction;
+		Action enemyAction;
 		void NormalizeString(string& input);  // helper function to remove white space & convert to a standard case, input is updated in-place
 };
 

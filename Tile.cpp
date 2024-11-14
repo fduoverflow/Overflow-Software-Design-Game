@@ -1,41 +1,7 @@
 ﻿#include <iostream>
 #include "Tile.h"
-#include "ConsoleColors.h"
+
 using namespace std;
-
-//enum BLOCK_TYPE { GRASS, WATER, TREE, FLOOR, BUSH };
-
-struct Block {
-	string name;
-	string description;
-	Color color;
-	bool collides;
-};
-
-const int NUM_BLOCK_TYPES = 19;
-
-
-Block BLOCK_TYPES[NUM_BLOCK_TYPES] = {
-	{"Grass", "just a silly block of grass", DARK_GREEN, false},
-	{"Water", "it's cold to the touch", LIGHT_BLUE, true},
-	{"Bridge", "", BROWN, false},
-	{"Dirt", "what a nice pattern!", TAN, false},
-	{"Bush", "there's pointy thorns in this bush. you probably shouldn't walk through it...", LIME_GREEN, true},
-	{"Fence", "", WHITE, true},
-	{"Enemy", "", RED, true},
-	{"Campfire", "", ORANGE, true},
-	{"Shopkeeper", "", PINK, true},
-	{"Scrummius", "", PURPLE, true},
-	{"Tower Wall", "", GRAY, true},
-	{"Friendly", "", BABY_BLUE, true},
-	{"Friendly", "", LIGHT_GREEN, true},
-	{"Mystery Item", "", LAVENDER, true},
-	{"Old House", "", LIGHT_YELLOW, true},
-	{"Old House", "", DARK_YELLOW, true},
-	{"House Window", "", DARK_PURPLE, true},
-	{"House Door", "", DARK_RED, true},
-	{"Sign", "", BROWN, true}
-};
 
 //Constructors
 Tile::Tile(int r, int c, int tileID)
@@ -45,10 +11,7 @@ Tile::Tile(int r, int c, int tileID)
 	ID = tileID;
 	myItem = nullptr;
 	myNPC = nullptr;
-	northTile = nullptr;
-	southTile = nullptr;
-	eastTile = nullptr;
-	westTile = nullptr;
+	myEnemy = nullptr;
 	questFlag = "";
 }
 Tile::Tile(int r, int c, Item* newItem, int tileID)
@@ -58,10 +21,7 @@ Tile::Tile(int r, int c, Item* newItem, int tileID)
 	ID = tileID;
 	myItem = newItem;
 	myNPC = nullptr;
-	northTile = nullptr;
-	southTile = nullptr;
-	eastTile = nullptr;
-	westTile = nullptr;
+	myEnemy = nullptr;
 	questFlag = "";
 }
 Tile::Tile()
@@ -71,10 +31,7 @@ Tile::Tile()
 	ID = 0;
 	myItem = nullptr;
 	myNPC = nullptr;
-	northTile = nullptr;
-	southTile = nullptr;
-	eastTile = nullptr;
-	westTile = nullptr;
+	myEnemy = nullptr;
 	questFlag = "";
 }
 
@@ -94,6 +51,16 @@ int Tile::GetColumn()
 void Tile::SetColumn(int c)
 {
 	col = c;
+}
+
+// Returns the ID number of the tile, designating its type
+int Tile::GetID() {
+	return ID;
+}
+
+// Sets the ID to a different typeof tile
+void Tile::SetID(int i) {
+	ID = i;
 }
 
 //Item getters and setters
@@ -137,59 +104,23 @@ Item& Tile::PickUpItem()
 	return *temp;
 }
 
-/*
-* Adjacent tiles getters and setters
-* Getters throw int 404 as exception when out of bounds.
-* Getters pass reference to allow other classes to change Tile values.
-*/
-Tile& Tile::GetNorthTile()
-{
-	if (northTile != nullptr)
-		return *northTile;
-	else
-		throw 404;
-}
-Tile& Tile::GetSouthTile()
-{
-	if (southTile != nullptr)
-		return *southTile;
-	else
-		throw 404;
-}
-Tile& Tile::GetEastTile()
-{
-	if (eastTile != nullptr)
-		return *eastTile;
-	else
-		throw 404;
-}
-Tile& Tile::GetWestTile()
-{
-	if (westTile != nullptr)
-		return *westTile;
-	else
-		throw 404;
-}
-void Tile::SetNorthTile(Tile& targetTile)
-{
-	northTile = &targetTile;
-}
-void Tile::SetSouthTile(Tile& targetTile)
-{
-	southTile = &targetTile;
-}
-void Tile::SetEastTile(Tile& targetTile)
-{
-	eastTile = &targetTile;
-}
-void Tile::SetWestTile(Tile& targetTile)
-{
-	westTile = &targetTile;
-}
 void Tile::DisplayTile()
 {
 	ConsoleColors::SetColor(BLOCK_TYPES[ID].color);
-	cout << TILE_DISPLAY;
+	if (myNPC != nullptr) {
+		display i = myNPC->GetIcon();
+		ConsoleColors::wprint(i.emoji, i.size);
+	}
+	else if (myItem != nullptr) {
+		icon i = myItem->GetIcon();
+		ConsoleColors::wprint(i.emoji, i.size);
+	}
+	else if (myEnemy != nullptr) {
+		enemyDisplay i = myEnemy->GetIcon();
+		ConsoleColors::wprint(i.emoji, i.size);
+	}
+	else
+		cout << TILE_DISPLAY;
 }
 
 /*
@@ -211,5 +142,5 @@ string Tile::GetQuestFlag()
 void Tile::DisplayPlayerTile()
 {
 	ConsoleColors::SetColor(BLOCK_TYPES[ID].color);
-	ConsoleColors::wprint(L"🧙‍♂️");
+	ConsoleColors::wprint(L"🧙‍♂️", 2);
 }
