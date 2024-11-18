@@ -591,7 +591,13 @@ void GameManager::SpawnStartingAreaEnemies(Map worldMap)
 	worldMap.GetChunkAt(1, 2).GetTileAt(6, 14).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Nut Throw", 2, squirrelDesc));
 	worldMap.GetChunkAt(1, 2).GetTileAt(9, 8).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Rusty Sword", { L"🗡️", 3 }, "Well-worn sword, but it still packs a punch!", Item::Type::WEAPON, 5, 1), "Nut Throw", 2, squirrelDesc));
 
-	// Chunk 1,3
+	// Chunk 3,1
+	worldMap.GetChunkAt(4, 14).GetTileAt(9, 8).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Rusty Sword", { L"🗡️", 3 }, "Well-worn sword, but it still packs a punch!", Item::Type::WEAPON, 5, 1), "Nut Throw", 2, squirrelDesc));
+	worldMap.GetChunkAt(8, 1).GetTileAt(13, 1).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
+	worldMap.GetChunkAt(12, 14).GetTileAt(13, 1).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
+
+
+
 
 	// Mushroom Warriors
 	// Chunk 4,2
@@ -603,8 +609,6 @@ void GameManager::SpawnStartingAreaEnemies(Map worldMap)
 	// Chunk 1,2
 	worldMap.GetChunkAt(1, 2).GetTileAt(1, 4).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
 	worldMap.GetChunkAt(1, 2).GetTileAt(14, 2).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3, mushroomDesc));
-
-	// Chunk 1,3
 
 
 	// Possessed Stumps
