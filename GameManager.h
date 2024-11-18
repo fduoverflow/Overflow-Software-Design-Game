@@ -61,5 +61,7 @@ public:
 
 	//Normalize string method
 	void NormalizeString(string& input);
+
+	void SpawnStartingAreaEnemies(Map);
 };
 
