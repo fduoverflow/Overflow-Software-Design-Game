@@ -574,3 +574,44 @@ void GameManager::NormalizeString(string& input)
 	transform(input.begin(), input.end(), input.begin(), ::toupper);
 	input = std::regex_replace(input, std::regex("^\\s+|\\s+$"), "");
 }
+
+void GameManager::SpawnStartingAreaEnemies(Map worldMap)
+{
+	// Enemy Descriptions
+	string squirrelDesc = "A magical squirrel with powers. You wonder how it passed it's Wizard Schoool exams to get it's wand...";
+	string mushroomDesc = "A walking and talking mushroom. It may hold healing attributes, it may be poisonous... only you can be the judge of that!";
+
+	// Wizard Squirrels-- first squirrel drops Leaf Sword
+	// Chunk 2,1
+	worldMap.GetChunkAt(2, 1).GetTileAt(2, 5).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Leaf Sword", { L"🗡️", 3 }, "Sword that does does 3 damage.", Item::Type::WEAPON, 3, 1), "Nut Throw", 2, squirrelDesc));
+	worldMap.GetChunkAt(2, 1).GetTileAt(13, 1).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2,squirrelDesc));
+	worldMap.GetChunkAt(2, 1).GetTileAt(13, 11).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Nut Throw", 2, squirrelDesc));
+
+	// Chunk 1,2
+	worldMap.GetChunkAt(1, 2).GetTileAt(6, 14).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Nut Throw", 2, squirrelDesc));
+	worldMap.GetChunkAt(1, 2).GetTileAt(9, 8).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Rusty Sword", { L"🗡️", 3 }, "Well-worn sword, but it still packs a punch!", Item::Type::WEAPON, 5, 1), "Nut Throw", 2, squirrelDesc));
+
+	// Chunk 3,1
+	worldMap.GetChunkAt(3,1).GetTileAt(4, 14).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Rusty Sword", { L"🗡️", 3 }, "Well-worn sword, but it still packs a punch!", Item::Type::WEAPON, 5, 1), "Nut Throw", 2, squirrelDesc));
+	worldMap.GetChunkAt(3, 1).GetTileAt(8, 1).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
+	worldMap.GetChunkAt(3,1).GetTileAt(12, 14).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
+
+
+
+
+	// Mushroom Warriors
+	// Chunk 4,2
+	worldMap.GetChunkAt(4, 2).GetTileAt(14, 5).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
+	worldMap.GetChunkAt(4, 2).GetTileAt(1, 4).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3, mushroomDesc));
+	worldMap.GetChunkAt(4, 2).GetTileAt(13, 8).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3, mushroomDesc));
+	worldMap.GetChunkAt(4, 2).GetTileAt(1, 12).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
+
+	// Chunk 1,2
+	worldMap.GetChunkAt(1, 2).GetTileAt(1, 4).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
+	worldMap.GetChunkAt(1, 2).GetTileAt(14, 2).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3, mushroomDesc));
+
+
+	// Possessed Stumps
+	
+
+}
