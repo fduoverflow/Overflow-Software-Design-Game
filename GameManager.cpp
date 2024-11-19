@@ -371,7 +371,7 @@ void GameManager::GameBattleManager(Player &myPlayer)
 
 	// if the player chooses run and run succeeds, it should stop the battle, but not get rid of the enemy
 	bool isActionRun = false;
-	while (GetPlayerLocationTile().GetEnemy() != nullptr && GetPlayerLocationTile().GetEnemy()->GetHealth() > 0 && isActionRun == false)
+	while (GetPlayerLocationTile().GetEnemy() != nullptr && GetPlayerLocationTile().GetEnemy()->GetHealth() > 0 && isActionRun == false && myPlayer.GetPlayerHealth() > 0)
 	{
 		// Player turn
 		// Asking for user input for their action
