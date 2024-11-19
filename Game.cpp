@@ -119,6 +119,12 @@ int main() {
 			}
 		}
 
+		//End game if player dies
+		if (myPlayer.GetPlayerHealth() <= 0) {
+			cout << "You have died. Better luck next time!" << endl;
+			return 0;
+		}
+
 		//Display player location info
 		cout << "\nChunk X: " << myPlayer.GetPlayerChunkLocationX();
 		cout << "\nChunk Y: " << myPlayer.GetPlayerChunkLocationY();
