@@ -457,9 +457,16 @@ void GameManager::GameBattleManager(Player &myPlayer)
 		if (GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
 		{
 			cout << enemyName << " has been defeated!\n";
+
+			//Drop item if Enemy was holding one
+			if (GetPlayerLocationTile().GetEnemy()->GetItem() != nullptr)
+			{
+				GetPlayerLocationTile().SetItem(GetPlayerLocationTile().GetEnemy()->GetItem());
+				cout << "The enemy dropped an item!";
+			}
+
 			GetPlayerLocationChunk().EnemyDefeted(GetPlayerLocationTile().GetEnemy());
-			//delete GetPlayerLocationTile().GetEnemy();	//Delete Enemy object so that other pointers no longer reference it.					  
-			//GetPlayerLocationTile().SetEnemy(nullptr);
+
 			return;
 		}
 
