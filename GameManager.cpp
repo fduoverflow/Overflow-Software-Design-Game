@@ -582,6 +582,22 @@ void GameManager::NormalizeString(string& input)
 	input = std::regex_replace(input, std::regex("^\\s+|\\s+$"), "");
 }
 
+/*
+* Use an item from the passed in Inventory object.
+*/
+void GameManager::UseItem(Inventory& playerInv)
+{
+	//Initialize player input string
+	string playerInput;
+
+	//Prompt player for which item to use.
+	cout << "Type in the name if the item you wish to use: ";
+	getline(cin, playerInput);
+
+	//Clean input
+	NormalizeString(playerInput);
+}
+
 void GameManager::SpawnStartingAreaEnemies(Map worldMap)
 {
 	// Enemy Descriptions

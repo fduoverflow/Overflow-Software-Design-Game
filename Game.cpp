@@ -58,18 +58,9 @@ int main() {
 	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
 	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
 
+	//Initialize starting area enemies
 	manager.SpawnStartingAreaEnemies(worldMap);
 
-	/*
-	// Intilalize the Mushroom Warrior Enemy -- we can move all NPC / enemy implementions to it's own classes if needed
-	
-	worldMap.GetChunkAt(1, 1).GetTileAt(9, 11).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3));
-	worldMap.GetChunkAt(1, 1).GetTileAt(7, 11).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3));
-
-	// Intilalize the Wizard Squirrel Enemy
-	worldMap.GetChunkAt(1, 1).GetTileAt(9, 12).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Leaf Sword", { L"🗡️", 3 }, "Sword that does does 3 damage.", Item::Type::WEAPON, 5, 1), "Nut Throw", 2, ""));
-
-	*/
 	//Set game loop variables
 	bool isGameOver = false;
 	string moveInput;
@@ -235,6 +226,19 @@ int main() {
 					break;
 				case UserInputValidation::Action::RULES:
 					myUI.DisplayRules();
+					break;
+				case UserInputValidation::Action::USE:
+					//Check for empty inventory
+					if (inventory.IsEmpty())
+					{
+						cout << "Inventory is empty. No Item to use.\n";
+					}
+					else
+					{
+						//Display inventory then use item.
+						inventory.displayInventory();
+						manager.UseItem(inventory);
+					}
 					break;
 			}
 		}
