@@ -583,19 +583,26 @@ void GameManager::NormalizeString(string& input)
 }
 
 /*
-* Use an item from the passed in Inventory object.
+* Use an Item from the passed in Inventory object.
+* Assumes Inventory is not empty.
 */
 void GameManager::UseItem(Inventory& playerInv)
 {
-	//Initialize player input string
+	//Initialize player input string.
 	string playerInput;
 
 	//Prompt player for which item to use.
 	cout << "Type in the name if the item you wish to use: ";
 	getline(cin, playerInput);
 
-	//Clean input
+	//Clean input.
 	NormalizeString(playerInput);
+
+	//Grab Item from Inventory.
+	Item grabbedItem = playerInv.removeItem(playerInput);
+
+	//Check grabbed Item.
+	cout << "Item grabbed: " << grabbedItem.GetName() << "\n";
 }
 
 void GameManager::SpawnStartingAreaEnemies(Map worldMap)
