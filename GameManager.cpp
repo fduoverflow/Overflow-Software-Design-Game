@@ -591,6 +591,9 @@ void GameManager::UseItem(Inventory& playerInv)
 	//Initialize player input string.
 	string playerInput;
 
+	//Reset cin to use std::getLine(). This is to allow for user input that includes spaces.
+	cin.ignore();
+
 	//Prompt player for which item to use.
 	cout << "Type in the name if the item you wish to use: ";
 	getline(cin, playerInput);
@@ -601,8 +604,32 @@ void GameManager::UseItem(Inventory& playerInv)
 	//Grab Item from Inventory.
 	Item grabbedItem = playerInv.removeItem(playerInput);
 
-	//Check grabbed Item.
-	cout << "Item grabbed: " << grabbedItem.GetName() << "\n";
+	//Use Item based on type
+	switch (grabbedItem.GetType())
+	{
+		case Item::Type::HEALING:
+			cout << "You just got healed by: " << grabbedItem.GetValue() << "\n";
+			break;
+		case Item::Type::KEY:
+			cout << "You can't use that key item right now.\n";
+			playerInv.addItem(grabbedItem);
+			break;
+		case Item::Type::EQUIPMENT:
+			cout << "You can't use that equipment item right now. To equip these, use the EQUIP command.\n";
+			playerInv.addItem(grabbedItem);
+			break;
+		case Item::Type::WEAPON:
+			cout << "You can't use that weapon item right now. To equip these, use the EQUIP command.\n";
+			playerInv.addItem(grabbedItem);
+			break;
+		case Item::Type::TELEPORTER:
+			cout << "You can't use that teleporter item right now.\n";
+			playerInv.addItem(grabbedItem);
+			break;
+		case Item::Type::EMPTY:
+			cout << "Somehow, an empty item was grabbed.\n";
+			break;
+	}
 }
 
 void GameManager::SpawnStartingAreaEnemies(Map worldMap)
