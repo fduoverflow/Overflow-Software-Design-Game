@@ -463,9 +463,8 @@ void GameManager::GameBattleManager(Player &myPlayer)
 			if (GetPlayerLocationTile().GetEnemy()->GetItem() != nullptr)
 			{
 				GetPlayerLocationTile().SetItem(GetPlayerLocationTile().GetEnemy()->GetItem());
-				cout << "The enemy dropped an item!";
+				cout << "The enemy dropped an item!\n";
 			}
-
 
 			//Heal the player if they just defeated the tutorial enemy, the dust golem.
 			if (GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
