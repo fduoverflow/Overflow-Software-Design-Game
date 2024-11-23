@@ -63,5 +63,7 @@ public:
 	void NormalizeString(string& input);
 
 	void SpawnStartingAreaEnemies(Map);
+	void SpawnSprintVilleEnemies(Map);
+	void SpawnLandOfScrumEnemies(Map);
 };
 

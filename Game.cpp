@@ -59,6 +59,8 @@ int main() {
 	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
 
 	manager.SpawnStartingAreaEnemies(worldMap);
+	manager.SpawnSprintVilleEnemies(worldMap);
+	manager.SpawnLandOfScrumEnemies(worldMap);
 
 	/*
 	// Intilalize the Mushroom Warrior Enemy -- we can move all NPC / enemy implementions to it's own classes if needed

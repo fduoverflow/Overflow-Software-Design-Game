@@ -622,3 +622,30 @@ void GameManager::SpawnStartingAreaEnemies(Map worldMap)
 	
 
 }
+void GameManager::SpawnSprintVilleEnemies(Map worldMap) {
+
+	// Enemy Descriptions
+	string pigeonDesc = "A hybrid of pigeon and griffin, this creature combines the ferocity of a predator with the annoyance of a city pest. Approach with caution!";
+	string goblinDesc = "A cunning and nimble foe, the Goblin Thief thrives in chaos. Known for its underhanded tactics, it will blind and distract its enemies before darting in for a devastating attack.";
+
+	// Puts the enemies in the map. (Change to actual spots once sprintville is incorporated)
+	worldMap.GetChunkAt(1, 1).GetTileAt(13, 1).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 5 }, "Sword that does does 5 damage.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
+	worldMap.GetChunkAt(1, 1).GetTileAt(13, 2).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+	worldMap.GetChunkAt(1, 1).GetTileAt(13, 3).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+
+	// Puts the enemies in the map. (Change to actual spots once sprintville is incorporated)
+	worldMap.GetChunkAt(1, 1).GetTileAt(12, 1).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sneaky Slash", 5, goblinDesc));
+	worldMap.GetChunkAt(1, 1).GetTileAt(12, 2).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, "Sneaky Slash", 5, goblinDesc));
+	worldMap.GetChunkAt(1, 1).GetTileAt(12, 3).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, "Sneaky Slash", 5, goblinDesc));
+}
+
+void GameManager::SpawnLandOfScrumEnemies(Map worldMap) {
+
+	// Enemy Descriptions
+	string blobDesc = " A malevolent mass of darkness, the Evil Dark Blob lurks in the Land of Scrum, waiting to engulf unwary adventurers.";
+
+	// Puts the enemies in the map. (Change to actual spots once Land of Scrum is incorporated)
+	worldMap.GetChunkAt(1, 1).GetTileAt(14, 1).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Corrosive Strike", 7, blobDesc));
+	worldMap.GetChunkAt(1, 1).GetTileAt(14, 2).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, "Corrosive Strike", 7, blobDesc));
+	worldMap.GetChunkAt(1, 1).GetTileAt(14, 3).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, "Corrosive Strike", 7, blobDesc));
+}
