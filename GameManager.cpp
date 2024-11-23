@@ -604,26 +604,27 @@ void GameManager::UseItem(Inventory& playerInv)
 	//Grab Item from Inventory.
 	Item grabbedItem = playerInv.removeItem(playerInput);
 
-	//Use Item based on type
+	//Use Item based on type. If Item can't be used, return it to Inventory.
 	switch (grabbedItem.GetType())
 	{
 		case Item::Type::HEALING:
 			cout << "You just got healed by: " << grabbedItem.GetValue() << "\n";
+			myPlayer->HealPlayer(grabbedItem.GetValue());
 			break;
 		case Item::Type::KEY:
-			cout << "You can't use that key item right now.\n";
+			cout << "You can't use that key item right now. Returning to inventory.\n";
 			playerInv.addItem(grabbedItem);
 			break;
 		case Item::Type::EQUIPMENT:
-			cout << "You can't use that equipment item right now. To equip these, use the EQUIP command.\n";
+			cout << "You can't use that equipment item right now. To equip these, use the EQUIP command. Returning to inventory.\n";
 			playerInv.addItem(grabbedItem);
 			break;
 		case Item::Type::WEAPON:
-			cout << "You can't use that weapon item right now. To equip these, use the EQUIP command.\n";
+			cout << "You can't use that weapon item right now. To equip these, use the EQUIP command. Returning to inventory.\n";
 			playerInv.addItem(grabbedItem);
 			break;
 		case Item::Type::TELEPORTER:
-			cout << "You can't use that teleporter item right now.\n";
+			cout << "You can't use that teleporter item right now. Returning to inventory.\n";
 			playerInv.addItem(grabbedItem);
 			break;
 		case Item::Type::EMPTY:
