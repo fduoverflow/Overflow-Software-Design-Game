@@ -459,6 +459,14 @@ void GameManager::GameBattleManager(Player &myPlayer)
 			//Notify player of enemy defeat
 			cout << enemyName << " has been defeated!\n";
 
+			//Drop item if Enemy was holding one
+			if (GetPlayerLocationTile().GetEnemy()->GetItem() != nullptr)
+			{
+				GetPlayerLocationTile().SetItem(GetPlayerLocationTile().GetEnemy()->GetItem());
+				cout << "The enemy dropped an item!";
+			}
+
+
 			//Heal the player if they just defeated the tutorial enemy, the dust golem.
 			if (GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
 			{
