@@ -645,7 +645,7 @@ void GameManager::UseItem(Inventory& playerInv)
 			playerInv.addItem(grabbedItem);
 			break;
 		case Item::Type::EMPTY:
-			cout << "Somehow, an empty item was grabbed.\n";
+			cout << "Wrong item name.\n";
 			break;
 	}
 }
