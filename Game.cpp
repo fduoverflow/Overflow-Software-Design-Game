@@ -23,7 +23,7 @@ int main() {
 
 	//Initialize player and inventory
 	Player myPlayer("link", 20, 5, 4); // CHANGE BACK TO 5, 4
-	myPlayer.SetPlayerChunkLocation(5, 3); // CHANGE BACK TO 1, 1
+	myPlayer.SetPlayerChunkLocation(1, 1); // CHANGE BACK TO 1, 1
 	Inventory inventory(25);
 
 	//Initialize UI
