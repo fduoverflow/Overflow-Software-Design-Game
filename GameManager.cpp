@@ -421,6 +421,8 @@ void GameManager::GameBattleManager(Player &myPlayer)
 				currentEnemyHealth = GetPlayerLocationTile().GetEnemy()->GetHealth();
 				cout << enemyName << " Health: " << currentEnemyHealth << "\n\n";
 				break;
+
+			// Player chooses the DEFLECT Action-- player will take only half dmg, and enemy will take half dmg of the attack they dealt
 			case UserInputValidation::Action::DEFLECT:
 				cout << playerName << " deflects!\n";
 				myPlayer.SetPlayerHealth(currentPlayerHealth - (enemyAttackDamage / 2));
@@ -433,11 +435,15 @@ void GameManager::GameBattleManager(Player &myPlayer)
 				cout << playerName << " Health: " << currentPlayerHealth << "\n\n";
 				break;
 			case UserInputValidation::Action::RUN:
+				// The player cannot run away from the tutorial battle with the dust golem
 				if (GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
 				{
+					// run chance is set to 10 for now, meaning the player will 100% of the time fail at running when fighting the dust golem
 					runChance = 10;
 					cout << "Lord Vallonious laughs at you from trying to run from the tutorial battle...\n";
 				}
+
+				// Setting Run chance at a 50% for now-- will be lowered later (thinking 15% as a default)
 				if (runChance <= 5)
 				{
 					cout << "You ran away safely, but the " << GetPlayerLocationTile().GetEnemy()->GetName() << " still remains...\n";
@@ -527,7 +533,7 @@ void GameManager::GameBattleManager(Player &myPlayer)
 				cout << "The enemy dropped an item!";
 			}
 
-			
+			// Getting rid of the instance of the enemy that has been defeated
 			GetPlayerLocationChunk().EnemyDefeted(GetPlayerLocationTile().GetEnemy());
 			return;
 		}
