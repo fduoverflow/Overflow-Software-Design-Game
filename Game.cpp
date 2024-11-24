@@ -63,6 +63,8 @@ int main() {
 
 	//Initialize starting area enemies
 	manager.SpawnStartingAreaEnemies(worldMap);
+	
+	manager.SpawnLandOfScrumEnemies(worldMap);
 
 	//Set game loop variables
 	bool isGameOver = false;
@@ -221,6 +223,7 @@ int main() {
 						// Creates the new world in here for now, and brings the player to it
 					{
 						manager.MoveToWorld(new Map("cityMap.txt", 3, 5), 0, 1, 2, 8);
+						manager.SpawnSprintVilleEnemies(*manager.GetMap());
 						system("cls");
 						manager.Display();
 					}

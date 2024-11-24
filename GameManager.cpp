@@ -41,6 +41,10 @@ void GameManager::MoveToWorld(Map* m, int cX, int cY, int tX, int tY) {
 	myPlayer->SetPlayerChunkLocation(cX, cY);
 	myPlayer->SetPlayerLocation(tX, tY);
 }
+Map* GameManager::GetMap()
+{
+	return map;
+}
 
 /*
 * Display map and anything within it.
@@ -689,4 +693,50 @@ void GameManager::SpawnStartingAreaEnemies(Map worldMap)
 	// Possessed Stumps
 	
 
+}
+void GameManager::SpawnSprintVilleEnemies(Map worldMap) {
+
+	// Enemy Descriptions
+	string pigeonDesc = "A hybrid of pigeon and griffin, this creature combines the ferocity of a predator with the annoyance of a city pest. Approach with caution!";
+	string goblinDesc = "A cunning and nimble foe, the Goblin Thief thrives in chaos. Known for its underhanded tactics, it will blind and distract its enemies before darting in for a devastating attack.";
+
+	// Pigeon Griffin Enemies
+	// Chunk 1,0
+	worldMap.GetChunkAt(1, 1).GetTileAt(7, 6).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 5 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
+	worldMap.GetChunkAt(1, 1).GetTileAt(8, 10).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+
+	// Chunk 2,1
+	worldMap.GetChunkAt(2, 1).GetTileAt(4, 10).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+	worldMap.GetChunkAt(2, 1).GetTileAt(8, 14).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+	worldMap.GetChunkAt(2, 1).GetTileAt(10, 7).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sky Peck", 4, pigeonDesc));
+	worldMap.GetChunkAt(2, 1).GetTileAt(4, 2).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sky Peck", 4, pigeonDesc));
+
+	// Chunk 2,0
+	worldMap.GetChunkAt(2, 0).GetTileAt(6, 4).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 5 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
+
+	// Chunk 3,0
+	worldMap.GetChunkAt(3, 0).GetTileAt(1, 5).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sky Peck", 4, pigeonDesc));
+	worldMap.GetChunkAt(3, 0).GetTileAt(13, 2).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+
+	// Goblin Thief Enemies
+
+	// Chunk 3,0
+	worldMap.GetChunkAt(3, 0).GetTileAt(4, 9).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Sneaky Slash", 5, goblinDesc));
+	worldMap.GetChunkAt(3, 0).GetTileAt(10, 7).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, "Sneaky Slash", 5, goblinDesc));
+	worldMap.GetChunkAt(3, 0).GetTileAt(13, 13).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, "Sneaky Slash", 5, goblinDesc));
+
+	// Chunk 4,0
+	worldMap.GetChunkAt(4, 0).GetTileAt(2, 13).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Sneaky Slash", 5, goblinDesc));
+	worldMap.GetChunkAt(4, 0).GetTileAt(14, 3).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Goblin's Dagger", { L"🗡️", 3 }, "The dagger of a goblin thief.", Item::Type::WEAPON, 8, 1), "Sneaky Slash", 5, goblinDesc));
+}
+
+void GameManager::SpawnLandOfScrumEnemies(Map worldMap) {
+
+	// Enemy Descriptions
+	string blobDesc = " A malevolent mass of darkness, the Evil Dark Blob lurks in the Land of Scrum, waiting to engulf unwary adventurers.";
+
+	// Puts the enemies in the map. (Change to actual spots once Land of Scrum is incorporated)
+	worldMap.GetChunkAt(1, 1).GetTileAt(14, 1).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 7, blobDesc));
+	worldMap.GetChunkAt(1, 1).GetTileAt(14, 2).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, "Corrosive Strike", 7, blobDesc));
+	worldMap.GetChunkAt(1, 1).GetTileAt(14, 3).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, "Corrosive Strike", 7, blobDesc));
 }
