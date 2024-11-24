@@ -7,7 +7,8 @@ Player::Player(string name, int health, int tileX, int tileY)
 	playerName = name;
 	playerTileLocation[0] = tileY;
 	playerTileLocation[1] = tileX;
-	playerHealth = health;
+	maxPlayerHealth = health;
+	currentPlayerHealth = health;
 	playerAttack = "Knuckle Sandwich"; // Initial player attack is just their fists (until they get the spellbook)
 	playerAttackDamage = 2; // When player is initialized, any attack they have can only do 2 dmg
 }
@@ -16,7 +17,8 @@ Player::Player()
 	playerName = "";
 	playerTileLocation[0] = 0;
 	playerTileLocation[1] = 0;
-	playerHealth = 0;
+	maxPlayerHealth = 0;
+	currentPlayerHealth = 0;
 	playerAttack = "";
 	playerAttackDamage = 1; // Default damage is 1
 }
@@ -62,14 +64,36 @@ wstring Player::GetPlayerIcon() {
 	return playerIcon;
 }
 
-//Player Health Setter/Getter
+//Player Health Setters/Getters
 int Player::GetPlayerHealth()
 {
-	return playerHealth;
+	return currentPlayerHealth;
+}
+int Player::GetPlayerMaxHealth()
+{
+	return maxPlayerHealth;
+}
+void Player::SetPlayerMaxHealth(int health)
+{
+	maxPlayerHealth = health;
 }
 void Player::SetPlayerHealth(int health)
 {
-	playerHealth = health;
+	currentPlayerHealth = health;
+}
+
+/*
+* Heal player by the passed amount.
+* Caps healing to not go above max health.
+*/
+void Player::HealPlayer(int val)
+{
+	if (val >= 0)			//Check to make sure passed val is not negative.
+	{
+		currentPlayerHealth += val;
+		if (currentPlayerHealth > maxPlayerHealth)
+			currentPlayerHealth = maxPlayerHealth;
+	}
 }
 
 // Player Attack Name Setter/Getter
