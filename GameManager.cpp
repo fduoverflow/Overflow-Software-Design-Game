@@ -456,15 +456,25 @@ void GameManager::GameBattleManager(Player &myPlayer)
 		// Occurs when the enemy is defeated by reaching 0 or less health after player action
 		if (GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
 		{
+			//Notify player of enemy defeat
 			cout << enemyName << " has been defeated!\n";
 
 			//Drop item if Enemy was holding one
 			if (GetPlayerLocationTile().GetEnemy()->GetItem() != nullptr)
 			{
 				GetPlayerLocationTile().SetItem(GetPlayerLocationTile().GetEnemy()->GetItem());
-				cout << "The enemy dropped an item!";
+				cout << "The enemy dropped an item!\n";
 			}
 
+			//Heal the player if they just defeated the tutorial enemy, the dust golem.
+			if (GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
+			{
+				myPlayer.SetPlayerHealth(20);
+				cout << "Lord Vallonious pities you, so he has healed you after your battle with the dust golem... he will not be so merciful next time...\n";
+				cout << "Player health: " << myPlayer.GetPlayerHealth();
+			}
+
+			//Remove Enemy reference pointers to delete Enemy
 			GetPlayerLocationChunk().EnemyDefeted(GetPlayerLocationTile().GetEnemy());
 
 			return;
