@@ -10,6 +10,7 @@
 #include "UserInterface.h"
 #include "Item.h"
 #include "Inventory.h"
+#include "NPC.h"
 
 using namespace std;
 
@@ -75,6 +76,7 @@ int main() {
 	myUI.DisplayRules();
 
 	while (!isGameOver) {
+		if()
 		
 		//Display NPC if there is one on Tile
 		if (manager.GetPlayerLocationTile().GetNPC() != nullptr)
