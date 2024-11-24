@@ -62,6 +62,7 @@ public:
 	//Normalize string method
 	void NormalizeString(string& input);
 
+	Map* GetMap();
 	void SpawnStartingAreaEnemies(Map);
 	void SpawnSprintVilleEnemies(Map);
 	void SpawnLandOfScrumEnemies(Map);

@@ -23,7 +23,7 @@ int main() {
 
 	//Initialize player and inventory
 	Player myPlayer("link", 20, 5, 4); // CHANGE BACK TO 5, 4
-	myPlayer.SetPlayerChunkLocation(1, 1); // CHANGE BACK TO 1, 1
+	myPlayer.SetPlayerChunkLocation(5, 3); // CHANGE BACK TO 1, 1
 	Inventory inventory(25);
 
 	//Initialize UI
@@ -59,7 +59,7 @@ int main() {
 	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
 
 	manager.SpawnStartingAreaEnemies(worldMap);
-	manager.SpawnSprintVilleEnemies(worldMap);
+	
 	manager.SpawnLandOfScrumEnemies(worldMap);
 
 	/*
@@ -229,6 +229,7 @@ int main() {
 						// Creates the new world in here for now, and brings the player to it
 					{
 						manager.MoveToWorld(new Map("cityMap.txt", 3, 5), 0, 1, 2, 8);
+						manager.SpawnSprintVilleEnemies(*manager.GetMap());
 						system("cls");
 						manager.Display();
 					}

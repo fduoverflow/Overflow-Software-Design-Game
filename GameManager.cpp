@@ -41,6 +41,10 @@ void GameManager::MoveToWorld(Map* m, int cX, int cY, int tX, int tY) {
 	myPlayer->SetPlayerChunkLocation(cX, cY);
 	myPlayer->SetPlayerLocation(tX, tY);
 }
+Map* GameManager::GetMap()
+{
+	return map;
+}
 
 /*
 * Display map and anything within it.
