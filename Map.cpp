@@ -12,12 +12,6 @@ Map::Map() {
 	numColumns = 0;
 }
 
-Map::Map(Chunk** chunkList, int rows, int cols) {
-	chunks = chunkList;
-	numRows = rows;
-	numColumns = cols;
-}
-
 Map::Map(string fileName, int rows, int columns) {
 	numRows = rows;				// number of chunks
 	numColumns = columns;		// number of columns

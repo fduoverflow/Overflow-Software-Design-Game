@@ -20,14 +20,19 @@ private:
 	//Bool to check if player has completed tutorial battle.
 	bool isFirstBattleDone;
 
+	// Functions to initialize different worlds
+	void InitializeStartingAreaWorld();
+	void InitializeCityWorld();
+	void InitializeLandOfScrumWorld();
+
 public:
 	// Constructors
 	GameManager();
-	GameManager(Player*, Map*);
+	GameManager(Player*);
 
 	// Moves to the next world, thus changing the map
 	// Sets the coordinates of the player on the new world
-	void MoveToWorld(Map*, int, int, int, int);
+	void SetNewWorld();
 
 	/*
 	* Moves player in given direction enum
@@ -62,6 +67,6 @@ public:
 	//Normalize string method
 	void NormalizeString(string& input);
 
-	void SpawnStartingAreaEnemies(Map);
+	void SpawnStartingAreaEnemies();
 };
 

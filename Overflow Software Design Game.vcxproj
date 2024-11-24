@@ -164,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="cityMap.txt" />
+    <Text Include="landOfScrumMap.txt" />
     <Text Include="startingAreaMap.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

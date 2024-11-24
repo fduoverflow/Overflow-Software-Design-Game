@@ -14,51 +14,20 @@
 using namespace std;
 
 
-const int STARTING_AREA_NUM_ROWS = 5;
-const int STARTING_AREA_NUM_COLS = 6;
-
 int main() {
-	//Initialize map
-	Map worldMap("startingAreaMap.txt", STARTING_AREA_NUM_ROWS, STARTING_AREA_NUM_COLS);
 
 	//Initialize player and inventory
-	Player myPlayer("link", 20, 5, 4); // CHANGE BACK TO 5, 4
-	myPlayer.SetPlayerChunkLocation(1, 1); // CHANGE BACK TO 1, 1
+	Player myPlayer("link", 20, 5, 4);
 	Inventory inventory(25);
 
 	//Initialize UI
 	UserInterface myUI;
 
-	//Strings to hold large npc dialogue. May move to somewhere else later.
-	string scrummiusDialogue = "Hellooo! My name is Scrummius the Owl, and I am quite pleased to meet yooou! What is your name?\nYooou said your name is " + myPlayer.GetPlayerName() +
-		" and Lord Vallonious has taken your pet, Gapplin? I don't believe you. But if I did I would say yooou are going to need a spell book if you are going tooo face him. Head west from your house and enter the old chateau. I believe yooou may find what you're looking for in there... liar.";
-	string herosTreeDialogue = "Greetings. I am the Hero's Tree. Thou must pass the Branches of Heroes to continue your adventure. These branches have chronicled the tales of these lands and to clear them, you must answer their three questions.";
-	string threeStonesDialogue = "The river seems to be uncrossable at the current moment...";
-
 	// Creates the Game Manager object that will handle all game logic
-	GameManager manager(&myPlayer, &worldMap);
+	GameManager manager(&myPlayer);
 
-	//Place items near player's starting tile
-	//worldMap.GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(new Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
-	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0,1));
-	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", { L"💍", 3 }, "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5,1));
-	worldMap.GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0,1));
-	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", { L"🪄", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25,1));
-
-	// Place teleporter into new world
-	worldMap.GetChunkAt(5, 3).GetTileAt(15, 8).SetItem(new Item("Gate", {L"🚪", 3}, "You're at the city gates; would you like to enter now?", Item::Type::TELEPORTER, 0, 0));
-
-
-	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
-	worldMap.GetChunkAt(1, 1).GetTileAt(1, 7).SetNPC(new NPC("Scrummius", {L"🦉", 3}, scrummiusDialogue));
-
-	//Initialize 3 Stones NPC to offer the 3 Stepping Stone Questions puzzle.
-	worldMap.GetChunkAt(3, 1).GetTileAt(2, 6).SetNPC(new NPC("Three Stones", { L"🪨", 3 }, threeStonesDialogue));
-
-	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
-	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
-
-	manager.SpawnStartingAreaEnemies(worldMap);
+	// Initialize first world
+	manager.SetNewWorld();
 
 	/*
 	// Intilalize the Mushroom Warrior Enemy -- we can move all NPC / enemy implementions to it's own classes if needed
@@ -226,7 +195,7 @@ int main() {
 					if (manager.GetPlayerLocationTile().GetItem() != nullptr && manager.GetPlayerLocationTile().GetItem()->GetType() == Item::Type::TELEPORTER)
 						// Creates the new world in here for now, and brings the player to it
 					{
-						manager.MoveToWorld(new Map("cityMap.txt", 3, 5), 0, 1, 2, 8);
+						manager.SetNewWorld();
 						system("cls");
 						manager.Display();
 					}

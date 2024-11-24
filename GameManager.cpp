@@ -4,6 +4,26 @@
 
 using namespace std;
 
+const int NUM_MAPS = 3;
+int currentMap = -1;
+const string maps[NUM_MAPS] = {"startingAreaMap.txt", "cityMap.txt", "landOfScrumMap.txt"};
+
+struct worldData {
+	string fileName;
+	int numRows;
+	int numColumns;
+	int chunkX;
+	int chunkY;
+	int tileX;
+	int tileY;
+	int health;
+};
+
+// World data for the three game worlds the player traverses
+worldData startingArea{ maps[0], 5, 6, 1, 1, 5, 4, 20 };
+worldData city{ maps[1], 3, 5, 0, 1, 2, 8, 40 };
+worldData landOfScrum{ maps[2], 1, 1, 0, 0, 1, 1, 80 };
+
 /*
 * Default constructor
 */
@@ -20,11 +40,10 @@ GameManager::GameManager()
 /*
 * Constructor with passed player and map.
 */
-GameManager::GameManager(Player* p, Map* m) 
+GameManager::GameManager(Player* p) 
 {
 	//Pass player and map
 	myPlayer = p;
-	map = m;
 
 	//Initialize quests
 	firstQuest = new Quest();
@@ -35,11 +54,86 @@ GameManager::GameManager(Player* p, Map* m)
 	isFirstBattleDone = false;
 }
 
+void GameManager::InitializeStartingAreaWorld() {
+
+	//Initialize map
+	map = new Map(maps[0], startingArea.numRows, startingArea.numColumns);
+
+	// Adjust player's position
+	myPlayer->SetPlayerChunkLocation(startingArea.chunkX, startingArea.chunkY);
+	myPlayer->SetPlayerLocation(startingArea.tileX, startingArea.tileY);
+
+	//Strings to hold large npc dialogue. May move to somewhere else later.
+	string scrummiusDialogue = "Hellooo! My name is Scrummius the Owl, and I am quite pleased to meet yooou! What is your name?\nYooou said your name is " + myPlayer->GetPlayerName() +
+		" and Lord Vallonious has taken your pet, Gapplin? I don't believe you. But if I did I would say yooou are going to need a spell book if you are going tooo face him. Head west from your house and enter the old chateau. I believe yooou may find what you're looking for in there... liar.";
+	string herosTreeDialogue = "Greetings. I am the Hero's Tree. Thou must pass the Branches of Heroes to continue your adventure. These branches have chronicled the tales of these lands and to clear them, you must answer their three questions.";
+	string threeStonesDialogue = "The river seems to be uncrossable at the current moment...";
+
+	//Place items near player's starting tile
+	map->GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0, 1));
+	map->GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", { L"💍", 3 }, "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5, 1));
+	map->GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0, 1));
+	map->GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", { L"🪄", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25, 1));
+
+	// Place teleporter into the city
+	map->GetChunkAt(5, 3).GetTileAt(15, 8).SetItem(new Item("Gate", { L"🚪", 3 }, "You're at the city gates; would you like to enter now?", Item::Type::TELEPORTER, 0, 0));
+
+
+	//Initialize first NPC Scrummius 3 tiles north of where the player starts. Placement is temporary until map gets further implementation.
+	map->GetChunkAt(1, 1).GetTileAt(1, 7).SetNPC(new NPC("Scrummius", { L"🦉", 3 }, scrummiusDialogue));
+
+	//Initialize 3 Stones NPC to offer the 3 Stepping Stone Questions puzzle.
+	map->GetChunkAt(3, 1).GetTileAt(2, 6).SetNPC(new NPC("Three Stones", { L"🪨", 3 }, threeStonesDialogue));
+
+	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
+	map->GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
+
+	SpawnStartingAreaEnemies();
+}
+
+void GameManager::InitializeCityWorld() {
+	//Initialize map
+	map = new Map(maps[1], city.numRows, city.numColumns);
+
+	// Adjust player's position
+	myPlayer->SetPlayerChunkLocation(city.chunkX, city.chunkY);
+	myPlayer->SetPlayerLocation(city.tileX, city.tileY);
+
+	// Place all item, NPC, and enemy initializations for the city in this function
+
+	// Teleporter into Land of Scrum
+	map->GetChunkAt(4, 2).GetTileAt(8, 12).SetItem(new Item("Gate", { L"🚪", 3 }, "You're at the dock; would you like to take the ride to the Land of Scrum?", Item::Type::TELEPORTER, 0, 0));
+
+}
+
+void GameManager::InitializeLandOfScrumWorld() {
+	//Initialize map
+	map = new Map(maps[2], landOfScrum.numRows, landOfScrum.numColumns);
+
+	// Adjust player's position
+	myPlayer->SetPlayerChunkLocation(landOfScrum.chunkX, landOfScrum.chunkY);
+	myPlayer->SetPlayerLocation(landOfScrum.tileX, landOfScrum.tileY);
+
+	// Place all item, NPC, and enemy initializations for the city in this function
+}
+
 // Moves to the next work, thus changing the map
-void GameManager::MoveToWorld(Map* m, int cX, int cY, int tX, int tY) {
-	map = m;
-	myPlayer->SetPlayerChunkLocation(cX, cY);
-	myPlayer->SetPlayerLocation(tX, tY);
+void GameManager::SetNewWorld() {
+	currentMap++;
+
+	switch (currentMap) {
+	case 0:
+		InitializeStartingAreaWorld();
+		break;
+	case 1:
+		InitializeCityWorld();
+		break;
+	case 2:
+		InitializeLandOfScrumWorld();
+		break;
+	default:
+		break;
+	}
 }
 
 /*
@@ -575,7 +669,7 @@ void GameManager::NormalizeString(string& input)
 	input = std::regex_replace(input, std::regex("^\\s+|\\s+$"), "");
 }
 
-void GameManager::SpawnStartingAreaEnemies(Map worldMap)
+void GameManager::SpawnStartingAreaEnemies()
 {
 	// Enemy Descriptions
 	string squirrelDesc = "A magical squirrel with powers. You wonder how it passed it's Wizard Schoool exams to get it's wand...";
@@ -583,32 +677,32 @@ void GameManager::SpawnStartingAreaEnemies(Map worldMap)
 
 	// Wizard Squirrels-- first squirrel drops Leaf Sword
 	// Chunk 2,1
-	worldMap.GetChunkAt(2, 1).GetTileAt(2, 5).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Leaf Sword", { L"🗡️", 3 }, "Sword that does does 3 damage.", Item::Type::WEAPON, 3, 1), "Nut Throw", 2, squirrelDesc));
-	worldMap.GetChunkAt(2, 1).GetTileAt(13, 1).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2,squirrelDesc));
-	worldMap.GetChunkAt(2, 1).GetTileAt(13, 11).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Nut Throw", 2, squirrelDesc));
+	map->GetChunkAt(2, 1).GetTileAt(2, 5).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Leaf Sword", { L"🗡️", 3 }, "Sword that does does 3 damage.", Item::Type::WEAPON, 3, 1), "Nut Throw", 2, squirrelDesc));
+	map->GetChunkAt(2, 1).GetTileAt(13, 1).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2,squirrelDesc));
+	map->GetChunkAt(2, 1).GetTileAt(13, 11).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Nut Throw", 2, squirrelDesc));
 
 	// Chunk 1,2
-	worldMap.GetChunkAt(1, 2).GetTileAt(6, 14).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Nut Throw", 2, squirrelDesc));
-	worldMap.GetChunkAt(1, 2).GetTileAt(9, 8).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Rusty Sword", { L"🗡️", 3 }, "Well-worn sword, but it still packs a punch!", Item::Type::WEAPON, 5, 1), "Nut Throw", 2, squirrelDesc));
+	map->GetChunkAt(1, 2).GetTileAt(6, 14).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Nut Throw", 2, squirrelDesc));
+	map->GetChunkAt(1, 2).GetTileAt(9, 8).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Rusty Sword", { L"🗡️", 3 }, "Well-worn sword, but it still packs a punch!", Item::Type::WEAPON, 5, 1), "Nut Throw", 2, squirrelDesc));
 
 	// Chunk 3,1
-	worldMap.GetChunkAt(3,1).GetTileAt(4, 14).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Rusty Sword", { L"🗡️", 3 }, "Well-worn sword, but it still packs a punch!", Item::Type::WEAPON, 5, 1), "Nut Throw", 2, squirrelDesc));
-	worldMap.GetChunkAt(3, 1).GetTileAt(8, 1).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
-	worldMap.GetChunkAt(3,1).GetTileAt(12, 14).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
+	map->GetChunkAt(3,1).GetTileAt(4, 14).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Rusty Sword", { L"🗡️", 3 }, "Well-worn sword, but it still packs a punch!", Item::Type::WEAPON, 5, 1), "Nut Throw", 2, squirrelDesc));
+	map->GetChunkAt(3, 1).GetTileAt(8, 1).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
+	map->GetChunkAt(3,1).GetTileAt(12, 14).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
 
 
 
 
 	// Mushroom Warriors
 	// Chunk 4,2
-	worldMap.GetChunkAt(4, 2).GetTileAt(14, 5).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
-	worldMap.GetChunkAt(4, 2).GetTileAt(1, 4).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3, mushroomDesc));
-	worldMap.GetChunkAt(4, 2).GetTileAt(13, 8).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3, mushroomDesc));
-	worldMap.GetChunkAt(4, 2).GetTileAt(1, 12).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
+	map->GetChunkAt(4, 2).GetTileAt(14, 5).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
+	map->GetChunkAt(4, 2).GetTileAt(1, 4).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3, mushroomDesc));
+	map->GetChunkAt(4, 2).GetTileAt(13, 8).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3, mushroomDesc));
+	map->GetChunkAt(4, 2).GetTileAt(1, 12).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
 
 	// Chunk 1,2
-	worldMap.GetChunkAt(1, 2).GetTileAt(1, 4).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
-	worldMap.GetChunkAt(1, 2).GetTileAt(14, 2).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3, mushroomDesc));
+	map->GetChunkAt(1, 2).GetTileAt(1, 4).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
+	map->GetChunkAt(1, 2).GetTileAt(14, 2).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3, mushroomDesc));
 
 
 	// Possessed Stumps
