@@ -433,8 +433,11 @@ void GameManager::GameBattleManager(Player &myPlayer)
 				cout << playerName << " Health: " << currentPlayerHealth << "\n\n";
 				break;
 			case UserInputValidation::Action::RUN:
-				
-				
+				if (GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
+				{
+					runChance = 10;
+					cout << "Lord Vallonious laughs at you from trying to run from the tutorial battle...\n";
+				}
 				if (runChance <= 5)
 				{
 					cout << "You ran away safely, but the " << GetPlayerLocationTile().GetEnemy()->GetName() << " still remains...\n";
@@ -472,6 +475,8 @@ void GameManager::GameBattleManager(Player &myPlayer)
 				myPlayer.SetPlayerHealth(20);
 				cout << "Lord Vallonious pities you, so he has healed you after your battle with the dust golem... he will not be so merciful next time...\n";
 				cout << "Player health: " << myPlayer.GetPlayerHealth();
+				//Initialize starting area enemies
+				SpawnStartingAreaEnemies(*map);
 			}
 
 			//Remove Enemy reference pointers to delete Enemy
