@@ -24,7 +24,7 @@ int main() {
 
 	//Initialize player and inventory
 	Player myPlayer("link", 20, 5, 4); // CHANGE BACK TO 5, 4
-	myPlayer.SetPlayerChunkLocation(1, 1); // CHANGE BACK TO 1, 1
+	myPlayer.SetPlayerChunkLocation(1,1); // CHANGE BACK TO 1, 1
 	Inventory inventory(25);
 
 	//Initialize UI
@@ -60,6 +60,9 @@ int main() {
 
 	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
 	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
+
+	//Spawning in the Spellbook Thief NPC-- will be more of just text rather than NPC to interact with
+	
 
 	//Initialize starting area enemies
 	manager.SpawnStartingAreaEnemies(worldMap);
@@ -226,6 +229,12 @@ int main() {
 						manager.SpawnSprintVilleEnemies(*manager.GetMap());
 						system("cls");
 						manager.Display();
+						// Implementing Spellbook Thief-- bumps into you the second you enter the city
+						cout << "A man bumps your shoulder. Bump. You suddenly feel lighter. Your spellbook, it's gone. You throw this thief a glare. His eyes snap back at you and he says...\n";
+						cout << "Arg sorry mate I am in a rush. I'll take this for now. Don't delay and be hasteful!\n";
+						cout << "You watch the strange man run away. You feel encouraged to chase him down and retrieve the spellbook!\n";
+						// Remove the spellbook from the player's inventory
+						inventory.removeItem("SCRUMMIUS' SPELL BOOK");
 					}
 					else
 						cout << "There is nothing to enter.\n";
