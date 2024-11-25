@@ -745,7 +745,12 @@ void GameManager::SpawnLandOfScrumEnemies(Map worldMap) {
 	worldMap.GetChunkAt(1, 1).GetTileAt(14, 3).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, "Corrosive Strike", 7, blobDesc));
 }
 
-
+/*
+Quest Makers for the Ship Captain's Quest
+Quest start- "thief" steals spellbook
+Quest End- talking to ship captain
+Story Beat: "Thief" was actually the ship captain, so now player can sail to Land of Scrum free of charge!
+*/
 void GameManager::InitializeCaptainQuest(Inventory inventory)
 {
 	captainQuest->SetQuestStart(true);
@@ -760,8 +765,11 @@ bool GameManager::CaptainQuestComplete(Inventory* inventory)
 {
 	captainQuest->SetQuestStart(false);
 	captainQuest->SetQuestComplete(true);
+	// Prompting the player that their spellbook is back in the inventory
 	cout << "You have completed the Captain's Quest. Your spellbook has been added back to your inventory\n\n";
 	inventory->addItem(*spellBook);
+
+	//Prompting the player that they can now go into the land of scrum
 	cout << "Now go forth and sail the seas to the Land of Scrum! Who knows what troubles await you on your quest for Gapplin!\n";
 	return true;
 }
