@@ -62,10 +62,13 @@ public:
 	void NormalizeString(string& input);
 
 	//Initialize starting area enemies
+	Map* GetMap();
 	void SpawnStartingAreaEnemies(Map);
 
 	//Use item from passed Inventory
 	void UseItem(Inventory& playerInv);
+	void SpawnSprintVilleEnemies(Map);
+	void SpawnLandOfScrumEnemies(Map);
 
 	// Setting the NPCs of Sprintville
 	void SetSprintVilleNPCs(Map& WorldMap);
