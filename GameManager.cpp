@@ -13,7 +13,7 @@ GameManager::GameManager()
 	firstQuest = new Quest();
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
-
+	captainQuest = new Quest("Ship Captain", "", "", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 }
@@ -30,7 +30,7 @@ GameManager::GameManager(Player* p, Map* m)
 	firstQuest = new Quest();
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
-
+	captainQuest = new Quest("Ship Captain", "", "", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 }
@@ -187,6 +187,10 @@ Quest* GameManager::GetBranchesQuest()
 Quest* GameManager::GetThreeStonesQuest()
 {
 	return threeStonesQuest;
+}
+Quest* GameManager::GetCaptainQuest()
+{
+	return captainQuest;
 }
 
 /*
@@ -740,9 +744,27 @@ void GameManager::SpawnLandOfScrumEnemies(Map worldMap) {
 	worldMap.GetChunkAt(1, 1).GetTileAt(14, 2).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, "Corrosive Strike", 7, blobDesc));
 	worldMap.GetChunkAt(1, 1).GetTileAt(14, 3).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, "Corrosive Strike", 7, blobDesc));
 }
-}
 
-void GameManager::SetSprintVilleNPCs(Map& worldMap)
+
+void GameManager::InitializeCaptainQuest(Inventory inventory)
+{
+	captainQuest->SetQuestStart(true);
+	// Implementing Spellbook Thief-- bumps into you the second you enter the city
+	cout << "A man bumps your shoulder. Bump. You suddenly feel lighter. Your spellbook, it's gone. You throw this thief a glare. His eyes snap back at you and he says...\n";
+	cout << "Arg sorry mate I am in a rush. I'll take this for now. Don't delay and be hasteful!\n";
+	cout << "You watch the strange man run away. You feel encouraged to chase him down and retrieve the spellbook!\n";
+	// Remove the spellbook from the player's inventory
+	inventory.removeItem("SCRUMMIUS' SPELL BOOK");
+}
+bool GameManager::CaptainQuestComplete(Inventory* inventory)
+{
+	captainQuest->SetQuestStart(false);
+	captainQuest->SetQuestComplete(true);
+	cout << "You have completed the Captain's Quest. Your spellbook has been added back to your inventory\n\n";
+	inventory->addItem(*spellBook);
+	return true;
+}
+void GameManager::SetSprintVilleNPCs(Map worldMap)
 {
 	string shipCaptainDialogue = "Ahoy there, matey! Let’s see yer ticket. No ticket, no voyage to the fabled Land o’ Scrum, savvy?\nAye, step aboard if ye’ve got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I rememeber you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
 	worldMap.GetChunkAt(4, 2).GetTileAt(8, 10).SetNPC(new NPC("Ship Captain", { L"⚓", 3 }, shipCaptainDialogue));

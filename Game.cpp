@@ -182,6 +182,10 @@ int main() {
 								manager.GetPlayerLocationTile().GetNPC()->SetDialogue("Congrats on completing the Branches of Heroes! Thine next destination should be further to the east.");
 							}
 						}
+						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Ship Captain")
+						{
+							manager.CaptainQuestComplete(&inventory);
+						}
 					}
 					break;
 				case UserInputValidation::Action::PICKUP:
@@ -229,12 +233,8 @@ int main() {
 						manager.SpawnSprintVilleEnemies(*manager.GetMap());
 						system("cls");
 						manager.Display();
-						// Implementing Spellbook Thief-- bumps into you the second you enter the city
-						cout << "A man bumps your shoulder. Bump. You suddenly feel lighter. Your spellbook, it's gone. You throw this thief a glare. His eyes snap back at you and he says...\n";
-						cout << "Arg sorry mate I am in a rush. I'll take this for now. Don't delay and be hasteful!\n";
-						cout << "You watch the strange man run away. You feel encouraged to chase him down and retrieve the spellbook!\n";
-						// Remove the spellbook from the player's inventory
-						inventory.removeItem("SCRUMMIUS' SPELL BOOK");
+						manager.InitializeCaptainQuest(inventory); // Intialize Captain Quest -- retrieving the spellbook
+						manager.SetSprintVilleNPCs(*manager.GetMap());
 					}
 					else
 						cout << "There is nothing to enter.\n";
