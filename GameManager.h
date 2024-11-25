@@ -66,5 +66,7 @@ public:
 
 	//Use item from passed Inventory
 	void UseItem(Inventory& playerInv);
-};
 
+	// Setting the NPCs of Sprintville
+	void SetSprintVilleNPCs(Map& WorldMap);
+};
