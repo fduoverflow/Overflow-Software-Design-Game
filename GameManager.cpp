@@ -762,6 +762,7 @@ bool GameManager::CaptainQuestComplete(Inventory* inventory)
 	captainQuest->SetQuestComplete(true);
 	cout << "You have completed the Captain's Quest. Your spellbook has been added back to your inventory\n\n";
 	inventory->addItem(*spellBook);
+	cout << "Now go forth and sail the seas to the Land of Scrum! Who knows what troubles await you on your quest for Gapplin!\n";
 	return true;
 }
 void GameManager::SetSprintVilleNPCs(Map worldMap)
