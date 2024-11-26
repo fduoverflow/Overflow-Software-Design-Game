@@ -13,7 +13,7 @@ GameManager::GameManager()
 	firstQuest = new Quest();
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
-
+	captainQuest = new Quest("Ship Captain", "", "", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 }
@@ -30,7 +30,7 @@ GameManager::GameManager(Player* p, Map* m)
 	firstQuest = new Quest();
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
-
+	captainQuest = new Quest("Ship Captain", "", "", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 }
@@ -40,6 +40,10 @@ void GameManager::MoveToWorld(Map* m, int cX, int cY, int tX, int tY) {
 	map = m;
 	myPlayer->SetPlayerChunkLocation(cX, cY);
 	myPlayer->SetPlayerLocation(tX, tY);
+}
+Map* GameManager::GetMap()
+{
+	return map;
 }
 
 /*
@@ -183,6 +187,10 @@ Quest* GameManager::GetBranchesQuest()
 Quest* GameManager::GetThreeStonesQuest()
 {
 	return threeStonesQuest;
+}
+Quest* GameManager::GetCaptainQuest()
+{
+	return captainQuest;
 }
 
 /*
@@ -700,4 +708,84 @@ void GameManager::SpawnStartingAreaEnemies(Map worldMap)
 	// Possessed Stumps
 	
 
+}
+void GameManager::SpawnSprintVilleEnemies(Map worldMap) {
+
+	// Enemy Descriptions
+	string pigeonDesc = "A hybrid of pigeon and griffin, this creature combines the ferocity of a predator with the annoyance of a city pest. Approach with caution!";
+	string goblinDesc = "A cunning and nimble foe, the Goblin Thief thrives in chaos. Known for its underhanded tactics, it will blind and distract its enemies before darting in for a devastating attack.";
+
+	// Pigeon Griffin Enemies
+	// Chunk 1,0
+	worldMap.GetChunkAt(1, 1).GetTileAt(7, 6).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 5 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
+	worldMap.GetChunkAt(1, 1).GetTileAt(8, 10).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+
+	// Chunk 2,1
+	worldMap.GetChunkAt(2, 1).GetTileAt(4, 10).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+	worldMap.GetChunkAt(2, 1).GetTileAt(8, 14).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+	worldMap.GetChunkAt(2, 1).GetTileAt(10, 7).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sky Peck", 4, pigeonDesc));
+	worldMap.GetChunkAt(2, 1).GetTileAt(4, 2).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sky Peck", 4, pigeonDesc));
+
+	// Chunk 2,0
+	worldMap.GetChunkAt(2, 0).GetTileAt(6, 4).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 5 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
+
+	// Chunk 3,0
+	worldMap.GetChunkAt(3, 0).GetTileAt(1, 5).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sky Peck", 4, pigeonDesc));
+	worldMap.GetChunkAt(3, 0).GetTileAt(13, 2).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+
+	// Goblin Thief Enemies
+
+	// Chunk 3,0
+	worldMap.GetChunkAt(3, 0).GetTileAt(4, 9).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Sneaky Slash", 5, goblinDesc));
+	worldMap.GetChunkAt(3, 0).GetTileAt(10, 7).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, "Sneaky Slash", 5, goblinDesc));
+	worldMap.GetChunkAt(3, 0).GetTileAt(13, 13).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, "Sneaky Slash", 5, goblinDesc));
+
+	// Chunk 4,0
+	worldMap.GetChunkAt(4, 0).GetTileAt(2, 13).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Sneaky Slash", 5, goblinDesc));
+	worldMap.GetChunkAt(4, 0).GetTileAt(14, 3).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Goblin's Dagger", { L"🗡️", 3 }, "The dagger of a goblin thief.", Item::Type::WEAPON, 8, 1), "Sneaky Slash", 5, goblinDesc));
+}
+
+void GameManager::SpawnLandOfScrumEnemies(Map worldMap) {
+
+	// Enemy Descriptions
+	string blobDesc = " A malevolent mass of darkness, the Evil Dark Blob lurks in the Land of Scrum, waiting to engulf unwary adventurers.";
+
+	// Puts the enemies in the map. (Change to actual spots once Land of Scrum is incorporated)
+	worldMap.GetChunkAt(1, 1).GetTileAt(14, 1).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 7, blobDesc));
+	worldMap.GetChunkAt(1, 1).GetTileAt(14, 2).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, "Corrosive Strike", 7, blobDesc));
+	worldMap.GetChunkAt(1, 1).GetTileAt(14, 3).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, "Corrosive Strike", 7, blobDesc));
+}
+
+/*
+Quest Makers for the Ship Captain's Quest
+Quest start- "thief" steals spellbook
+Quest End- talking to ship captain
+Story Beat: "Thief" was actually the ship captain, so now player can sail to Land of Scrum free of charge!
+*/
+void GameManager::InitializeCaptainQuest(Inventory inventory)
+{
+	captainQuest->SetQuestStart(true);
+	// Implementing Spellbook Thief-- bumps into you the second you enter the city
+	cout << "A man bumps your shoulder. Bump. You suddenly feel lighter. Your spellbook, it's gone. You throw this thief a glare. His eyes snap back at you and he says...\n";
+	cout << "Arg sorry mate I am in a rush. I'll take this for now. Don't delay and be hasteful!\n";
+	cout << "You watch the strange man run away. You feel encouraged to chase him down and retrieve the spellbook!\n";
+	// Remove the spellbook from the player's inventory
+	inventory.removeItem("SCRUMMIUS' SPELL BOOK");
+}
+bool GameManager::CaptainQuestComplete(Inventory* inventory)
+{
+	captainQuest->SetQuestStart(false);
+	captainQuest->SetQuestComplete(true);
+	// Prompting the player that their spellbook is back in the inventory
+	cout << "You have completed the Captain's Quest. Your spellbook has been added back to your inventory\n\n";
+	inventory->addItem(*spellBook);
+
+	//Prompting the player that they can now go into the land of scrum
+	cout << "Now go forth and sail the seas to the Land of Scrum! Who knows what troubles await you on your quest for Gapplin!\n";
+	return true;
+}
+void GameManager::SetSprintVilleNPCs(Map worldMap)
+{
+	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o' Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I rememeber you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
+	worldMap.GetChunkAt(4, 2).GetTileAt(8, 10).SetNPC(new NPC("Ship Captain", { L"⚓", 3 }, shipCaptainDialogue));
 }
