@@ -24,7 +24,11 @@ void Inventory::displayInventory() {
     else {
         for (int i = 0; i < size; i++) {
             if (contents[i].GetType() != Item::Type::EMPTY) {                   // Display items
-                cout << "\nName: " << contents[i].GetName() << endl;
+                cout << "\nName: " << contents[i].GetName();
+                if (contents[i].IsCurrentlyEquipped())
+                    cout << "(Equipped)" << endl;
+                else
+                    cout << "\n";
                 cout << "Description: " << contents[i].GetDescription() << endl;
                 cout << "Type: ";
                 // Display the type of the item

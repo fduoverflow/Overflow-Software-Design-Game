@@ -41,21 +41,24 @@ class Item
 		string GetName();
 		string GetDescription();
 		Type GetType();
-		int GetValue();
 		icon GetIcon();
+		int GetValue();
 		int GetQuantity();
+		bool IsCurrentlyEquipped();
 		void setName(string n);
 		void setDescription(string desc);
 		void setType(Type t);
 		void setValue(int val);
 		void setQuantity(int q);
+		void Equip();
 
 	private:
 		string name;
 		string description;
 		Type myType;
+		icon myIcon;
 		int value;				//This value can be used to represent amount of HP healed, damage a weapon does, armor provided, etc... depending on the item Type.
 		int quantity;
-		icon myIcon;
+		bool isEquipped;
 };
 
