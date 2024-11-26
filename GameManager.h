@@ -64,6 +64,8 @@ public:
 	//Initialize starting area enemies
 	Map* GetMap();
 	void SpawnStartingAreaEnemies(Map);
+	void SpawnSprintVilleEnemies(Map);
+	void SpawnLandOfScrumEnemies(Map);
 
 	//Use item from passed Inventory
 	void UseItem(Inventory& playerInv);
