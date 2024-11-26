@@ -242,6 +242,19 @@ int main() {
 						manager.UseItem(inventory);
 					}
 					break;
+				case UserInputValidation::Action::EQUIP:
+					//Check for empty inventory
+					if (inventory.IsEmpty())
+					{
+						cout << "Inventory is empty. No Item to equip.\n";
+					}
+					else
+					{
+						//Display inventory then equip item.
+						inventory.displayInventory();
+						manager.(inventory);
+					}
+					break;
 			}
 		}
 		else if (!isAction && isMove)

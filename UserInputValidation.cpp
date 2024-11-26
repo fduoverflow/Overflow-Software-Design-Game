@@ -87,6 +87,7 @@ bool UserInputValidation::CheckValidAction(Action action)
 	case Action::RULES:
 	case Action::ENTER:
 	case Action::USE:
+	case Action::EQUIP:
 		return true;
 	case Action::ERROR:
 	default:
@@ -171,6 +172,10 @@ UserInputValidation::Action UserInputValidation::StringToAction(string input)
 	else if (input == "USE")
 	{
 		return Action::USE;
+	}
+	else if (input == "EQUIP")
+	{
+		return Action::EQUIP;
 	}
 	else
 	{
