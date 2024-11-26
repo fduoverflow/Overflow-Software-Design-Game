@@ -63,10 +63,7 @@ int main() {
 
 	//Spawning in the Spellbook Thief NPC-- will be more of just text rather than NPC to interact with
 	
-
-	//Initialize starting area enemies
-	manager.SpawnStartingAreaEnemies(worldMap);
-	
+	//Temp spawns of last area. Will be moved once the last map is implemented.
 	manager.SpawnLandOfScrumEnemies(worldMap);
 
 	//Set game loop variables
