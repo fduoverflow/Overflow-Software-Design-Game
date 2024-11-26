@@ -687,10 +687,37 @@ void GameManager::EquipItem(Inventory& playerInv)
 		cout << "Sorry, you can not equip a key item.\n";
 		break;
 	case Item::Type::EQUIPMENT:
-		if(!grabbedItem->IsCurrentlyEquipped())
-			cout << "You have equipped: " << grabbedItem->GetName() << ". Marking as equipped in inventory.\n";
-		else
-			cout << "You have unequipped: " << grabbedItem->GetName() << ". Marking as unequipped in inventory.\n";
+		if (grabbedItem->GetName().find("Hat"))
+		{
+			if (!grabbedItem->IsCurrentlyEquipped())
+			{
+				//Check for previous equipment and unequip it.
+				if (myPlayer->GetEquippedHat() != nullptr)
+				{
+					myPlayer->SetPlayerMaxHealth(myPlayer->GetPlayerMaxHealth() - myPlayer->GetEquippedHat()->GetValue());
+					myPlayer->SetPlayerHealth(myPlayer->GetPlayerHealth() - myPlayer->GetEquippedHat()->GetValue());
+					myPlayer->GetEquippedHat()->Equip();
+				}
+
+				//Equip and update values
+				myPlayer->SetPlayerMaxHealth(myPlayer->GetPlayerMaxHealth() + grabbedItem->GetValue());
+				myPlayer->SetPlayerHealth(myPlayer->GetPlayerHealth() + grabbedItem->GetValue());
+				myPlayer->SetEquippedHat(grabbedItem);
+				cout << "You have equipped: " << grabbedItem->GetName() << ". Marking as equipped in inventory.\n";
+			}
+			else
+			{
+				//Unequip item
+				myPlayer->SetPlayerMaxHealth(myPlayer->GetPlayerMaxHealth() - grabbedItem->GetValue());
+				myPlayer->SetPlayerHealth(myPlayer->GetPlayerHealth() - grabbedItem->GetValue());
+				myPlayer->SetEquippedHat(nullptr);
+				cout << "You have unequipped: " << grabbedItem->GetName() << ". Marking as unequipped in inventory.\n";
+			}
+		}
+		else if (grabbedItem->GetName().find("Robe"))
+		{
+			
+		}
 		grabbedItem->Equip();
 		break;
 	case Item::Type::WEAPON:
@@ -710,6 +737,7 @@ void GameManager::EquipItem(Inventory& playerInv)
 		}
 		else
 		{
+			//Unequip item
 			myPlayer->SetPlayerAttackDamage(2);
 			myPlayer->SetPlayerAttack("Knuckle Sandwich");
 			myPlayer->SetEquippedWeapon(nullptr);

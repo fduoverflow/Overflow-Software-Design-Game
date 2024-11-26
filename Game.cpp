@@ -46,6 +46,8 @@ int main() {
 	worldMap.GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0,1));
 	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", { L"🪄", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25,1));
 	*/
+	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Charmed Hat", { L"💍", 3 }, "Cool headwear.", Item::Type::EQUIPMENT, 3, 1));
+	worldMap.GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Arcane Hat", { L"💍", 3 }, "I think I saw this somewhere.", Item::Type::EQUIPMENT, 9, 1));
 
 	// Place teleporter into new world
 	worldMap.GetChunkAt(5, 3).GetTileAt(15, 8).SetItem(new Item("Gate", {L"🚪", 3}, "You're at the city gates; would you like to enter now?", Item::Type::TELEPORTER, 0, 0));
