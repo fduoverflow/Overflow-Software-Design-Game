@@ -460,15 +460,25 @@ void GameManager::GameBattleManager(Player &myPlayer)
 		// Occurs when the enemy is defeated by reaching 0 or less health after player action
 		if (GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
 		{
+			//Notify player of enemy defeat
 			cout << enemyName << " has been defeated!\n";
 
 			//Drop item if Enemy was holding one
 			if (GetPlayerLocationTile().GetEnemy()->GetItem() != nullptr)
 			{
 				GetPlayerLocationTile().SetItem(GetPlayerLocationTile().GetEnemy()->GetItem());
-				cout << "The enemy dropped an item!";
+				cout << "The enemy dropped an item!\n";
 			}
 
+			//Heal the player if they just defeated the tutorial enemy, the dust golem.
+			if (GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
+			{
+				myPlayer.SetPlayerHealth(20);
+				cout << "Lord Vallonious pities you, so he has healed you after your battle with the dust golem... he will not be so merciful next time...\n";
+				cout << "Player health: " << myPlayer.GetPlayerHealth();
+			}
+
+			//Remove Enemy reference pointers to delete Enemy
 			GetPlayerLocationChunk().EnemyDefeted(GetPlayerLocationTile().GetEnemy());
 
 			return;
@@ -508,9 +518,16 @@ void GameManager::GameBattleManager(Player &myPlayer)
 		if (GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
 		{
 			cout << enemyName << " has been defeated!\n";
+
+			//Drop item if Enemy was holding one
+			if (GetPlayerLocationTile().GetEnemy()->GetItem() != nullptr)
+			{
+				GetPlayerLocationTile().SetItem(GetPlayerLocationTile().GetEnemy()->GetItem());
+				cout << "The enemy dropped an item!";
+			}
+
+			
 			GetPlayerLocationChunk().EnemyDefeted(GetPlayerLocationTile().GetEnemy());
-			//delete GetPlayerLocationTile().GetEnemy();	//Delete Enemy object so that other pointers no longer reference it.					  
-			//GetPlayerLocationTile().SetEnemy(nullptr);
 			return;
 		}
 	}
@@ -584,6 +601,57 @@ void GameManager::NormalizeString(string& input)
 {
 	transform(input.begin(), input.end(), input.begin(), ::toupper);
 	input = std::regex_replace(input, std::regex("^\\s+|\\s+$"), "");
+}
+
+/*
+* Use an Item from the passed in Inventory object.
+* Assumes Inventory is not empty.
+*/
+void GameManager::UseItem(Inventory& playerInv)
+{
+	//Initialize player input string.
+	string playerInput;
+
+	//Reset cin to use std::getLine(). This is to allow for user input that includes spaces.
+	cin.ignore();
+
+	//Prompt player for which item to use.
+	cout << "Type in the name if the item you wish to use: ";
+	getline(cin, playerInput);
+
+	//Clean input.
+	NormalizeString(playerInput);
+
+	//Grab Item from Inventory.
+	Item grabbedItem = playerInv.removeItem(playerInput);
+
+	//Use Item based on type. If Item can't be used, return it to Inventory.
+	switch (grabbedItem.GetType())
+	{
+		case Item::Type::HEALING:
+			cout << "You just got healed by: " << grabbedItem.GetValue() << " HP\n";
+			myPlayer->HealPlayer(grabbedItem.GetValue());
+			break;
+		case Item::Type::KEY:
+			cout << "You can't use that key item right now. Returning to inventory.\n";
+			playerInv.addItem(grabbedItem);
+			break;
+		case Item::Type::EQUIPMENT:
+			cout << "You can't use that equipment item right now. To equip these, use the EQUIP command. Returning to inventory.\n";
+			playerInv.addItem(grabbedItem);
+			break;
+		case Item::Type::WEAPON:
+			cout << "You can't use that weapon item right now. To equip these, use the EQUIP command. Returning to inventory.\n";
+			playerInv.addItem(grabbedItem);
+			break;
+		case Item::Type::TELEPORTER:
+			cout << "You can't use that teleporter item right now. Returning to inventory.\n";
+			playerInv.addItem(grabbedItem);
+			break;
+		case Item::Type::EMPTY:
+			cout << "Wrong item name.\n";
+			break;
+	}
 }
 
 void GameManager::SpawnStartingAreaEnemies(Map worldMap)

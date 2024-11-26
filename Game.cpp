@@ -38,12 +38,14 @@ int main() {
 	// Creates the Game Manager object that will handle all game logic
 	GameManager manager(&myPlayer, &worldMap);
 
+	/*
 	//Place items near player's starting tile
 	//worldMap.GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(new Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
 	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0,1));
 	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", { L"💍", 3 }, "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5,1));
 	worldMap.GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0,1));
 	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", { L"🪄", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25,1));
+	*/
 
 	// Place teleporter into new world
 	worldMap.GetChunkAt(5, 3).GetTileAt(15, 8).SetItem(new Item("Gate", {L"🚪", 3}, "You're at the city gates; would you like to enter now?", Item::Type::TELEPORTER, 0, 0));
@@ -58,20 +60,11 @@ int main() {
 	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
 	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
 
+	//Initialize starting area enemies
 	manager.SpawnStartingAreaEnemies(worldMap);
 	
 	manager.SpawnLandOfScrumEnemies(worldMap);
 
-	/*
-	// Intilalize the Mushroom Warrior Enemy -- we can move all NPC / enemy implementions to it's own classes if needed
-	
-	worldMap.GetChunkAt(1, 1).GetTileAt(9, 11).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3));
-	worldMap.GetChunkAt(1, 1).GetTileAt(7, 11).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3));
-
-	// Intilalize the Wizard Squirrel Enemy
-	worldMap.GetChunkAt(1, 1).GetTileAt(9, 12).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Leaf Sword", { L"🗡️", 3 }, "Sword that does does 3 damage.", Item::Type::WEAPON, 5, 1), "Nut Throw", 2, ""));
-
-	*/
 	//Set game loop variables
 	bool isGameOver = false;
 	string moveInput;
@@ -238,6 +231,19 @@ int main() {
 					break;
 				case UserInputValidation::Action::RULES:
 					myUI.DisplayRules();
+					break;
+				case UserInputValidation::Action::USE:
+					//Check for empty inventory
+					if (inventory.IsEmpty())
+					{
+						cout << "Inventory is empty. No Item to use.\n";
+					}
+					else
+					{
+						//Display inventory then use item.
+						inventory.displayInventory();
+						manager.UseItem(inventory);
+					}
 					break;
 			}
 		}

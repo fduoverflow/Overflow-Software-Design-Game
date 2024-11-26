@@ -13,7 +13,8 @@ private:
 	string playerName;
 	string outOfBoundsMessage = "\nThe player can not move to that location.\n";
 	string movingChunkMessage = "\nMoving to new Chunk.\n";
-	int playerHealth;
+	int maxPlayerHealth;
+	int currentPlayerHealth;
 	int playerChunkLoc[2];			// Player chunk location stored as row and column
 	int playerTileLocation[2];		// Tile that the player is located on
 	string playerAttack;			// Player Attack Name
@@ -30,7 +31,10 @@ public:
 
 	//Player Health Setter/Getter
 	int GetPlayerHealth();
+	int GetPlayerMaxHealth();
+	void SetPlayerMaxHealth(int health);
 	void SetPlayerHealth(int health);
+	void HealPlayer(int val);
 
 	//Player Attacks Setters/Getters
 	string GetPlayerAttack();

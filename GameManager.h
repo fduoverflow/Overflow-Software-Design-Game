@@ -4,6 +4,7 @@
 #include "UserInputValidation.h"
 #include "Tile.h"
 #include "Quest.h"
+#include "Inventory.h"
 
 
 class GameManager
@@ -29,9 +30,7 @@ public:
 	// Sets the coordinates of the player on the new world
 	void MoveToWorld(Map*, int, int, int, int);
 
-	/*
-	* Moves player in given direction enum
-	*/
+	//Moves player in given direction enum
 	void MovePlayer(UserInputValidation::Move);
 
 	// Displays the map and anything within it
@@ -66,5 +65,8 @@ public:
 	void SpawnStartingAreaEnemies(Map);
 	void SpawnSprintVilleEnemies(Map);
 	void SpawnLandOfScrumEnemies(Map);
+
+	//Use item from passed Inventory
+	void UseItem(Inventory& playerInv);
 };
 
