@@ -11,6 +11,9 @@ Player::Player(string name, int health, int tileX, int tileY)
 	currentPlayerHealth = health;
 	playerAttack = "Knuckle Sandwich"; // Initial player attack is just their fists (until they get the spellbook)
 	playerAttackDamage = 2; // When player is initialized, any attack they have can only do 2 dmg
+	weapon = nullptr;
+	hat = nullptr;
+	body = nullptr;
 }
 Player::Player()
 {
@@ -21,6 +24,9 @@ Player::Player()
 	currentPlayerHealth = 0;
 	playerAttack = "";
 	playerAttackDamage = 1; // Default damage is 1
+	weapon = nullptr;
+	hat = nullptr;
+	body = nullptr;
 }
 
 //Player Location Setter/Getter
@@ -114,4 +120,30 @@ int Player::GetPlayerAttackDamage()
 void Player::SetPlayerAttackDamage(int p_dmg)
 {
 	playerAttackDamage = p_dmg;
+}
+
+//Equipment Setters/Getters
+Item* Player::GetEquippedWeapon()
+{
+	return weapon;
+}
+Item* Player::GetEquippedHat()
+{
+	return hat;
+}
+Item* Player::GetEquippedBody()
+{
+	return body;
+}
+void Player::SetEquippedWeapon(Item* newItem)
+{
+	weapon = newItem;
+}
+void Player::SetEquippedHat(Item* newItem)
+{
+	hat = newItem;
+}
+void Player::SetEquippedBody(Item* newItem)
+{
+	body = newItem;
 }

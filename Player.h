@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "UserInputValidation.h"
+#include "Item.h"
 using namespace std;
 
 /*
@@ -21,6 +22,11 @@ private:
 	int playerAttackDamage;			// Player Attack damage number
 	wstring playerIcon = L"🧙‍♂️";
 
+	//Equipped items
+	Item* weapon;
+	Item* hat;
+	Item* body;
+
 public:
 	//Player Name Setter/Getter
 	string GetPlayerName();
@@ -39,7 +45,6 @@ public:
 	//Player Attacks Setters/Getters
 	string GetPlayerAttack();
 	void SetPlayerAttack(string playerAttack);
-
 	int GetPlayerAttackDamage();
 	void SetPlayerAttackDamage(int playerAttackDamage);
 
@@ -50,6 +55,14 @@ public:
 	int GetPlayerChunkLocationX();
 	int GetPlayerChunkLocationY();
 	void SetPlayerChunkLocation(int r, int c);
+
+	//Equipment Setters/Getters.
+	Item* GetEquippedWeapon();
+	Item* GetEquippedHat();
+	Item* GetEquippedBody();
+	void SetEquippedWeapon(Item* newItem);
+	void SetEquippedHat(Item* newItem);
+	void SetEquippedBody(Item* newItem);
 
 	//Constructors for Player Class
 	Player(string name, int health, int tileX, int tileY);
