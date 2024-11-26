@@ -713,6 +713,7 @@ void GameManager::EquipItem(Inventory& playerInv)
 				myPlayer->SetEquippedHat(nullptr);
 				cout << "You have unequipped: " << grabbedItem->GetName() << ". Marking as unequipped in inventory.\n";
 			}
+			cout << "Current max HP: " << myPlayer->GetPlayerMaxHealth() << endl;
 		}
 		else if (grabbedItem->GetName().find("Robe") != string::npos)		//string::npos is the return type if the substring was not found
 		{
@@ -814,4 +815,44 @@ void GameManager::SpawnStartingAreaEnemies(Map worldMap)
 	// Possessed Stumps
 	
 
+}
+
+void GameManager::SpawnStartingAreaItems(Map worldMap)
+{
+	// Item Descriptions
+	string wandOfSparkingDesc = "A spark of inspiration... or just a spark. Deals minor ouchies.";
+	string platinumSwordDesc = "Shiny and sharp! This sword looks fancier than it actually is.";
+	string maceDesc = "For when you want to flatten foes medieval style.";
+	string moltenFuryDesc = "Lava-hot. Perfect for warming up enemies... permanently.";
+	string charmedHatDesc = "Stylish and slightly enchanted. It won't make you smarter, but it might make you luckier.";
+	string charmedRobeDesc = "Run away in style with this robe of questionable evasiveness.";
+	string lesserHealingPotionDesc = "Tiny but mighty! It's like a hug for your HP";
+
+	// Chunk 1,0 Items
+	worldMap.GetChunkAt(1, 0).GetTileAt(5, 6).SetItem(new Item("Wand of Sparking", { L"🪄", 3 }, wandOfSparkingDesc, Item::Type::WEAPON, 5, 1));
+	worldMap.GetChunkAt(1, 0).GetTileAt(5, 13).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// Chunk 1,2 Items
+	worldMap.GetChunkAt(1, 2).GetTileAt(3, 8).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// Chunk 1,3 Items
+	worldMap.GetChunkAt(1, 3).GetTileAt(7, 14).SetItem(new Item("Platinum Sword", { L"🗡️", 3 }, platinumSwordDesc, Item::Type::WEAPON, 6, 1));
+
+	// Chunk 2,1 Items
+	worldMap.GetChunkAt(2, 1).GetTileAt(5, 13).SetItem(new Item("Charmed Hat", { L"🎓", 3 }, charmedHatDesc, Item::Type::EQUIPMENT, 3, 1));
+
+	// Chunk 3,1 Items
+	worldMap.GetChunkAt(3, 1).GetTileAt(8, 6).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// Chunk 4,1 Items
+	worldMap.GetChunkAt(4, 1).GetTileAt(5, 13).SetItem(new Item("Molten Fury", { L"🏹", 3 }, moltenFuryDesc, Item::Type::WEAPON, 4, 1));
+
+	// Chunk 4,2 Items
+	worldMap.GetChunkAt(4, 2).GetTileAt(13, 14).SetItem(new Item("Charmed Robe", { L"👘", 3 }, charmedRobeDesc, Item::Type::EQUIPMENT, 1, 1));
+
+	// Chunk 4,3 Items
+	worldMap.GetChunkAt(4, 3).GetTileAt(4, 7).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// Chunk 4,4 Items
+	worldMap.GetChunkAt(4, 4).GetTileAt(8, 14).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
 }

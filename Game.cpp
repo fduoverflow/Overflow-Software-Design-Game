@@ -39,17 +39,13 @@ int main() {
 	GameManager manager(&myPlayer, &worldMap);
 
 	/*
-	//Place items near player's starting tile
+	//Place items near player's starting tile for testing
 	//worldMap.GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(new Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
 	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0,1));
 	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", { L"💍", 3 }, "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5,1));
 	worldMap.GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0,1));
 	worldMap.GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", { L"🪄", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25,1));
 	*/
-	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Charmed Hat", { L"🎓", 3 }, "Cool headwear.", Item::Type::EQUIPMENT, 3, 1));
-	worldMap.GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Arcane Hat", { L"🎓", 3 }, "I think I saw this somewhere.", Item::Type::EQUIPMENT, 9, 1));
-	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Charmed Robe", { L"👘", 3 }, "Cool robe.", Item::Type::EQUIPMENT, 1, 1));
-	worldMap.GetChunkAt(1, 1).GetTileAt(4, 6).SetItem(new Item("Arcane Robe", { L"👘", 3 }, "I think I saw this somewhere.", Item::Type::EQUIPMENT, 3, 1));
 
 	// Place teleporter into new world
 	worldMap.GetChunkAt(5, 3).GetTileAt(15, 8).SetItem(new Item("Gate", {L"🚪", 3}, "You're at the city gates; would you like to enter now?", Item::Type::TELEPORTER, 0, 0));
@@ -66,6 +62,9 @@ int main() {
 
 	//Initialize starting area enemies
 	manager.SpawnStartingAreaEnemies(worldMap);
+
+	//Initialize starting area items
+	manager.SpawnStartingAreaItems(worldMap);
 
 	//Set game loop variables
 	bool isGameOver = false;

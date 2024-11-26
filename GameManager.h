@@ -64,6 +64,9 @@ public:
 	//Initialize starting area enemies
 	void SpawnStartingAreaEnemies(Map);
 
+	//Initialize starting area items
+	void SpawnStartingAreaItems(Map);
+
 	//Use Item from passed Inventory
 	void UseItem(Inventory& playerInv);
 

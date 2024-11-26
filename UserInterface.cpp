@@ -19,6 +19,13 @@ string UserInterface::DisplayRules()
     rules += "10. Explore the world and interact with NPCs to receive quests.\n";
     rules += "11. Reach the land of Scrum to rescue Gapplin and defeat Vallonious.\n";
 
+    //Stats affected by items
+    rules += "\nStats affected by items:\n";
+    rules += "Weapons affect the player's attack.\n";
+    rules += "Hats increase the player's max health.\n";
+    rules += "Robes increase the player's evasiveness when attempting to flee from battle.\n";
+    rules += "Healing items will be available around the map which can be used to restore your HP.\n";
+
     cout << rules << endl; // Print the rules to the console
     return rules; // Return the rules as a string
 }
