@@ -69,7 +69,5 @@ public:
 
 	//Use item from passed Inventory
 	void UseItem(Inventory& playerInv);
-	void SpawnSprintVilleEnemies(Map);
-	void SpawnLandOfScrumEnemies(Map);
 };
 
