@@ -252,7 +252,7 @@ int main() {
 					{
 						//Display inventory then equip item.
 						inventory.displayInventory();
-						manager.(inventory);
+						manager.EquipItem(inventory);
 					}
 					break;
 			}

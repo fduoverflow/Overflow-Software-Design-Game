@@ -128,7 +128,7 @@ void GameManager::InitilizeTutorialQuest()
 	string objective = "Go to the house and gather the spellbook!";
 
 	// Spell book is a key item that is gathered after the first quest-- not a weapon for now
-	spellBook = new Item("Scrummius' Spell Book", { L"📖", 3 }, "A certain peculiar owl's spellbook, who knows what secrets it may hold...", Item::Type::KEY, 0,1);
+	spellBook = new Item("Scrummius' Spell Book", { L"📖", 3 }, "A certain peculiar owl's spellbook, who knows what secrets it may hold...", Item::Type::WEAPON, 0,1);
 	firstQuest = new Quest(name, desc, objective, spellBook);
 
 	// Place the spellbook in location -- door: (7,7) and (7,8)
@@ -672,27 +672,29 @@ void GameManager::EquipItem(Inventory& playerInv)
 	//Grab Item from Inventory.
 	Item grabbedItem = playerInv.removeItem(playerInput);
 
-	//Use Item based on type. If Item can't be used, return it to Inventory.
+	//Equip Item based on type. If Item can't be equipped, return it to Inventory.
 	switch (grabbedItem.GetType())
 	{
 	case Item::Type::HEALING:
-		cout << "You just got healed by: " << grabbedItem.GetValue() << " HP\n";
-		myPlayer->HealPlayer(grabbedItem.GetValue());
+		cout << "Sorry, you can not equip a healing item. Utilize the USE command if you wish to use it. Returning to inventory.\n";
+		playerInv.addItem(grabbedItem);
 		break;
 	case Item::Type::KEY:
-		cout << "You can't use that key item right now. Returning to inventory.\n";
+		cout << "Sorry, you can not equip a key item. Returning to inventory.\n";
 		playerInv.addItem(grabbedItem);
 		break;
 	case Item::Type::EQUIPMENT:
-		cout << "You can't use that equipment item right now. To equip these, use the EQUIP command. Returning to inventory.\n";
+		cout << "You have equipped: " << grabbedItem.GetName() << ". Marking as equipped in inventory.\n";
+		grabbedItem.Equip();
 		playerInv.addItem(grabbedItem);
 		break;
 	case Item::Type::WEAPON:
-		cout << "You can't use that weapon item right now. To equip these, use the EQUIP command. Returning to inventory.\n";
+		cout << "You have equipped: " << grabbedItem.GetName() << ". Marking as equipped in inventory.\n";
+		grabbedItem.Equip();
 		playerInv.addItem(grabbedItem);
 		break;
 	case Item::Type::TELEPORTER:
-		cout << "You can't use that teleporter item right now. Returning to inventory.\n";
+		cout << "Sorry, you can not equip a teleporter item. Returning to inventory.\n";
 		playerInv.addItem(grabbedItem);
 		break;
 	case Item::Type::EMPTY:
