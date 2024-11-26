@@ -20,6 +20,7 @@ private:
 	int playerTileLocation[2];		// Tile that the player is located on
 	string playerAttack;			// Player Attack Name
 	int playerAttackDamage;			// Player Attack damage number
+	int evasiveness;				// Player Evasiveness number
 	wstring playerIcon = L"🧙‍♂️";
 
 	//Equipped items
@@ -47,6 +48,11 @@ public:
 	void SetPlayerAttack(string playerAttack);
 	int GetPlayerAttackDamage();
 	void SetPlayerAttackDamage(int playerAttackDamage);
+
+	//Player evasiveness setter/getter;
+	int GetPlayerEvade();
+	void SetPlayerEvade(int val);
+
 
 	//Player Location Setter/Getter
 	int GetPlayerLocationX();

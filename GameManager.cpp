@@ -687,7 +687,7 @@ void GameManager::EquipItem(Inventory& playerInv)
 		cout << "Sorry, you can not equip a key item.\n";
 		break;
 	case Item::Type::EQUIPMENT:
-		if (grabbedItem->GetName().find("Hat"))
+		if (grabbedItem->GetName().find("Hat") != string::npos)				//string::npos is the return type if the substring was not found
 		{
 			if (!grabbedItem->IsCurrentlyEquipped())
 			{
@@ -714,9 +714,30 @@ void GameManager::EquipItem(Inventory& playerInv)
 				cout << "You have unequipped: " << grabbedItem->GetName() << ". Marking as unequipped in inventory.\n";
 			}
 		}
-		else if (grabbedItem->GetName().find("Robe"))
+		else if (grabbedItem->GetName().find("Robe") != string::npos)		//string::npos is the return type if the substring was not found
 		{
-			
+			if (!grabbedItem->IsCurrentlyEquipped())
+			{
+				//Check for previous equipment and unequip it.
+				if (myPlayer->GetEquippedBody() != nullptr)
+				{
+					myPlayer->SetPlayerEvade(myPlayer->GetPlayerEvade() - myPlayer->GetEquippedBody()->GetValue());
+					myPlayer->GetEquippedBody()->Equip();
+				}
+
+				//Equip and update values
+				myPlayer->SetPlayerEvade(myPlayer->GetPlayerEvade() + grabbedItem->GetValue());
+				myPlayer->SetEquippedBody(grabbedItem);
+				cout << "You have equipped: " << grabbedItem->GetName() << ". Marking as equipped in inventory.\n";
+			}
+			else
+			{
+				//Unequip item
+				myPlayer->SetPlayerEvade(myPlayer->GetPlayerEvade() - grabbedItem->GetValue());
+				myPlayer->SetEquippedBody(nullptr);
+				cout << "You have unequipped: " << grabbedItem->GetName() << ". Marking as unequipped in inventory.\n";
+			}
+			cout << "Current evade status: " << myPlayer->GetPlayerEvade() << endl;
 		}
 		grabbedItem->Equip();
 		break;
