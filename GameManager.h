@@ -15,6 +15,7 @@ private:
 	Quest* firstQuest;
 	Quest* branchesOfHeroesQuest;
 	Quest* threeStonesQuest;
+	Quest* captainQuest;
 	Item* spellBook;
 	bool WillCollide(int, int, int, int);	// Checks whether of not the new player position is collidable
 
@@ -46,10 +47,14 @@ public:
 	void InitilizeTutorialQuest(); // First Quest -- Retrieve spellbook from house after talking to Scrummius (owl)
 	void TutorialQuestComplete();
 
+	void InitializeCaptainQuest(Inventory); //Quest Where player must retrieve their spellbook after it has been stolen by the thief as the player entered SprintVille
+	bool CaptainQuestComplete(Inventory*);
+
 	//Quest getters and setters
 	Quest* GetFirstQuest();
 	Quest* GetBranchesQuest();
 	Quest* GetThreeStonesQuest();
+	Quest* GetCaptainQuest();
 
 	void GameBattleManager(Player&); // Function that will manage how battles work and the interactions between the ATTACK, DEFLECT, and RUN actions
 	UserInputValidation::Action ProcessEnemyTurn(int currentEnemyHealth, int startEnemyhealth);
@@ -69,5 +74,7 @@ public:
 
 	//Use item from passed Inventory
 	void UseItem(Inventory& playerInv);
-};
 
+	// Setting the NPCs of Sprintville
+	void SetSprintVilleNPCs(Map);
+};
