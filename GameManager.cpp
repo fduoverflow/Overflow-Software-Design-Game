@@ -936,6 +936,14 @@ void GameManager::InitializeCaptainQuest(Inventory inventory)
 	cout << "Arg sorry mate I am in a rush. I'll take this for now. Don't delay and be hasteful!\n";
 	cout << "You watch the strange man run away. You feel encouraged to chase him down and retrieve the spellbook!\n";
 	// Remove the spellbook from the player's inventory
+	if (inventory.findItem("SCRUMMIUS' SPELL BOOK")->IsCurrentlyEquipped())
+	{
+		//Unequip item
+		myPlayer->SetPlayerAttackDamage(2);
+		myPlayer->SetPlayerAttack("Knuckle Sandwich");
+		myPlayer->GetEquippedWeapon()->Equip();
+		myPlayer->SetEquippedWeapon(nullptr);
+	}
 	inventory.removeItem("SCRUMMIUS' SPELL BOOK");
 }
 bool GameManager::CaptainQuestComplete(Inventory* inventory)
