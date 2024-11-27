@@ -10,6 +10,7 @@
 #include "UserInterface.h"
 #include "Item.h"
 #include "Inventory.h"
+#include "NPC.h"
 
 using namespace std;
 
@@ -23,7 +24,7 @@ int main() {
 
 	//Initialize player and inventory
 	Player myPlayer("link", 20, 5, 4); // CHANGE BACK TO 5, 4
-	myPlayer.SetPlayerChunkLocation(1, 1); // CHANGE BACK TO 1, 1
+	myPlayer.SetPlayerChunkLocation(1,1); // CHANGE BACK TO 1, 1
 	Inventory inventory(25);
 
 	//Initialize UI
@@ -60,8 +61,10 @@ int main() {
 	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
 	worldMap.GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
 
-	//Initialize starting area enemies
-	manager.SpawnStartingAreaEnemies(worldMap);
+	//Spawning in the Spellbook Thief NPC-- will be more of just text rather than NPC to interact with
+	
+	//Temp spawns of last area. Will be moved once the last map is implemented.
+	manager.SpawnLandOfScrumEnemies(worldMap);
 
 	//Initialize starting area items
 	manager.SpawnStartingAreaItems(worldMap);
@@ -179,6 +182,10 @@ int main() {
 								manager.GetPlayerLocationTile().GetNPC()->SetDialogue("Congrats on completing the Branches of Heroes! Thine next destination should be further to the east.");
 							}
 						}
+						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Ship Captain")
+						{
+							manager.CaptainQuestComplete(&inventory);
+						}
 					}
 					break;
 				case UserInputValidation::Action::PICKUP:
@@ -223,8 +230,11 @@ int main() {
 						// Creates the new world in here for now, and brings the player to it
 					{
 						manager.MoveToWorld(new Map("cityMap.txt", 3, 5), 0, 1, 2, 8);
+						manager.SpawnSprintVilleEnemies(*manager.GetMap());
 						system("cls");
 						manager.Display();
+						manager.InitializeCaptainQuest(inventory); // Intialize Captain Quest -- retrieving the spellbook
+						manager.SetSprintVilleNPCs(*manager.GetMap());
 					}
 					else
 						cout << "There is nothing to enter.\n";
