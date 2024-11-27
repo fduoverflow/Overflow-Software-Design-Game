@@ -12,6 +12,7 @@ public:
 	void displayInventory(); // Displays the inventory
 	void addItem(Item& item); //Adds item to inventory
 	Item removeItem(string itemName); //Removes item to inventory
+	Item* findItem(string itemName); //Find and return reference to item to inventory
 
 	// Public getter for isEmpty
 	bool IsEmpty() const { return isEmpty; }

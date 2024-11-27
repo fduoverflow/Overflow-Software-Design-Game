@@ -40,7 +40,7 @@ int main() {
 	GameManager manager(&myPlayer, &worldMap);
 
 	/*
-	//Place items near player's starting tile
+	//Place items near player's starting tile for testing
 	//worldMap.GetChunkAt(0, 0).GetTileAt(5, 4).SetItem(new Item("Apple", "This Apple will heal 10 HP when used.", Item::Type::HEALING, 10));
 	worldMap.GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0,1));
 	worldMap.GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", { L"💍", 3 }, "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5,1));
@@ -65,6 +65,9 @@ int main() {
 	
 	//Temp spawns of last area. Will be moved once the last map is implemented.
 	manager.SpawnLandOfScrumEnemies(worldMap);
+
+	//Initialize starting area items
+	manager.SpawnStartingAreaItems(worldMap);
 
 	//Set game loop variables
 	bool isGameOver = false;
@@ -250,6 +253,19 @@ int main() {
 						//Display inventory then use item.
 						inventory.displayInventory();
 						manager.UseItem(inventory);
+					}
+					break;
+				case UserInputValidation::Action::EQUIP:
+					//Check for empty inventory
+					if (inventory.IsEmpty())
+					{
+						cout << "Inventory is empty. No Item to equip.\n";
+					}
+					else
+					{
+						//Display inventory then equip item.
+						inventory.displayInventory();
+						manager.EquipItem(inventory);
 					}
 					break;
 			}

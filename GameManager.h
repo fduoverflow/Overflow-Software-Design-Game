@@ -72,8 +72,14 @@ public:
 	void SpawnSprintVilleEnemies(Map);
 	void SpawnLandOfScrumEnemies(Map);
 
-	//Use item from passed Inventory
+	//Initialize starting area items
+	void SpawnStartingAreaItems(Map);
+
+	//Use Item from passed Inventory
 	void UseItem(Inventory& playerInv);
+
+	//Equip Item from passed Inventory
+	void EquipItem(Inventory& playerInv);
 
 	// Setting the NPCs of Sprintville
 	void SetSprintVilleNPCs(Map);

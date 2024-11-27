@@ -24,7 +24,11 @@ void Inventory::displayInventory() {
     else {
         for (int i = 0; i < size; i++) {
             if (contents[i].GetType() != Item::Type::EMPTY) {                   // Display items
-                cout << "\nName: " << contents[i].GetName() << endl;
+                cout << "\nName: " << contents[i].GetName();
+                if (contents[i].IsCurrentlyEquipped())
+                    cout << " (Equipped)" << endl;
+                else
+                    cout << "\n";
                 cout << "Description: " << contents[i].GetDescription() << endl;
                 cout << "Type: ";
                 // Display the type of the item
@@ -115,4 +119,28 @@ Item Inventory::removeItem(string itemName)
 
     //Return found Item or empty Item if no match found in Inventory.
     return itemCopy;
+}
+
+/*
+* Look for an Item in Inventory and return its reference.
+* Assumes passed string is normalized.
+* Will return nullptr if search did not find the item.
+*/
+Item* Inventory::findItem(string itemName)
+{
+    //Initialize temp control variables
+    string currentInvItemName;
+
+    for (int i = 0; i < size; i++)
+    {
+        //Noralize name to match passed string
+        currentInvItemName = contents[i].GetName();
+        transform(currentInvItemName.begin(), currentInvItemName.end(), currentInvItemName.begin(), ::toupper);
+
+        if (currentInvItemName == itemName)
+            return &contents[i];
+    }
+
+    //Return empty first item in inventory on failed search
+    return nullptr;
 }
