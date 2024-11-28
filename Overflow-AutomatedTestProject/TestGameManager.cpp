@@ -6,6 +6,8 @@
 #include "../NPC.h"
 #include "../NPC.cpp"
 
+// use this class to test npc in future
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace OverflowTestGameManager
@@ -15,7 +17,7 @@ namespace OverflowTestGameManager
 	public:
 		TEST_METHOD(TestPlayerInteractsWithNPC)
 		{
-			// Arrange basically Creating a player and an NPC
+			// basically Creating a player and an NPC
 			Player player("Hero", 100, 5, 5); // Player starts at (5, 5)
 			NPC npc("Scrummius", { L"??", 1 }, "Hello there, adventurer!");
 

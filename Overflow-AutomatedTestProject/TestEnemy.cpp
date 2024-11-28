@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "../Enemy.cpp"
 #include "CppUnitTest.h"
 #include <iostream>
@@ -9,6 +9,8 @@
 #include "../Item.h"
 #include "../Map.h"
 
+// use this class to test enemies
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace OverflowTestEnemy
@@ -18,14 +20,14 @@ namespace OverflowTestEnemy
 	public:
 		TEST_METHOD(TestPlayerMovesAndAttacksEnemy)
 		{
-			// Arrange
-			// Player starts at position (5, 5)
+			
+			
 			Player player("Hero", 100, 5, 5);
 			player.SetPlayerAttackDamage(10); // Player attack damage is set to 10
 			player.SetPlayerAttack("Sword Slash"); // Player attack set to "Sword Slash"
 
 			// Enemy starts at position (7, 7)
-			Enemy enemy("Dust Golem", { L"??", 1 }, 20);
+			Enemy enemy("Dust Golem", { L"🪨", 1 }, 20);
 
 			// Simulate movement toward the enemy
 			while (player.GetPlayerLocationX() != 7 || player.GetPlayerLocationY() != 7)
