@@ -55,13 +55,13 @@ namespace OverflowTestPlayerClass
 
 		TEST_METHOD(TestQuestInitialization)
 		{
-			// Arrange
+			
 			Item spellbook("Spellbook", { L"📖", 1 }, "A book containing magical spells.", Item::Type::KEY, 0, 1);
 			Quest quest("Retrieve the Spellbook",
 				"Find the spellbook in the abandoned house.",
 				"Travel to the house.", &spellbook);
 
-			// Act & Assert
+			
 			Assert::AreEqual(std::string("Retrieve the Spellbook"), quest.GetQuestName(), L"Quest name mismatch.");
 			Assert::AreEqual(std::string("Find the spellbook in the abandoned house."), quest.GetQuestDescription(), L"Quest description mismatch.");
 			Assert::AreEqual(std::string("Travel to the house."), quest.GetCurrentObjective(), L"Initial objective mismatch.");
@@ -99,7 +99,7 @@ namespace OverflowTestPlayerClass
 				"Travel to the house.",
 				&spellbook);
 
-			// Act: Simulate completing the quest
+			//  Simulate completing the quest
 			quest.SetQuestStart(true);
 			quest.SetQuestComplete(true);
 
