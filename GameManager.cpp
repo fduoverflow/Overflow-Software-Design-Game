@@ -22,7 +22,7 @@ struct worldData {
 // World data for the three game worlds the player traverses
 worldData startingArea{ maps[0], 5, 6, 1, 1, 5, 4, 20 };
 worldData city{ maps[1], 3, 5, 0, 1, 2, 8, 40 };
-worldData landOfScrum{ maps[2], 1, 1, 0, 0, 1, 1, 80 };
+worldData landOfScrum{ maps[2], 3, 6, 0, 1, 0, 7, 80 };
 
 /*
 * Default constructor
