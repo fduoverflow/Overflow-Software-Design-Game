@@ -1103,6 +1103,7 @@ void GameManager::SpawnLandOfScrumEnemies() {
 
 	// Chunk 4,2
 	map->GetChunkAt(4, 2).GetTileAt(8, 14).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(4, 2).GetTileAt(5, 2).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
 
 	// Chunk 3,2
 	map->GetChunkAt(3, 2).GetTileAt(5, 1).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
