@@ -941,6 +941,7 @@ void GameManager::SpawnStartingAreaEnemies()
 	// Enemy Descriptions
 	string squirrelDesc = "A magical squirrel with powers. You wonder how it passed it's Wizard Schoool exams to get it's wand...";
 	string mushroomDesc = "A walking and talking mushroom. It may hold healing attributes, it may be poisonous... only you can be the judge of that!";
+	string stumpDesc = "A gnarled, rotting tree stump brought to life by dark magic.";
 
 	// Wizard Squirrels-- first squirrel drops Leaf Sword
 	// Chunk 2,1
@@ -964,8 +965,7 @@ void GameManager::SpawnStartingAreaEnemies()
 	// Chunk 4,2
 	map->GetChunkAt(4, 2).GetTileAt(14, 5).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
 	map->GetChunkAt(4, 2).GetTileAt(1, 4).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3, mushroomDesc));
-	map->GetChunkAt(4, 2).GetTileAt(13, 8).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3, mushroomDesc));
-	map->GetChunkAt(4, 2).GetTileAt(1, 12).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
+	map->GetChunkAt(4, 2).GetTileAt(13, 8).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
 
 	// Chunk 1,2
 	map->GetChunkAt(1, 2).GetTileAt(1, 4).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
@@ -973,8 +973,11 @@ void GameManager::SpawnStartingAreaEnemies()
 
 
 	// Possessed Stumps
-	
+	// Chunk 4, 4
+	map->GetChunkAt(4, 4).GetTileAt(8, 12).SetEnemy(new Enemy("Possessed Stump", { L"👿", 3 }, 16, new Item("Elixer of Renewal", { L"🧋", 3 }, "Use this potion to heal your HP!", Item::Type::HEALING, 8, 1), "Splinter Swipe", 3, stumpDesc));
 
+	// Chunck 4,2
+	map->GetChunkAt(4, 2).GetTileAt(1, 12).SetEnemy(new Enemy("Possessed Stump", { L"👿", 3 }, 16, "Splinter Swipe", 3, stumpDesc));
 }
 
 void GameManager::SpawnStartingAreaItems()
