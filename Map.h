@@ -15,7 +15,6 @@ class Map
 		int numRows, numColumns;
 	public:
 		Map();
-		Map(Chunk**, int, int);
 		Map(string, int, int);
 		//Accessor methods
 		void DisplayMap(int, int, wstring);

@@ -12,6 +12,7 @@ class GameManager
 private:
 	Player* myPlayer;
 	Map* map;
+	Inventory* inventory;
 	Quest* firstQuest;
 	Quest* branchesOfHeroesQuest;
 	Quest* threeStonesQuest;
@@ -22,14 +23,20 @@ private:
 	//Bool to check if player has completed tutorial battle.
 	bool isFirstBattleDone;
 
+	// Functions to initialize different worlds
+	void InitializeStartingAreaWorld();
+	void InitializeCityWorld();
+	void InitializeLandOfScrumWorld();
+
 public:
 	// Constructors
 	GameManager();
-	GameManager(Player*, Map*);
+	GameManager(Player*);
+	GameManager(Player*, Inventory*);
 
 	// Moves to the next world, thus changing the map
 	// Sets the coordinates of the player on the new world
-	void MoveToWorld(Map*, int, int, int, int);
+	void SetNewWorld();
 
 	//Moves player in given direction enum
 	void MovePlayer(UserInputValidation::Move);
@@ -47,8 +54,8 @@ public:
 	void InitilizeTutorialQuest(); // First Quest -- Retrieve spellbook from house after talking to Scrummius (owl)
 	void TutorialQuestComplete();
 
-	void InitializeCaptainQuest(Inventory); //Quest Where player must retrieve their spellbook after it has been stolen by the thief as the player entered SprintVille
-	bool CaptainQuestComplete(Inventory*);
+	void InitializeCaptainQuest(); //Quest Where player must retrieve their spellbook after it has been stolen by the thief as the player entered SprintVille
+	bool CaptainQuestComplete();
 
 	//Quest getters and setters
 	Quest* GetFirstQuest();
@@ -68,12 +75,12 @@ public:
 
 	//Initialize starting area enemies
 	Map* GetMap();
-	void SpawnStartingAreaEnemies(Map);
-	void SpawnSprintVilleEnemies(Map);
-	void SpawnLandOfScrumEnemies(Map);
+	void SpawnStartingAreaEnemies();
+	void SpawnSprintVilleEnemies();
+	void SpawnLandOfScrumEnemies();
 
 	//Initialize starting area items
-	void SpawnStartingAreaItems(Map);
+	void SpawnStartingAreaItems();
 
 	//Use Item from passed Inventory
 	void UseItem(Inventory& playerInv);
@@ -82,5 +89,7 @@ public:
 	void EquipItem(Inventory& playerInv);
 
 	// Setting the NPCs of Sprintville
-	void SetSprintVilleNPCs(Map);
+	void SetSprintVilleNPCs();
+
+	int GetCurrentMap();
 };

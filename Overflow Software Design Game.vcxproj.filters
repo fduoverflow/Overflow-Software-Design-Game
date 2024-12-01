@@ -111,5 +111,6 @@
   <ItemGroup>
     <Text Include="startingAreaMap.txt" />
     <Text Include="cityMap.txt" />
+    <Text Include="landOfScrumMap.txt" />
   </ItemGroup>
 </Project>
