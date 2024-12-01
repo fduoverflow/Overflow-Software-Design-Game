@@ -33,7 +33,7 @@ GameManager::GameManager()
 	firstQuest = new Quest();
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
-
+	captainQuest = new Quest("Ship Captain", "", "", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 }
@@ -49,7 +49,7 @@ GameManager::GameManager(Player* p)
 	firstQuest = new Quest();
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
-
+	captainQuest = new Quest("Ship Captain", "", "", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 }
@@ -69,11 +69,13 @@ void GameManager::InitializeStartingAreaWorld() {
 	string herosTreeDialogue = "Greetings. I am the Hero's Tree. Thou must pass the Branches of Heroes to continue your adventure. These branches have chronicled the tales of these lands and to clear them, you must answer their three questions.";
 	string threeStonesDialogue = "The river seems to be uncrossable at the current moment...";
 
-	//Place items near player's starting tile
+	//Place items near player's starting 
+	/*
 	map->GetChunkAt(1, 1).GetTileAt(6, 5).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0, 1));
 	map->GetChunkAt(1, 1).GetTileAt(4, 5).SetItem(new Item("Ring", { L"💍", 3 }, "This Ring can be equipped to increase your magic power.", Item::Type::EQUIPMENT, 5, 1));
 	map->GetChunkAt(1, 1).GetTileAt(6, 6).SetItem(new Item("Key", { L"🗝️", 3 }, "This key might unlock a door somewhere.", Item::Type::KEY, 0, 1));
 	map->GetChunkAt(1, 1).GetTileAt(5, 6).SetItem(new Item("Wand", { L"🪄", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 25, 1));
+	*/
 
 	// Place teleporter into the city
 	map->GetChunkAt(5, 3).GetTileAt(15, 8).SetItem(new Item("Gate", { L"🚪", 3 }, "You're at the city gates; would you like to enter now?", Item::Type::TELEPORTER, 0, 0));
@@ -88,7 +90,9 @@ void GameManager::InitializeStartingAreaWorld() {
 	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
 	map->GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
 
-	SpawnStartingAreaEnemies();
+	//SpawnStartingAreaEnemies();
+	//Initialize starting area items
+	SpawnStartingAreaItems();
 }
 
 void GameManager::InitializeCityWorld() {
@@ -100,7 +104,7 @@ void GameManager::InitializeCityWorld() {
 	myPlayer->SetPlayerLocation(city.tileX, city.tileY);
 
 	// Place all item, NPC, and enemy initializations for the city in this function
-
+	SetSprintVilleNPCs();
 	// Teleporter into Land of Scrum
 	map->GetChunkAt(4, 2).GetTileAt(8, 12).SetItem(new Item("Gate", { L"🚪", 3 }, "You're at the dock; would you like to take the ride to the Land of Scrum?", Item::Type::TELEPORTER, 0, 0));
 
@@ -114,7 +118,8 @@ void GameManager::InitializeLandOfScrumWorld() {
 	myPlayer->SetPlayerChunkLocation(landOfScrum.chunkX, landOfScrum.chunkY);
 	myPlayer->SetPlayerLocation(landOfScrum.tileX, landOfScrum.tileY);
 
-	// Place all item, NPC, and enemy initializations for the city in this function
+	// Place all item, NPC, and enemy initializations for the city in this 
+	SpawnLandOfScrumEnemies(map);
 }
 
 // Moves to the next work, thus changing the map
@@ -134,6 +139,10 @@ void GameManager::SetNewWorld() {
 	default:
 		break;
 	}
+}
+Map* GameManager::GetMap()
+{
+	return map;
 }
 
 /*
@@ -222,7 +231,7 @@ void GameManager::InitilizeTutorialQuest()
 	string objective = "Go to the house and gather the spellbook!";
 
 	// Spell book is a key item that is gathered after the first quest-- not a weapon for now
-	spellBook = new Item("Scrummius' Spell Book", { L"📖", 3 }, "A certain peculiar owl's spellbook, who knows what secrets it may hold...", Item::Type::KEY, 0,1);
+	spellBook = new Item("Scrummius' Spell Book", { L"📖", 3 }, "A certain peculiar owl's spellbook, who knows what secrets it may hold...", Item::Type::WEAPON, 4,1);
 	firstQuest = new Quest(name, desc, objective, spellBook);
 
 	// Place the spellbook in location -- door: (7,7) and (7,8)
@@ -277,6 +286,10 @@ Quest* GameManager::GetBranchesQuest()
 Quest* GameManager::GetThreeStonesQuest()
 {
 	return threeStonesQuest;
+}
+Quest* GameManager::GetCaptainQuest()
+{
+	return captainQuest;
 }
 
 /*
@@ -515,6 +528,8 @@ void GameManager::GameBattleManager(Player &myPlayer)
 				currentEnemyHealth = GetPlayerLocationTile().GetEnemy()->GetHealth();
 				cout << enemyName << " Health: " << currentEnemyHealth << "\n\n";
 				break;
+
+			// Player chooses the DEFLECT Action-- player will take only half dmg, and enemy will take half dmg of the attack they dealt
 			case UserInputValidation::Action::DEFLECT:
 				cout << playerName << " deflects!\n";
 				myPlayer.SetPlayerHealth(currentPlayerHealth - (enemyAttackDamage / 2));
@@ -527,8 +542,15 @@ void GameManager::GameBattleManager(Player &myPlayer)
 				cout << playerName << " Health: " << currentPlayerHealth << "\n\n";
 				break;
 			case UserInputValidation::Action::RUN:
-				
-				
+				// The player cannot run away from the tutorial battle with the dust golem
+				if (GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
+				{
+					// run chance is set to 10 for now, meaning the player will 100% of the time fail at running when fighting the dust golem
+					runChance = 10;
+					cout << "Lord Vallonious laughs at you from trying to run from the tutorial battle...\n";
+				}
+
+				// Setting Run chance at a 50% for now-- will be lowered later (thinking 15% as a default)
 				if (runChance <= 5)
 				{
 					cout << "You ran away safely, but the " << GetPlayerLocationTile().GetEnemy()->GetName() << " still remains...\n";
@@ -550,10 +572,29 @@ void GameManager::GameBattleManager(Player &myPlayer)
 		// Occurs when the enemy is defeated by reaching 0 or less health after player action
 		if (GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
 		{
+			//Notify player of enemy defeat
 			cout << enemyName << " has been defeated!\n";
+
+			//Drop item if Enemy was holding one
+			if (GetPlayerLocationTile().GetEnemy()->GetItem() != nullptr)
+			{
+				GetPlayerLocationTile().SetItem(GetPlayerLocationTile().GetEnemy()->GetItem());
+				cout << "The enemy dropped an item!\n";
+			}
+
+			//Heal the player if they just defeated the tutorial enemy, the dust golem.
+			if (GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
+			{
+				myPlayer.SetPlayerHealth(20);
+				cout << "Lord Vallonious pities you, so he has healed you after your battle with the dust golem... he will not be so merciful next time...\n";
+				cout << "Player health: " << myPlayer.GetPlayerHealth();
+				//Initialize starting area enemies
+				SpawnStartingAreaEnemies();
+			}
+
+			//Remove Enemy reference pointers to delete Enemy
 			GetPlayerLocationChunk().EnemyDefeted(GetPlayerLocationTile().GetEnemy());
-			//delete GetPlayerLocationTile().GetEnemy();	//Delete Enemy object so that other pointers no longer reference it.					  
-			//GetPlayerLocationTile().SetEnemy(nullptr);
+
 			return;
 		}
 
@@ -591,9 +632,16 @@ void GameManager::GameBattleManager(Player &myPlayer)
 		if (GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
 		{
 			cout << enemyName << " has been defeated!\n";
+
+			//Drop item if Enemy was holding one
+			if (GetPlayerLocationTile().GetEnemy()->GetItem() != nullptr)
+			{
+				GetPlayerLocationTile().SetItem(GetPlayerLocationTile().GetEnemy()->GetItem());
+				cout << "The enemy dropped an item!";
+			}
+
+			// Getting rid of the instance of the enemy that has been defeated
 			GetPlayerLocationChunk().EnemyDefeted(GetPlayerLocationTile().GetEnemy());
-			//delete GetPlayerLocationTile().GetEnemy();	//Delete Enemy object so that other pointers no longer reference it.					  
-			//GetPlayerLocationTile().SetEnemy(nullptr);
 			return;
 		}
 	}
@@ -669,6 +717,183 @@ void GameManager::NormalizeString(string& input)
 	input = std::regex_replace(input, std::regex("^\\s+|\\s+$"), "");
 }
 
+/*
+* Use an Item from the passed in Inventory object.
+* Assumes Inventory is not empty.
+*/
+void GameManager::UseItem(Inventory& playerInv)
+{
+	//Initialize player input string.
+	string playerInput;
+
+	//Reset cin to use std::getLine(). This is to allow for user input that includes spaces.
+	cin.ignore();
+
+	//Prompt player for which item to use.
+	cout << "Type in the name if the item you wish to use: ";
+	getline(cin, playerInput);
+
+	//Clean input.
+	NormalizeString(playerInput);
+
+	//Grab Item from Inventory.
+	Item grabbedItem = playerInv.removeItem(playerInput);
+
+	//Use Item based on type. If Item can't be used, return it to Inventory.
+	switch (grabbedItem.GetType())
+	{
+		case Item::Type::HEALING:
+			cout << "You just got healed by: " << grabbedItem.GetValue() << " HP\n";
+			myPlayer->HealPlayer(grabbedItem.GetValue());
+			break;
+		case Item::Type::KEY:
+			cout << "You can't use that key item right now. Returning to inventory.\n";
+			playerInv.addItem(grabbedItem);
+			break;
+		case Item::Type::EQUIPMENT:
+			cout << "You can't use that equipment item right now. To equip these, use the EQUIP command. Returning to inventory.\n";
+			playerInv.addItem(grabbedItem);
+			break;
+		case Item::Type::WEAPON:
+			cout << "You can't use that weapon item right now. To equip these, use the EQUIP command. Returning to inventory.\n";
+			playerInv.addItem(grabbedItem);
+			break;
+		case Item::Type::TELEPORTER:
+			cout << "You can't use that teleporter item right now. Returning to inventory.\n";
+			playerInv.addItem(grabbedItem);
+			break;
+		case Item::Type::EMPTY:
+			cout << "Wrong item name.\n";
+			break;
+	}
+}
+
+/*
+* Equip an Item from the passed in Inventory object.
+* Assumes Inventory is not empty.
+*/
+void GameManager::EquipItem(Inventory& playerInv)
+{
+	//Initialize player input string.
+	string playerInput;
+
+	//Reset cin to use std::getLine(). This is to allow for user input that includes spaces.
+	cin.ignore();
+
+	//Prompt player for which item to use.
+	cout << "Type in the name if the item you wish to equip: ";
+	getline(cin, playerInput);
+
+	//Clean input.
+	NormalizeString(playerInput);
+
+	//Grab Item from Inventory.
+	Item* grabbedItem = playerInv.findItem(playerInput);
+	if (grabbedItem == nullptr)
+	{
+		cout << "Wrong item name.\n";
+		return;
+	}
+
+	//Equip Item based on type. If Item can't be equipped, return it to Inventory.
+	switch (grabbedItem->GetType())
+	{
+	case Item::Type::HEALING:
+		cout << "Sorry, you can not equip a healing item. Utilize the USE command if you wish to use it.\n";
+		break;
+	case Item::Type::KEY:
+		cout << "Sorry, you can not equip a key item.\n";
+		break;
+	case Item::Type::EQUIPMENT:
+		if (grabbedItem->GetName().find("Hat") != string::npos)				//string::npos is the return type if the substring was not found
+		{
+			if (!grabbedItem->IsCurrentlyEquipped())
+			{
+				//Check for previous equipment and unequip it.
+				if (myPlayer->GetEquippedHat() != nullptr)
+				{
+					myPlayer->SetPlayerMaxHealth(myPlayer->GetPlayerMaxHealth() - myPlayer->GetEquippedHat()->GetValue());
+					myPlayer->SetPlayerHealth(myPlayer->GetPlayerHealth() - myPlayer->GetEquippedHat()->GetValue());
+					myPlayer->GetEquippedHat()->Equip();
+				}
+
+				//Equip and update values
+				myPlayer->SetPlayerMaxHealth(myPlayer->GetPlayerMaxHealth() + grabbedItem->GetValue());
+				myPlayer->SetPlayerHealth(myPlayer->GetPlayerHealth() + grabbedItem->GetValue());
+				myPlayer->SetEquippedHat(grabbedItem);
+				cout << "You have equipped: " << grabbedItem->GetName() << ". Marking as equipped in inventory.\n";
+			}
+			else
+			{
+				//Unequip item
+				myPlayer->SetPlayerMaxHealth(myPlayer->GetPlayerMaxHealth() - grabbedItem->GetValue());
+				myPlayer->SetPlayerHealth(myPlayer->GetPlayerHealth() - grabbedItem->GetValue());
+				myPlayer->SetEquippedHat(nullptr);
+				cout << "You have unequipped: " << grabbedItem->GetName() << ". Marking as unequipped in inventory.\n";
+			}
+			cout << "Current max HP: " << myPlayer->GetPlayerMaxHealth() << endl;
+		}
+		else if (grabbedItem->GetName().find("Robe") != string::npos)		//string::npos is the return type if the substring was not found
+		{
+			if (!grabbedItem->IsCurrentlyEquipped())
+			{
+				//Check for previous equipment and unequip it.
+				if (myPlayer->GetEquippedBody() != nullptr)
+				{
+					myPlayer->SetPlayerEvade(myPlayer->GetPlayerEvade() - myPlayer->GetEquippedBody()->GetValue());
+					myPlayer->GetEquippedBody()->Equip();
+				}
+
+				//Equip and update values
+				myPlayer->SetPlayerEvade(myPlayer->GetPlayerEvade() + grabbedItem->GetValue());
+				myPlayer->SetEquippedBody(grabbedItem);
+				cout << "You have equipped: " << grabbedItem->GetName() << ". Marking as equipped in inventory.\n";
+			}
+			else
+			{
+				//Unequip item
+				myPlayer->SetPlayerEvade(myPlayer->GetPlayerEvade() - grabbedItem->GetValue());
+				myPlayer->SetEquippedBody(nullptr);
+				cout << "You have unequipped: " << grabbedItem->GetName() << ". Marking as unequipped in inventory.\n";
+			}
+			cout << "Current evade status: " << myPlayer->GetPlayerEvade() << endl;
+		}
+		grabbedItem->Equip();
+		break;
+	case Item::Type::WEAPON:
+		if (!grabbedItem->IsCurrentlyEquipped())
+		{
+			//Check for previous equipment and unequip it.
+			if (myPlayer->GetEquippedWeapon() != nullptr)
+			{
+				myPlayer->GetEquippedWeapon()->Equip();
+			}
+
+			//Equip and update values
+			myPlayer->SetPlayerAttackDamage(grabbedItem->GetValue());
+			myPlayer->SetPlayerAttack(grabbedItem->GetName());
+			myPlayer->SetEquippedWeapon(grabbedItem);
+			cout << "You have equipped: " << grabbedItem->GetName() << ". Marking as equipped in inventory.\n";
+		}
+		else
+		{
+			//Unequip item
+			myPlayer->SetPlayerAttackDamage(2);
+			myPlayer->SetPlayerAttack("Knuckle Sandwich");
+			myPlayer->SetEquippedWeapon(nullptr);
+			cout << "You have unequipped: " << grabbedItem->GetName() << ". Marking as unequipped in inventory.\n";
+		}
+		grabbedItem->Equip();
+		break;
+	case Item::Type::TELEPORTER:
+		cout << "Sorry, you can not equip a teleporter item.\n";
+		break;
+	case Item::Type::EMPTY:
+		cout << "Wrong item name.\n";
+		break;
+	}
+}
+
 void GameManager::SpawnStartingAreaEnemies()
 {
 	// Enemy Descriptions
@@ -708,4 +933,132 @@ void GameManager::SpawnStartingAreaEnemies()
 	// Possessed Stumps
 	
 
+}
+
+void GameManager::SpawnStartingAreaItems()
+{
+	// Item Descriptions
+	string wandOfSparkingDesc = "A spark of inspiration... or just a spark. Deals minor ouchies.";
+	string platinumSwordDesc = "Shiny and sharp! This sword looks fancier than it actually is.";
+	string maceDesc = "For when you want to flatten foes medieval style.";
+	string moltenFuryDesc = "Lava-hot. Perfect for warming up enemies... permanently.";
+	string charmedHatDesc = "Stylish and slightly enchanted. It won't make you smarter, but it might make you luckier.";
+	string charmedRobeDesc = "Run away in style with this robe of questionable evasiveness.";
+	string lesserHealingPotionDesc = "Tiny but mighty! It's like a hug for your HP";
+
+	// Chunk 1,0 Items
+	map->GetChunkAt(1, 0).GetTileAt(5, 6).SetItem(new Item("Wand of Sparking", { L"🪄", 3 }, wandOfSparkingDesc, Item::Type::WEAPON, 5, 1));
+	map->GetChunkAt(1, 0).GetTileAt(5, 13).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// Chunk 1,2 Items
+	map->GetChunkAt(1, 2).GetTileAt(3, 8).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// Chunk 1,3 Items
+	map->GetChunkAt(1, 3).GetTileAt(7, 14).SetItem(new Item("Platinum Sword", { L"🗡️", 3 }, platinumSwordDesc, Item::Type::WEAPON, 6, 1));
+
+	// Chunk 2,1 Items
+	map->GetChunkAt(2, 1).GetTileAt(5, 13).SetItem(new Item("Charmed Hat", { L"🎓", 3 }, charmedHatDesc, Item::Type::EQUIPMENT, 3, 1));
+
+	// Chunk 3,1 Items
+	map->GetChunkAt(3, 1).GetTileAt(8, 6).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// Chunk 4,1 Items
+	map->GetChunkAt(4, 1).GetTileAt(5, 13).SetItem(new Item("Molten Fury", { L"🏹", 3 }, moltenFuryDesc, Item::Type::WEAPON, 4, 1));
+
+	// Chunk 4,2 Items
+	map->GetChunkAt(4, 2).GetTileAt(13, 14).SetItem(new Item("Charmed Robe", { L"👘", 3 }, charmedRobeDesc, Item::Type::EQUIPMENT, 1, 1));
+
+	// Chunk 4,3 Items
+	map->GetChunkAt(4, 3).GetTileAt(4, 7).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// Chunk 4,4 Items
+	map->GetChunkAt(4, 4).GetTileAt(8, 14).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+}
+void GameManager::SpawnSprintVilleEnemies() {
+
+	// Enemy Descriptions
+	string pigeonDesc = "A hybrid of pigeon and griffin, this creature combines the ferocity of a predator with the annoyance of a city pest. Approach with caution!";
+	string goblinDesc = "A cunning and nimble foe, the Goblin Thief thrives in chaos. Known for its underhanded tactics, it will blind and distract its enemies before darting in for a devastating attack.";
+
+	// Pigeon Griffin Enemies
+	// Chunk 1,0
+	map->GetChunkAt(1, 1).GetTileAt(7, 6).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 5 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
+	map->GetChunkAt(1, 1).GetTileAt(8, 10).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+
+	// Chunk 2,1
+	map->GetChunkAt(2, 1).GetTileAt(4, 10).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+	map->GetChunkAt(2, 1).GetTileAt(8, 14).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+	map->GetChunkAt(2, 1).GetTileAt(10, 7).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sky Peck", 4, pigeonDesc));
+	map->GetChunkAt(2, 1).GetTileAt(4, 2).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sky Peck", 4, pigeonDesc));
+
+	// Chunk 2,0
+	map->GetChunkAt(2, 0).GetTileAt(6, 4).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 5 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
+
+	// Chunk 3,0
+	map->GetChunkAt(3, 0).GetTileAt(1, 5).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sky Peck", 4, pigeonDesc));
+	map->GetChunkAt(3, 0).GetTileAt(13, 2).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
+
+	// Goblin Thief Enemies
+
+	// Chunk 3,0
+	map->GetChunkAt(3, 0).GetTileAt(4, 9).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Sneaky Slash", 5, goblinDesc));
+	map->GetChunkAt(3, 0).GetTileAt(10, 7).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, "Sneaky Slash", 5, goblinDesc));
+	map->GetChunkAt(3, 0).GetTileAt(13, 13).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, "Sneaky Slash", 5, goblinDesc));
+
+	// Chunk 4,0
+	map->GetChunkAt(4, 0).GetTileAt(2, 13).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Sneaky Slash", 5, goblinDesc));
+	map->GetChunkAt(4, 0).GetTileAt(14, 3).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Goblin's Dagger", { L"🗡️", 3 }, "The dagger of a goblin thief.", Item::Type::WEAPON, 8, 1), "Sneaky Slash", 5, goblinDesc));
+}
+
+void GameManager::SpawnLandOfScrumEnemies() {
+
+	// Enemy Descriptions
+	string blobDesc = " A malevolent mass of darkness, the Evil Dark Blob lurks in the Land of Scrum, waiting to engulf unwary adventurers.";
+
+	// Puts the enemies in the map. (Change to actual spots once Land of Scrum is incorporated)
+	map->GetChunkAt(1, 1).GetTileAt(14, 1).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 7, blobDesc));
+	map->GetChunkAt(1, 1).GetTileAt(14, 2).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, "Corrosive Strike", 7, blobDesc));
+	map->GetChunkAt(1, 1).GetTileAt(14, 3).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 40, "Corrosive Strike", 7, blobDesc));
+}
+
+/*
+Quest Makers for the Ship Captain's Quest
+Quest start- "thief" steals spellbook
+Quest End- talking to ship captain
+Story Beat: "Thief" was actually the ship captain, so now player can sail to Land of Scrum free of charge!
+*/
+void GameManager::InitializeCaptainQuest(Inventory inventory)
+{
+	captainQuest->SetQuestStart(true);
+	// Implementing Spellbook Thief-- bumps into you the second you enter the city
+	cout << "A man bumps your shoulder. Bump. You suddenly feel lighter. Your spellbook, it's gone. You throw this thief a glare. His eyes snap back at you and he says...\n";
+	cout << "Arg sorry mate I am in a rush. I'll take this for now. Don't delay and be hasteful!\n";
+	cout << "You watch the strange man run away. You feel encouraged to chase him down and retrieve the spellbook!\n";
+	// Remove the spellbook from the player's inventory
+	if (inventory.findItem("SCRUMMIUS' SPELL BOOK")->IsCurrentlyEquipped())
+	{
+		//Unequip item
+		myPlayer->SetPlayerAttackDamage(2);
+		myPlayer->SetPlayerAttack("Knuckle Sandwich");
+		myPlayer->GetEquippedWeapon()->Equip();
+		myPlayer->SetEquippedWeapon(nullptr);
+	}
+	inventory.removeItem("SCRUMMIUS' SPELL BOOK");
+}
+bool GameManager::CaptainQuestComplete(Inventory* inventory)
+{
+	captainQuest->SetQuestStart(false);
+	captainQuest->SetQuestComplete(true);
+	// Prompting the player that their spellbook is back in the inventory
+	cout << "You have completed the Captain's Quest. Your spellbook has been added back to your inventory\n\n";
+	inventory->addItem(*spellBook);
+
+	//Prompting the player that they can now go into the land of scrum
+	cout << "Now go forth and sail the seas to the Land of Scrum! Who knows what troubles await you on your quest for Gapplin!\n";
+	return true;
+}
+void GameManager::SetSprintVilleNPCs(Map worldMap)
+{
+	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o' Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I rememeber you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
+	worldMap.GetChunkAt(4, 2).GetTileAt(8, 10).SetNPC(new NPC("Ship Captain", { L"⚓", 3 }, shipCaptainDialogue));
 }

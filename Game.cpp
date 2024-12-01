@@ -10,6 +10,7 @@
 #include "UserInterface.h"
 #include "Item.h"
 #include "Inventory.h"
+#include "NPC.h"
 
 using namespace std;
 
@@ -29,16 +30,14 @@ int main() {
 	// Initialize first world
 	manager.SetNewWorld();
 
-	/*
-	// Intilalize the Mushroom Warrior Enemy -- we can move all NPC / enemy implementions to it's own classes if needed
+
+	//Spawning in the Spellbook Thief NPC-- will be more of just text rather than NPC to interact with
 	
-	worldMap.GetChunkAt(1, 1).GetTileAt(9, 11).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3));
-	worldMap.GetChunkAt(1, 1).GetTileAt(7, 11).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, "Mushroom Drop", 3));
+	//Temp spawns of last area. Will be moved once the last map is implemented.
+	
 
-	// Intilalize the Wizard Squirrel Enemy
-	worldMap.GetChunkAt(1, 1).GetTileAt(9, 12).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, new Item("Leaf Sword", { L"🗡️", 3 }, "Sword that does does 3 damage.", Item::Type::WEAPON, 5, 1), "Nut Throw", 2, ""));
+	
 
-	*/
 	//Set game loop variables
 	bool isGameOver = false;
 	string moveInput;
@@ -152,6 +151,10 @@ int main() {
 								manager.GetPlayerLocationTile().GetNPC()->SetDialogue("Congrats on completing the Branches of Heroes! Thine next destination should be further to the east.");
 							}
 						}
+						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Ship Captain")
+						{
+							manager.CaptainQuestComplete(&inventory);
+						}
 					}
 					break;
 				case UserInputValidation::Action::PICKUP:
@@ -198,12 +201,40 @@ int main() {
 						manager.SetNewWorld();
 						system("cls");
 						manager.Display();
+						manager.InitializeCaptainQuest(inventory); // Intialize Captain Quest -- retrieving the spellbook
+						
 					}
 					else
 						cout << "There is nothing to enter.\n";
 					break;
 				case UserInputValidation::Action::RULES:
 					myUI.DisplayRules();
+					break;
+				case UserInputValidation::Action::USE:
+					//Check for empty inventory
+					if (inventory.IsEmpty())
+					{
+						cout << "Inventory is empty. No Item to use.\n";
+					}
+					else
+					{
+						//Display inventory then use item.
+						inventory.displayInventory();
+						manager.UseItem(inventory);
+					}
+					break;
+				case UserInputValidation::Action::EQUIP:
+					//Check for empty inventory
+					if (inventory.IsEmpty())
+					{
+						cout << "Inventory is empty. No Item to equip.\n";
+					}
+					else
+					{
+						//Display inventory then equip item.
+						inventory.displayInventory();
+						manager.EquipItem(inventory);
+					}
 					break;
 			}
 		}

@@ -10,6 +10,7 @@ Item::Item()
 	myType = Type::EMPTY;
 	value = 0;
 	quantity = 0;
+	isEquipped = false;
 }
 Item::Item(string n, icon i, string desc, Type t, int val, int q)
 {
@@ -19,6 +20,7 @@ Item::Item(string n, icon i, string desc, Type t, int val, int q)
 	myType = t;
 	value = val;
 	quantity = q;
+	isEquipped = false;
 }
 
 //Getters and setters
@@ -45,6 +47,10 @@ int Item::GetQuantity()
 {
 	return quantity;
 }
+bool Item::IsCurrentlyEquipped()
+{
+	return isEquipped;
+}
 void Item::setName(string n)
 {
 	name = n;
@@ -64,4 +70,8 @@ void Item::setValue(int val)
 void Item::setQuantity(int q)
 {
 	quantity = q;
+}
+void Item::Equip()
+{
+	isEquipped = !isEquipped;
 }

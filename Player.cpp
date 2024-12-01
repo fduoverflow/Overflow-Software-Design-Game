@@ -7,18 +7,28 @@ Player::Player(string name, int health, int tileX, int tileY)
 	playerName = name;
 	playerTileLocation[0] = tileY;
 	playerTileLocation[1] = tileX;
-	playerHealth = health;
+	maxPlayerHealth = health;
+	currentPlayerHealth = health;
 	playerAttack = "Knuckle Sandwich"; // Initial player attack is just their fists (until they get the spellbook)
 	playerAttackDamage = 2; // When player is initialized, any attack they have can only do 2 dmg
+	evasiveness = 1;
+	weapon = nullptr;
+	hat = nullptr;
+	body = nullptr;
 }
 Player::Player()
 {
 	playerName = "";
 	playerTileLocation[0] = 0;
 	playerTileLocation[1] = 0;
-	playerHealth = 0;
+	maxPlayerHealth = 0;
+	currentPlayerHealth = 0;
 	playerAttack = "";
 	playerAttackDamage = 1; // Default damage is 1
+	evasiveness = 1;
+	weapon = nullptr;
+	hat = nullptr;
+	body = nullptr;
 }
 
 //Player Location Setter/Getter
@@ -62,14 +72,36 @@ wstring Player::GetPlayerIcon() {
 	return playerIcon;
 }
 
-//Player Health Setter/Getter
+//Player Health Setters/Getters
 int Player::GetPlayerHealth()
 {
-	return playerHealth;
+	return currentPlayerHealth;
+}
+int Player::GetPlayerMaxHealth()
+{
+	return maxPlayerHealth;
+}
+void Player::SetPlayerMaxHealth(int health)
+{
+	maxPlayerHealth = health;
 }
 void Player::SetPlayerHealth(int health)
 {
-	playerHealth = health;
+	currentPlayerHealth = health;
+}
+
+/*
+* Heal player by the passed amount.
+* Caps healing to not go above max health.
+*/
+void Player::HealPlayer(int val)
+{
+	if (val >= 0)			//Check to make sure passed val is not negative.
+	{
+		currentPlayerHealth += val;
+		if (currentPlayerHealth > maxPlayerHealth)
+			currentPlayerHealth = maxPlayerHealth;
+	}
 }
 
 // Player Attack Name Setter/Getter
@@ -90,4 +122,40 @@ int Player::GetPlayerAttackDamage()
 void Player::SetPlayerAttackDamage(int p_dmg)
 {
 	playerAttackDamage = p_dmg;
+}
+
+//Player evasiveness setter/getter;
+int Player::GetPlayerEvade()
+{
+	return evasiveness;
+}
+void Player::SetPlayerEvade(int val)
+{
+	evasiveness = val;
+}
+
+//Equipment Setters/Getters
+Item* Player::GetEquippedWeapon()
+{
+	return weapon;
+}
+Item* Player::GetEquippedHat()
+{
+	return hat;
+}
+Item* Player::GetEquippedBody()
+{
+	return body;
+}
+void Player::SetEquippedWeapon(Item* newItem)
+{
+	weapon = newItem;
+}
+void Player::SetEquippedHat(Item* newItem)
+{
+	hat = newItem;
+}
+void Player::SetEquippedBody(Item* newItem)
+{
+	body = newItem;
 }
