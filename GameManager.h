@@ -12,6 +12,7 @@ class GameManager
 private:
 	Player* myPlayer;
 	Map* map;
+	Inventory* inventory;
 	Quest* firstQuest;
 	Quest* branchesOfHeroesQuest;
 	Quest* threeStonesQuest;
@@ -31,6 +32,7 @@ public:
 	// Constructors
 	GameManager();
 	GameManager(Player*);
+	GameManager(Player*, Inventory*);
 
 	// Moves to the next world, thus changing the map
 	// Sets the coordinates of the player on the new world
@@ -52,8 +54,8 @@ public:
 	void InitilizeTutorialQuest(); // First Quest -- Retrieve spellbook from house after talking to Scrummius (owl)
 	void TutorialQuestComplete();
 
-	void InitializeCaptainQuest(Inventory); //Quest Where player must retrieve their spellbook after it has been stolen by the thief as the player entered SprintVille
-	bool CaptainQuestComplete(Inventory*);
+	void InitializeCaptainQuest(); //Quest Where player must retrieve their spellbook after it has been stolen by the thief as the player entered SprintVille
+	bool CaptainQuestComplete();
 
 	//Quest getters and setters
 	Quest* GetFirstQuest();
@@ -88,4 +90,6 @@ public:
 
 	// Setting the NPCs of Sprintville
 	void SetSprintVilleNPCs();
+
+	int GetCurrentMap();
 };

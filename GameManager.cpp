@@ -36,6 +36,7 @@ GameManager::GameManager()
 	captainQuest = new Quest("Ship Captain", "", "", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
+	inventory = nullptr;
 }
 /*
 * Constructor with passed player and map.
@@ -52,8 +53,26 @@ GameManager::GameManager(Player* p)
 	captainQuest = new Quest("Ship Captain", "", "", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
+	inventory = nullptr;
 }
+GameManager::GameManager(Player* p, Inventory* i)
+{
+	//Pass player and map
+	myPlayer = p;
 
+	//Initialize quests
+	firstQuest = new Quest();
+	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
+	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
+	captainQuest = new Quest("Ship Captain", "", "", nullptr);
+	//Initialize tutorial battle checker
+	isFirstBattleDone = false;
+	inventory = i;
+}
+int GameManager::GetCurrentMap()
+{
+	return currentMap;
+}
 void GameManager::InitializeStartingAreaWorld() {
 
 	//Initialize map
@@ -102,9 +121,22 @@ void GameManager::InitializeCityWorld() {
 	// Adjust player's position
 	myPlayer->SetPlayerChunkLocation(city.chunkX, city.chunkY);
 	myPlayer->SetPlayerLocation(city.tileX, city.tileY);
+	if (myPlayer->GetEquippedHat() != nullptr)
+	{
+		myPlayer->SetPlayerMaxHealth(40 + myPlayer->GetEquippedHat()->GetValue());
+		myPlayer->SetPlayerHealth(40 + myPlayer->GetEquippedHat()->GetValue());
+	}
+	else 
+	{
+		myPlayer->SetPlayerMaxHealth(40);
+		myPlayer->SetPlayerHealth(40);
+	}
+	
 
 	// Place all item, NPC, and enemy initializations for the city in this function
 	SetSprintVilleNPCs();
+	SpawnSprintVilleEnemies();
+	
 	// Teleporter into Land of Scrum
 	map->GetChunkAt(4, 2).GetTileAt(8, 12).SetItem(new Item("Gate", { L"🚪", 3 }, "You're at the dock; would you like to take the ride to the Land of Scrum?", Item::Type::TELEPORTER, 0, 0));
 
@@ -117,9 +149,19 @@ void GameManager::InitializeLandOfScrumWorld() {
 	// Adjust player's position
 	myPlayer->SetPlayerChunkLocation(landOfScrum.chunkX, landOfScrum.chunkY);
 	myPlayer->SetPlayerLocation(landOfScrum.tileX, landOfScrum.tileY);
+	if (myPlayer->GetEquippedHat() != nullptr)
+	{
+		myPlayer->SetPlayerMaxHealth(80 + myPlayer->GetEquippedHat()->GetValue());
+		myPlayer->SetPlayerHealth(80 + myPlayer->GetEquippedHat()->GetValue());
+	}
+	else
+	{
+		myPlayer->SetPlayerMaxHealth(80);
+		myPlayer->SetPlayerHealth(80);
+	}
 
 	// Place all item, NPC, and enemy initializations for the city in this 
-	SpawnLandOfScrumEnemies(map);
+	SpawnLandOfScrumEnemies();
 }
 
 // Moves to the next work, thus changing the map
@@ -1027,7 +1069,7 @@ Quest start- "thief" steals spellbook
 Quest End- talking to ship captain
 Story Beat: "Thief" was actually the ship captain, so now player can sail to Land of Scrum free of charge!
 */
-void GameManager::InitializeCaptainQuest(Inventory inventory)
+void GameManager::InitializeCaptainQuest()
 {
 	captainQuest->SetQuestStart(true);
 	// Implementing Spellbook Thief-- bumps into you the second you enter the city
@@ -1035,7 +1077,7 @@ void GameManager::InitializeCaptainQuest(Inventory inventory)
 	cout << "Arg sorry mate I am in a rush. I'll take this for now. Don't delay and be hasteful!\n";
 	cout << "You watch the strange man run away. You feel encouraged to chase him down and retrieve the spellbook!\n";
 	// Remove the spellbook from the player's inventory
-	if (inventory.findItem("SCRUMMIUS' SPELL BOOK")->IsCurrentlyEquipped())
+	if (inventory->findItem("SCRUMMIUS' SPELL BOOK")->IsCurrentlyEquipped())
 	{
 		//Unequip item
 		myPlayer->SetPlayerAttackDamage(2);
@@ -1043,9 +1085,9 @@ void GameManager::InitializeCaptainQuest(Inventory inventory)
 		myPlayer->GetEquippedWeapon()->Equip();
 		myPlayer->SetEquippedWeapon(nullptr);
 	}
-	inventory.removeItem("SCRUMMIUS' SPELL BOOK");
+	inventory->removeItem("SCRUMMIUS' SPELL BOOK");
 }
-bool GameManager::CaptainQuestComplete(Inventory* inventory)
+bool GameManager::CaptainQuestComplete()
 {
 	captainQuest->SetQuestStart(false);
 	captainQuest->SetQuestComplete(true);
@@ -1057,8 +1099,8 @@ bool GameManager::CaptainQuestComplete(Inventory* inventory)
 	cout << "Now go forth and sail the seas to the Land of Scrum! Who knows what troubles await you on your quest for Gapplin!\n";
 	return true;
 }
-void GameManager::SetSprintVilleNPCs(Map worldMap)
+void GameManager::SetSprintVilleNPCs()
 {
 	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o' Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I rememeber you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
-	worldMap.GetChunkAt(4, 2).GetTileAt(8, 10).SetNPC(new NPC("Ship Captain", { L"⚓", 3 }, shipCaptainDialogue));
+	map->GetChunkAt(4, 2).GetTileAt(8, 10).SetNPC(new NPC("Ship Captain", { L"⚓", 3 }, shipCaptainDialogue));
 }

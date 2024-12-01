@@ -25,7 +25,7 @@ int main() {
 	UserInterface myUI;
 
 	// Creates the Game Manager object that will handle all game logic
-	GameManager manager(&myPlayer);
+	GameManager manager(&myPlayer, &inventory);
 
 	// Initialize first world
 	manager.SetNewWorld();
@@ -153,7 +153,7 @@ int main() {
 						}
 						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Ship Captain")
 						{
-							manager.CaptainQuestComplete(&inventory);
+							manager.CaptainQuestComplete();
 						}
 					}
 					break;
@@ -201,7 +201,10 @@ int main() {
 						manager.SetNewWorld();
 						system("cls");
 						manager.Display();
-						manager.InitializeCaptainQuest(inventory); // Intialize Captain Quest -- retrieving the spellbook
+						if (manager.GetCurrentMap() == 1)
+						{
+							manager.InitializeCaptainQuest(); // Intialize Captain Quest -- retrieving the spellbook
+						}
 						
 					}
 					else
