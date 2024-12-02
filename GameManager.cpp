@@ -1137,7 +1137,7 @@ void GameManager::SpawnLandOfScrumItems()
 
 	// Land of Scrum Hat
 	string arcaneHatDesc = "Woven with arcane magic... and maybe a bit of thread from Granny's attic.";
-	map->GetChunkAt(2, 1).GetTileAt(12, 13).SetItem(new Item("Echanted Hat", { L"🎓",3 }, arcaneHatDesc, Item::Type::EQUIPMENT, 9, 1));
+	map->GetChunkAt(3, 0).GetTileAt(14, 1).SetItem(new Item("Arcane Hat", { L"🎓",3 }, arcaneHatDesc, Item::Type::EQUIPMENT, 9, 1));
 }
 
 
