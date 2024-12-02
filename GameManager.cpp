@@ -162,6 +162,7 @@ void GameManager::InitializeLandOfScrumWorld() {
 
 	// Place all item, NPC, and enemy initializations for the city in this 
 	SpawnLandOfScrumEnemies();
+	SpawnLandOfScrumItems();
 }
 
 // Moves to the next work, thus changing the map
@@ -1055,6 +1056,8 @@ void GameManager::SpawnSprintVilleEnemies() {
 	map->GetChunkAt(4, 0).GetTileAt(14, 3).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Goblin's Dagger", { L"🗡️", 3 }, "The dagger of a goblin thief.", Item::Type::WEAPON, 8, 1), "Sneaky Slash", 5, goblinDesc));
 }
 
+/* This function is used to initialize the enemies in the Land of Scrum Area
+*/
 void GameManager::SpawnLandOfScrumEnemies() {
 
 	// Enemy Descriptions
@@ -1110,6 +1113,33 @@ void GameManager::SpawnLandOfScrumEnemies() {
 	map->GetChunkAt(3, 2).GetTileAt(10, 4).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
 	map->GetChunkAt(3, 2).GetTileAt(10, 9).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
 }
+
+/* This function is used to initalize any items placed in the Land of Scrum Area
+*/
+void GameManager::SpawnLandOfScrumItems()
+{
+	// Land of Scrum Weapons
+	string excaliburSwordDesc =  "Legend has it this blade is invincible. Your mileage may vary.";
+	string phantomPhoenixDesc = "A mystical bird of fire, now available in bow form.";
+	map->GetChunkAt(1, 1).GetTileAt(4, 1).SetItem(new Item("Excalibur", { L"🗡️",5 }, excaliburSwordDesc, Item::Type::WEAPON, 10, 1));
+	map->GetChunkAt(2, 0).GetTileAt(11, 14).SetItem(new Item("Phantom Phoenix", { L"🏹",3 }, phantomPhoenixDesc, Item::Type::WEAPON, 10, 1));
+
+	// Item Description and Initialization
+	string greaterHealingPotionDesc = "This one packs a real punch—right to your health bar!";
+	string lesserHealingPotionDesc = "Tiny but mighty! It's like a hug for your HP";
+	map->GetChunkAt(1, 1).GetTileAt(11, 14).SetItem(new Item("Greater Healing Potion", { L"🍵",3 }, greaterHealingPotionDesc, Item::Type::HEALING, 15, 1));
+	map->GetChunkAt(2, 2).GetTileAt(11, 1).SetItem(new Item("Greater Healing Potion", { L"🍵",3 }, greaterHealingPotionDesc, Item::Type::HEALING, 15, 1));
+	map->GetChunkAt(4, 2).GetTileAt(1, 4).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// Land of Scrum Robe
+	string arcaneRobeDesc = "Arcane fabric, made for escaping danger—now in limited supply!";
+	map->GetChunkAt(4, 0).GetTileAt(1, 11).SetItem(new Item("Arcane Robe", { L"👘",3 }, arcaneRobeDesc, Item::Type::EQUIPMENT, 3, 1));
+
+	// Land of Scrum Hat
+	string arcaneHatDesc = "Woven with arcane magic... and maybe a bit of thread from Granny's attic.";
+	map->GetChunkAt(2, 1).GetTileAt(12, 13).SetItem(new Item("Echanted Hat", { L"🎓",3 }, arcaneHatDesc, Item::Type::EQUIPMENT, 9, 1));
+}
+
 
 /*
 Quest Makers for the Ship Captain's Quest

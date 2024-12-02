@@ -82,6 +82,9 @@ public:
 	//Initialize starting area items
 	void SpawnStartingAreaItems();
 
+	//Initialize Land of Scrum items
+	void SpawnLandOfScrumItems();
+
 	//Use Item from passed Inventory
 	void UseItem(Inventory& playerInv);
 
