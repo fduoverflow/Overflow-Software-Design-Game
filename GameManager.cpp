@@ -162,6 +162,12 @@ void GameManager::InitializeLandOfScrumWorld() {
 
 	// Place all item, NPC, and enemy initializations for the city in this 
 	SpawnLandOfScrumEnemies();
+
+	// Lock of Vallonious final boss room until the player answers that they would like to proceed
+	map->GetChunkAt(5, 1).GetTileAt(0, 6).SetID(10);
+	map->GetChunkAt(5, 1).GetTileAt(0, 7).SetID(10);
+	map->GetChunkAt(5, 1).GetTileAt(0, 8).SetID(10);
+	map->GetChunkAt(5, 1).GetTileAt(0, 9).SetID(10);
 }
 
 // Moves to the next work, thus changing the map
@@ -170,18 +176,21 @@ void GameManager::SetNewWorld() {
 
 	switch (currentMap) {
 	case 0:
-		InitializeStartingAreaWorld();
+		//InitializeStartingAreaWorld();
+		InitializeLandOfScrumWorld();
 		break;
 	case 1:
 		InitializeCityWorld();
 		break;
 	case 2:
-		InitializeLandOfScrumWorld();
+		InitializeStartingAreaWorld();
+		//InitializeLandOfScrumWorld();
 		break;
 	default:
 		break;
 	}
 }
+
 Map* GameManager::GetMap()
 {
 	return map;
@@ -1113,21 +1122,30 @@ void GameManager::SpawnLandOfScrumEnemies() {
 
 	// Lord Vallonious
 	map->GetChunkAt(5, 1).GetTileAt(10, 7).SetEnemy(new Enemy("Lord Vallonious", { L"🐉",3 }, 65, "Dragon Breath", 9, valloniousDesc));
-
-	// Give story beat/Dialogue if the player has entered the room with Lord Vallonious
-
+}
+void GameManager::CheckForValloniousRoom()
+{
 	// Check that the player has enter Vallonious' Room
-	// Chunk 5,1 and since the entrance way is 4 tiles long, you have to account for Rows 6-9, but all the same column of 0
+	// Chunk 4,1 and since the entrance way is 4 tiles long, you have to account for Rows 6-9, but all the same column of 15
 	string playerAnswer;
-	if ((myPlayer->GetPlayerChunkLocationX() == 5 && myPlayer->GetPlayerChunkLocationY() == 1))
+	if ((myPlayer->GetPlayerChunkLocationX() == 4 && myPlayer->GetPlayerChunkLocationY() == 1) && map->GetChunkAt(5, 1).GetTileAt(0, 6).GetID() == 10)
 	{
-		if ((myPlayer->GetPlayerLocationX() == 6 || myPlayer->GetPlayerLocationX() == 7 || myPlayer->GetPlayerLocationX() == 8 || myPlayer->GetPlayerLocationX() == 9) && myPlayer->GetPlayerLocationY() == 0)
+		if ((myPlayer->GetPlayerLocationY() == 6 || myPlayer->GetPlayerLocationY() == 7 || myPlayer->GetPlayerLocationY() == 8 || myPlayer->GetPlayerLocationY() == 9) && myPlayer->GetPlayerLocationX() == 15)
 		{
+			// Give story beat/Dialogue if the player has entered the room with Lord Vallonious
+			cout << "\n\nLord Vallonious says: Welcome FOOL! I hope you've prepared well enough for our final battle\n If you must turn back now and prepare further, I will be merciful and allow you to do so.\n";
+			cout << "This may be thy final battle after all... the choice is yours...\n";
+			cout << "You feel as though there is no turning back after this point...\n";
+			cout << "As you think that, you hear Gapplin's cry coming from behind Vallonious' throne...\n";
 			cout << "Would you like to proceed? ";
 			cin >> playerAnswer;
 			NormalizeString(playerAnswer);
 			if (playerAnswer == "YES")
 			{
+				map->GetChunkAt(5, 1).GetTileAt(0, 6).SetID(9);
+				map->GetChunkAt(5, 1).GetTileAt(0, 7).SetID(17);
+				map->GetChunkAt(5, 1).GetTileAt(0, 8).SetID(17);
+				map->GetChunkAt(5, 1).GetTileAt(0, 9).SetID(9);
 				cout << "Lord Vallonious says: VERY WELL THEN FOOL! Our battle will be legendary.\n I will laugh my way as I take Gapplin and make him mine own.\n I hope your journey has been bountiful, but I'm afraid it ends HERE!!!!\n\n";
 			}
 			else
@@ -1137,7 +1155,6 @@ void GameManager::SpawnLandOfScrumEnemies() {
 		}
 	}
 }
-
 /*
 Quest Makers for the Ship Captain's Quest
 Quest start- "thief" steals spellbook

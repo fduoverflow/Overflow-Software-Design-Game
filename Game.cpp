@@ -51,6 +51,7 @@ int main() {
 
 	while (!isGameOver) {
 		
+		
 		//Display NPC if there is one on Tile
 		if (manager.GetPlayerLocationTile().GetNPC() != nullptr)
 		{
@@ -58,7 +59,6 @@ int main() {
 			cout << "\nType Talk to speak to them.";
 		}
 
-		
 		//Display Enemy if there is one on Tile. When battle system is implemented, it will launch from here.
 		if (manager.GetPlayerLocationTile().GetEnemy() != nullptr)
 		{
@@ -251,6 +251,9 @@ int main() {
 
 			//Display current chunk
 			manager.Display();
+
+			// Player is getting ready for the final battle
+			manager.CheckForValloniousRoom();
 		}
 		else if (!isAction && !isMove)							//Moved action error messages here because they were printing when the other action was used. Ex: "Invalid action" printed when inputing WASD.
 		{
