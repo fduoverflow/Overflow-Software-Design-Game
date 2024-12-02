@@ -1200,3 +1200,21 @@ void GameManager::SetSprintVilleNPCs()
 	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I remember you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
 	map->GetChunkAt(4, 2).GetTileAt(8, 10).SetNPC(new NPC("Ship Captain", { L"⚓", 3 }, shipCaptainDialogue));
 }
+
+void GameManager::RollEndCredits()
+{
+	if (inventory->findItem("LEGENDARY GAPPLIN") != nullptr)
+	{
+		cout << endl;
+		cout << "Lord Vallonious says: ARGHHHHHHHHHH. This is not my end.\n";
+		cout << "This is not the last you see of me! I WILL HAVE MY REVENGE.\n\n";
+		cout << "A voice from beyond says: With Vallonious now defeated, Restrospecta can be at peace once again.\n";
+		cout << "You feel strongly however, that this is not the last you will see of Vallonious...\n\n";
+		cout << "-------------------------------------------------------------------------------------------------------\n";
+		cout << "Thank you so much for playing our game!\n";
+		cout << "Even though you cannot go back to previous areas, you are free to walk around the Land of Scrum!\n";
+		cout << "---------------------------------------------------------------------------------------------------------\n\n";
+		cout << "Gapplin says: Thank you for saving me! I hope your journey here was a good one!\n\n";
+		cout << "A voice from beyond says: you may now close the game. Thanks for playing!\n";
+	}
+}

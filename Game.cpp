@@ -169,6 +169,7 @@ int main() {
 						}
 						inventory.addItem(manager.GetPlayerLocationTile().PickUpItem()); //Adds the picked up item to the invetory
 						cout << "Item was picked up.\n";
+						manager.RollEndCredits();
 					}
 					else
 					{
