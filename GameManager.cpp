@@ -1060,6 +1060,7 @@ void GameManager::SpawnLandOfScrumEnemies() {
 	// Enemy Descriptions
 	string blobDesc = "A malevolent mass of darkness, the Evil Dark Blob lurks in the Land of Scrum, waiting to engulf unwary adventurers.";
 	string shadowDesc = "A sinister wisp of darkness that floats eerily, its faint whispers sowing unease in the hearts of adventurers.";
+	string valloniousDesc = "The wicked dragon of the land of Restrospecta. Defeat him and finish your quest!";
 
 	// Puts the enemies in the map
 	// Dark Evil Blob Enemies
@@ -1110,7 +1111,31 @@ void GameManager::SpawnLandOfScrumEnemies() {
 	map->GetChunkAt(3, 2).GetTileAt(10, 4).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
 	map->GetChunkAt(3, 2).GetTileAt(10, 9).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
 
-	
+	// Lord Vallonious
+	map->GetChunkAt(5, 1).GetTileAt(10, 7).SetEnemy(new Enemy("Lord Vallonious", { L"🐉",3 }, 65, "Dragon Breath", 9, valloniousDesc));
+
+	// Give story beat/Dialogue if the player has entered the room with Lord Vallonious
+
+	// Check that the player has enter Vallonious' Room
+	// Chunk 5,1 and since the entrance way is 4 tiles long, you have to account for Rows 6-9, but all the same column of 0
+	string playerAnswer;
+	if ((myPlayer->GetPlayerChunkLocationX() == 5 && myPlayer->GetPlayerChunkLocationY() == 1))
+	{
+		if ((myPlayer->GetPlayerLocationX() == 6 || myPlayer->GetPlayerLocationX() == 7 || myPlayer->GetPlayerLocationX() == 8 || myPlayer->GetPlayerLocationX() == 9) && myPlayer->GetPlayerLocationY() == 0)
+		{
+			cout << "Would you like to proceed? ";
+			cin >> playerAnswer;
+			NormalizeString(playerAnswer);
+			if (playerAnswer == "YES")
+			{
+				cout << "Lord Vallonious says: VERY WELL THEN FOOL! Our battle will be legendary.\n I will laugh my way as I take Gapplin and make him mine own.\n I hope your journey has been bountiful, but I'm afraid it ends HERE!!!!\n\n";
+			}
+			else
+			{
+				cout << "Lord Vallonious says: Go prepare and ready yourself for the final battle then... I'll be merciful as this will certainly be your last fight... MUAHAHAHAHAHHAHAH.\n\n";
+			}
+		}
+	}
 }
 
 /*
