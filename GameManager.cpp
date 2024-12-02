@@ -1077,6 +1077,9 @@ void GameManager::SpawnLandOfScrumEnemies() {
 	map->GetChunkAt(1, 1).GetTileAt(2, 5).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
 	map->GetChunkAt(1, 1).GetTileAt(13, 10).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
 
+	// Test item to be able to defeat Vallonious quicker (testing purposes)
+	map->GetChunkAt(1, 1).GetTileAt(4, 4).SetItem(new Item("Wand", { L"🐿️", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 40, 1));
+
 	// Chunk 2,2
 	map->GetChunkAt(2, 2).GetTileAt(8, 14).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
 
@@ -1121,7 +1124,7 @@ void GameManager::SpawnLandOfScrumEnemies() {
 	map->GetChunkAt(3, 2).GetTileAt(10, 9).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
 
 	// Lord Vallonious
-	map->GetChunkAt(5, 1).GetTileAt(10, 7).SetEnemy(new Enemy("Lord Vallonious", { L"🐉",3 }, 65, "Dragon Breath", 9, valloniousDesc));
+	map->GetChunkAt(5, 1).GetTileAt(10, 7).SetEnemy(new Enemy("Lord Vallonious", { L"🐉",3 }, 65, new Item("Legendary Gapplin", { L"🍏", 9 }, "The reason for your journey. Take good care of him! :)", Item::Type::KEY, 100, 1), "Dragon Breath", 9, valloniousDesc));
 }
 void GameManager::CheckForValloniousRoom()
 {
@@ -1134,19 +1137,20 @@ void GameManager::CheckForValloniousRoom()
 		{
 			// Give story beat/Dialogue if the player has entered the room with Lord Vallonious
 			cout << "\n\nLord Vallonious says: Welcome FOOL! I hope you've prepared well enough for our final battle\n If you must turn back now and prepare further, I will be merciful and allow you to do so.\n";
-			cout << "This may be thy final battle after all... the choice is yours...\n";
+			cout << "This may be thy final battle after all... the choice is yours...\n\n";
 			cout << "You feel as though there is no turning back after this point...\n";
 			cout << "As you think that, you hear Gapplin's cry coming from behind Vallonious' throne...\n";
 			cout << "Would you like to proceed? ";
 			cin >> playerAnswer;
+			cout << endl;
 			NormalizeString(playerAnswer);
 			if (playerAnswer == "YES")
 			{
+				cout << "Lord Vallonious says: VERY WELL THEN FOOL! Our battle will be legendary.\n I will laugh my way as I take Gapplin and make him mine own.\n I hope your journey has been bountiful, but I'm afraid it ends HERE!!!!\n\n";
 				map->GetChunkAt(5, 1).GetTileAt(0, 6).SetID(9);
 				map->GetChunkAt(5, 1).GetTileAt(0, 7).SetID(17);
 				map->GetChunkAt(5, 1).GetTileAt(0, 8).SetID(17);
 				map->GetChunkAt(5, 1).GetTileAt(0, 9).SetID(9);
-				cout << "Lord Vallonious says: VERY WELL THEN FOOL! Our battle will be legendary.\n I will laugh my way as I take Gapplin and make him mine own.\n I hope your journey has been bountiful, but I'm afraid it ends HERE!!!!\n\n";
 			}
 			else
 			{
