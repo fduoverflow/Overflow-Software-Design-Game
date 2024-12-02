@@ -1074,7 +1074,7 @@ void GameManager::SpawnSprintVilleItems()
 
 	// SprintVille Hat
 	string enchantedHatDesc = "Guaranteed to add a mystical flair to your headgear collection.";
-	map->GetChunkAt(2, 1).GetTileAt(12, 13).SetItem(new Item("Echanted Hat", {L"🎓",3},enchantedHatDesc, Item::Type::EQUIPMENT,6,1));
+	map->GetChunkAt(2, 1).GetTileAt(12, 13).SetItem(new Item("Enchanted Hat", {L"🎓",3},enchantedHatDesc, Item::Type::EQUIPMENT,6,1));
 
 }
 
