@@ -974,7 +974,7 @@ void GameManager::SpawnStartingAreaEnemies()
 
 	// Possessed Stumps
 	// Chunk 4, 4
-	map->GetChunkAt(4, 4).GetTileAt(8, 12).SetEnemy(new Enemy("Possessed Stump", { L"👿", 3 }, 16, new Item("Elixer of Renewal", { L"🧋", 3 }, "Use this potion to heal your HP!", Item::Type::HEALING, 8, 1), "Splinter Swipe", 3, stumpDesc));
+	map->GetChunkAt(4, 4).GetTileAt(8, 12).SetEnemy(new Enemy("Possessed Stump", { L"👿", 3 }, 16, new Item("Elixer of Renewal", { L"🧋", 3 }, "Use this potion to heal your HP!", Item::Type::HEALING, 12, 1), "Splinter Swipe", 3, stumpDesc));
 
 	// Chunck 4,2
 	map->GetChunkAt(4, 2).GetTileAt(1, 12).SetEnemy(new Enemy("Possessed Stump", { L"👿", 3 }, 16, "Splinter Swipe", 3, stumpDesc));
@@ -1024,6 +1024,7 @@ void GameManager::SpawnSprintVilleEnemies() {
 	// Enemy Descriptions
 	string pigeonDesc = "A hybrid of pigeon and griffin, this creature combines the ferocity of a predator with the annoyance of a city pest. Approach with caution!";
 	string goblinDesc = "A cunning and nimble foe, the Goblin Thief thrives in chaos. Known for its underhanded tactics, it will blind and distract its enemies before darting in for a devastating attack.";
+	string trashManDesc = "A small garbage bag come to life. So much for recycling...";
 
 	// Pigeon Griffin Enemies
 	// Chunk 1,0
@@ -1053,6 +1054,11 @@ void GameManager::SpawnSprintVilleEnemies() {
 	// Chunk 4,0
 	map->GetChunkAt(4, 0).GetTileAt(2, 13).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Sneaky Slash", 5, goblinDesc));
 	map->GetChunkAt(4, 0).GetTileAt(14, 3).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Goblin's Dagger", { L"🗡️", 3 }, "The dagger of a goblin thief.", Item::Type::WEAPON, 8, 1), "Sneaky Slash", 5, goblinDesc));
+
+	// Magical Trash man Enemies
+	map->GetChunkAt(4, 1).GetTileAt(2, 3).SetEnemy(new Enemy("Magical Trash Man", { L"🗑️", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Waste Hurl", 6, trashManDesc));
+	map->GetChunkAt(4, 1).GetTileAt(12, 12).SetEnemy(new Enemy("Magical Trash Man", { L"🗑️", 3 }, 25,  "Waste Hurl", 5, trashManDesc));
+	map->GetChunkAt(4, 1).GetTileAt(3, 10).SetEnemy(new Enemy("Magical Trash Man", { L"🗑️", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Waste Hurl", 6, trashManDesc));
 }
 
 void GameManager::SpawnLandOfScrumEnemies() {
