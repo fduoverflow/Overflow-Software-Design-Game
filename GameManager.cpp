@@ -1055,7 +1055,8 @@ void GameManager::SpawnSprintVilleEnemies() {
 	map->GetChunkAt(4, 0).GetTileAt(2, 13).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Sneaky Slash", 5, goblinDesc));
 	map->GetChunkAt(4, 0).GetTileAt(14, 3).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Goblin's Dagger", { L"🗡️", 3 }, "The dagger of a goblin thief.", Item::Type::WEAPON, 8, 1), "Sneaky Slash", 5, goblinDesc));
 
-	// Magical Trash man Enemies
+	// Magical Trash man Enemies-- same Health as Goblin, but does 1 HP damage more
+	//Chunk 4,1
 	map->GetChunkAt(4, 1).GetTileAt(2, 3).SetEnemy(new Enemy("Magical Trash Man", { L"🗑️", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Waste Hurl", 6, trashManDesc));
 	map->GetChunkAt(4, 1).GetTileAt(12, 12).SetEnemy(new Enemy("Magical Trash Man", { L"🗑️", 3 }, 25,  "Waste Hurl", 5, trashManDesc));
 	map->GetChunkAt(4, 1).GetTileAt(3, 10).SetEnemy(new Enemy("Magical Trash Man", { L"🗑️", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Waste Hurl", 6, trashManDesc));
