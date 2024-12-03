@@ -1027,7 +1027,7 @@ void GameManager::SpawnSprintVilleEnemies() {
 
 	// Pigeon Griffin Enemies
 	// Chunk 1,0
-	map->GetChunkAt(1, 1).GetTileAt(7, 6).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 5 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
+	map->GetChunkAt(1, 1).GetTileAt(7, 6).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 3 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
 	map->GetChunkAt(1, 1).GetTileAt(8, 10).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
 
 	// Chunk 2,1
@@ -1037,7 +1037,7 @@ void GameManager::SpawnSprintVilleEnemies() {
 	map->GetChunkAt(2, 1).GetTileAt(4, 2).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sky Peck", 4, pigeonDesc));
 
 	// Chunk 2,0
-	map->GetChunkAt(2, 0).GetTileAt(6, 4).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 5 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
+	map->GetChunkAt(2, 0).GetTileAt(6, 4).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 3 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
 
 	// Chunk 3,0
 	map->GetChunkAt(3, 0).GetTileAt(1, 5).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sky Peck", 4, pigeonDesc));
@@ -1065,50 +1065,50 @@ void GameManager::SpawnLandOfScrumEnemies() {
 	// Dark Evil Blob Enemies
 	// Chunk 1,1
 	map->GetChunkAt(1, 1).GetTileAt(2, 5).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
-	map->GetChunkAt(1, 1).GetTileAt(13, 10).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(1, 1).GetTileAt(13, 10).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Venombrand", { L"🗡️", 3 }, "A sinister sword forged from toxic metals, its blade drips with a corrosive venom", Item::Type::WEAPON, 12, 1), "Corrosive Strike", 6, blobDesc));
 
 	// Chunk 2,2
-	map->GetChunkAt(2, 2).GetTileAt(8, 14).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(2, 2).GetTileAt(8, 14).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
 
 	// Chunk 4,0
-	map->GetChunkAt(4, 0).GetTileAt(5, 13).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(4, 0).GetTileAt(5, 13).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
 	map->GetChunkAt(4, 0).GetTileAt(8, 1).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
 
 	// Chunk 3,0
-	map->GetChunkAt(3, 0).GetTileAt(5, 6).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
-	map->GetChunkAt(3, 0).GetTileAt(5, 11).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(3, 0).GetTileAt(5, 6).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(3, 0).GetTileAt(5, 11).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Venomshot", { L"🏹", 3 }, "A bow that shoots arrows filled with a corrosive venom", Item::Type::WEAPON, 14, 1), "Corrosive Strike", 6, blobDesc));
 	map->GetChunkAt(3, 0).GetTileAt(10, 14).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
 
 	// Chunk 3,2
-	map->GetChunkAt(3, 2).GetTileAt(5, 6).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(3, 2).GetTileAt(5, 6).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
 	map->GetChunkAt(3, 2).GetTileAt(5, 11).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
-	map->GetChunkAt(3, 2).GetTileAt(10, 14).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(3, 2).GetTileAt(10, 14).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
 
 	// Gloomy Shadow Enemies
 	// Chunk 2,1
-	map->GetChunkAt(2, 1).GetTileAt(5, 2).SetEnemy(new Enemy("Gloomy Shadow", {L"👤", 3}, 30, new Item("Shadowfang Blade", {L"🗡️", 9}, "A lightweight sword imbued with dark energy. Deals 9 HP per hit.", Item::Type::WEAPON, 8, 1), "Dreadful Embrace", 7, shadowDesc));
-	map->GetChunkAt(2, 1).GetTileAt(5, 13).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(2, 1).GetTileAt(5, 2).SetEnemy(new Enemy("Gloomy Shadow", {L"👤", 3}, 30, new Item("Shadowfang Blade", {L"🗡️", 3}, "A lightweight sword imbued with dark energy. Deals 9 HP per hit.", Item::Type::WEAPON, 9, 1), "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(2, 1).GetTileAt(5, 13).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
 
 	// Chunk 2,2
-	map->GetChunkAt(2, 2).GetTileAt(13, 5).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(2, 2).GetTileAt(13, 5).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
 
 	// Chunk 2,0
-	map->GetChunkAt(2, 0).GetTileAt(13, 10).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(2, 0).GetTileAt(13, 10).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
 	map->GetChunkAt(2, 0).GetTileAt(8, 1).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
 
 	// Chunck 3,0
-	map->GetChunkAt(3, 0).GetTileAt(5, 1).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
-	map->GetChunkAt(3, 0).GetTileAt(10, 4).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(3, 0).GetTileAt(5, 1).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(3, 0).GetTileAt(10, 4).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Darkvein Bow", { L"🏹", 3 }, "A bow imbued with dark energy. Deals 11 HP per hit.", Item::Type::WEAPON, 11, 1), "Dreadful Embrace", 7, shadowDesc));
 	map->GetChunkAt(3, 0).GetTileAt(10, 9).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
 
 	// Chunk 4,2
-	map->GetChunkAt(4, 2).GetTileAt(8, 14).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
-	map->GetChunkAt(4, 2).GetTileAt(5, 2).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(4, 2).GetTileAt(8, 14).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(4, 2).GetTileAt(5, 2).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Eclipse Blade", { L"🗡", 3 }, "A long sword imbued with dark energy. Deals 13 HP per hit.", Item::Type::WEAPON, 13, 1), "Dreadful Embrace", 7, shadowDesc));
 
 	// Chunk 3,2
-	map->GetChunkAt(3, 2).GetTileAt(5, 1).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(3, 2).GetTileAt(5, 1).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
 	map->GetChunkAt(3, 2).GetTileAt(10, 4).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
-	map->GetChunkAt(3, 2).GetTileAt(10, 9).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(3, 2).GetTileAt(10, 9).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
 }
 
 /*
