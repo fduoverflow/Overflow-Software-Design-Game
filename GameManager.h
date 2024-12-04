@@ -46,6 +46,7 @@ public:
 	void DisplayMap();
 	
 	void ClearScreenAndPrompt();
+	void ClearBattleMessages();
 
 	//Returns the Tile address at player's current location.
 	Tile& GetPlayerLocationTile();
