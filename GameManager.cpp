@@ -497,108 +497,147 @@ bool GameManager::ThreeStonesPuzzle()
 	}
 }
 
-void GameManager::GameBattleManager(Player& myPlayer) // messing around with combat stuff to make it more neat ;)
+void GameManager::GameBattleManager(Player& myPlayer)
 {
-	// Initial tutorial battle message
+	// Check if the battle is the tutorial battle against the Dust Golem
 	if (!isFirstBattleDone && GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
 	{
 		cout << "Before the battle begins, you hear Lord Vallonious' voice in your head...\n";
-		cout << "FOOL! This seems to be your first battle. Let me teach you the basics...\n";
-		cout << "You have 3 actions: ATTACK, DEFLECT, and RUN.\n";
+		cout << "FOOL! This seems to be your first battle. Let me teach you the basics, so that our final battle may at least be a fair one.\n";
+		cout << "If you cannot even defeat this simple Dust Golem, you hold no chance to defeat ME!\n\n";
+		cout << "You have 3 actions: ATTACK, DEFLECT, and RUN. Attack and Run are self-explanatory...\n";
+		cout << "Deflect works like so: when an attack is deflected, the one who deflected takes half the damage, but so does the attacker.\n";
 		cout << "May your future battles be bountiful... I await in the Land of Scrum for our EPIC ENCOUNTER!\n\n";
 
+		// Update checker
 		isFirstBattleDone = true;
 	}
 
-	while (GetPlayerLocationTile().GetEnemy() != nullptr && GetPlayerLocationTile().GetEnemy()->GetHealth() > 0 && myPlayer.GetPlayerHealth() > 0)
+	// Flag to determine if the player successfully runs
+	bool isActionRun = false;
+
+	// Battle loop
+	while (GetPlayerLocationTile().GetEnemy() != nullptr &&
+		GetPlayerLocationTile().GetEnemy()->GetHealth() > 0 &&
+		!isActionRun &&
+		myPlayer.GetPlayerHealth() > 0)
 	{
+		//  Whats being siad for player action
 		string battleAction;
-		cout << "Enter ATTACK, DEFLECT, or RUN for your action: ";
+		cout << "Enter Attack, Deflect, or Run for your action: ";
 		cin >> battleAction;
 
-		//  input to uppercase for case-insensitive 
-		transform(battleAction.begin(), battleAction.end(), battleAction.begin(), ::toupper);
+		// Valiii input
+		UserInputValidation playerChecker;
+		bool validAction = playerChecker.ActionChecker(battleAction);
 
-		if (battleAction == "ATTACK" || battleAction == "DEFLECT" || battleAction == "RUN")
+		// Fetch player and enemy data
+		string enemyName = GetPlayerLocationTile().GetEnemy()->GetName();
+		string playerName = myPlayer.GetPlayerName();
+		int playerAttackDamage = myPlayer.GetPlayerAttackDamage();
+		string playerAttackName = myPlayer.GetPlayerAttack();
+		int enemyAttackDamage = GetPlayerLocationTile().GetEnemy()->GetEnemyAttackDamage();
+		string enemyAttackName = GetPlayerLocationTile().GetEnemy()->GetEnemyAttack();
+		int currentEnemyHealth = GetPlayerLocationTile().GetEnemy()->GetHealth();
+		int currentPlayerHealth = myPlayer.GetPlayerHealth();
+
+		// Making random chance for running
+		srand((unsigned)time(nullptr));
+		int runChance = 1 + (rand() % 100); // Random chance between 1 and 100
+
+		// Clear the screen after a valid action
+		if (validAction)
 		{
-			// Clear the screen to simulate combat mode 
-			system("cls");
+			system("cls"); // Clears  console
 		}
 
-		if (battleAction == "ATTACK")
+		if (validAction)
 		{
-			// Player attacks
-			cout << myPlayer.GetPlayerName() << " uses " << myPlayer.GetPlayerAttack()
-				<< " and deals " << myPlayer.GetPlayerAttackDamage() << " HP!\n";
-			GetPlayerLocationTile().GetEnemy()->SetHealth(GetPlayerLocationTile().GetEnemy()->GetHealth() - myPlayer.GetPlayerAttackDamage());
-		}
-		else if (battleAction == "DEFLECT")
-		{
-			// Player deflects
-			cout << myPlayer.GetPlayerName() << " deflects!\n";
-			myPlayer.SetPlayerHealth(myPlayer.GetPlayerHealth() - (GetPlayerLocationTile().GetEnemy()->GetEnemyAttackDamage() / 2));
-			GetPlayerLocationTile().GetEnemy()->SetHealth(GetPlayerLocationTile().GetEnemy()->GetHealth() - (GetPlayerLocationTile().GetEnemy()->GetEnemyAttackDamage() / 2));
-		}
-		else if (battleAction == "RUN")
-		{
-			// Player attempts to run
-			srand((unsigned)time(nullptr));
-			if (rand() % 100 < 50) // 50% chance to successfully run
+			switch (playerChecker.GetPlayerAction())
 			{
-				cout << "You successfully ran away!\n";
-				// Move player to  next tile
-				int currentX = myPlayer.GetPlayerLocationX();
-				int currentY = myPlayer.GetPlayerLocationY();
+			case UserInputValidation::Action::ATTACK:
+				cout << playerName << " uses " << playerAttackName << " and deals " << playerAttackDamage << " HP!\n";
+				GetPlayerLocationTile().GetEnemy()->SetHealth(currentEnemyHealth - playerAttackDamage);
+				break;
 
-				myPlayer.SetPlayerLocation(currentX + 1, currentY); // Example: Move to the right
-				return; // Exit the combat loop
-			}
-			else
-			{
-				cout << "You tried to run away, but the " << GetPlayerLocationTile().GetEnemy()->GetName() << " blocked your path!\n";
+			case UserInputValidation::Action::DEFLECT:
+				cout << playerName << " deflects!\n";
+				myPlayer.SetPlayerHealth(currentPlayerHealth - (enemyAttackDamage / 2));
+				GetPlayerLocationTile().GetEnemy()->SetHealth(currentEnemyHealth - (enemyAttackDamage / 2));
+				break;
+
+			case UserInputValidation::Action::RUN:
+				if (GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
+				{
+					cout << "Lord Vallonious laughs at you for trying to run from the tutorial battle...\n";
+				}
+				else if (runChance <= 50) // 50% run success chance
+				{
+					cout << "You ran away successfully! The " << enemyName << " still remains...\n";
+					isActionRun = true;
+					continue; // Exit  loop
+				}
+				else
+				{
+					cout << "You were not able to run away...\n";
+				}
+				break;
+
+			default:
+				cout << "Invalid action. You lost your turn.\n";
+				break;
 			}
 		}
 		else
 		{
-			// Invalid input
-			cout << "Invalid action! Please enter ATTACK, DEFLECT, or RUN.\n";
-			continue;
+			cout << "Invalid command. You lost your turn.\n";
 		}
 
 		// Check if the enemy is defeated
 		if (GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
 		{
-			cout << GetPlayerLocationTile().GetEnemy()->GetName() << " has been defeated!\n";
+			cout << enemyName << " has been defeated!\n";
 			if (GetPlayerLocationTile().GetEnemy()->GetItem() != nullptr)
 			{
 				GetPlayerLocationTile().SetItem(GetPlayerLocationTile().GetEnemy()->GetItem());
 				cout << "The enemy dropped an item!\n";
 			}
-
-			if (GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
+			if (enemyName == "Dust Golem")
 			{
-				myPlayer.SetPlayerHealth(20); // Heal the player
-				cout << "Lord Vallonious pities you, so he has healed you. Player health: " << myPlayer.GetPlayerHealth() << "\n";
+				myPlayer.SetPlayerHealth(20);
+				cout << "Lord Vallonious heals you after your battle with the Dust Golem.\n";
+				SpawnStartingAreaEnemies(); // Ensure enemies spawn after tutorial
 			}
-
 			GetPlayerLocationChunk().EnemyDefeted(GetPlayerLocationTile().GetEnemy());
-			return; // Exit  combat loop
+			return;
 		}
 
-		// Enemy's turn
-		if (GetPlayerLocationTile().GetEnemy()->GetHealth() > 0)
+		// Enemy turn
+		if (!isActionRun && GetPlayerLocationTile().GetEnemy()->GetHealth() > 0)
 		{
-			cout << GetPlayerLocationTile().GetEnemy()->GetName() << " uses " << GetPlayerLocationTile().GetEnemy()->GetEnemyAttack()
-				<< " and deals " << GetPlayerLocationTile().GetEnemy()->GetEnemyAttackDamage() << " HP!\n";
-			myPlayer.SetPlayerHealth(myPlayer.GetPlayerHealth() - GetPlayerLocationTile().GetEnemy()->GetEnemyAttackDamage());
+			UserInputValidation::Action enemyAction = ProcessEnemyTurn(
+				GetPlayerLocationTile().GetEnemy()->GetHealth(),
+				GetPlayerLocationTile().GetEnemy()->GetStartingHealth()
+			);
+			if (enemyAction == UserInputValidation::Action::ATTACK)
+			{
+				cout << enemyName << " uses " << enemyAttackName << " and deals " << enemyAttackDamage << " HP!\n";
+				myPlayer.SetPlayerHealth(currentPlayerHealth - enemyAttackDamage);
+			}
+			else if (enemyAction == UserInputValidation::Action::DEFLECT)
+			{
+				cout << enemyName << " deflects your attack, reducing damage taken!\n";
+				GetPlayerLocationTile().GetEnemy()->SetHealth(currentEnemyHealth - (playerAttackDamage / 2));
+			}
 		}
 
-		// Display updated player and enemy status
+		// Display updated player and enemy health
 		cout << "\nUpdated Status:\n";
-		cout << "Enemy: " << GetPlayerLocationTile().GetEnemy()->GetName() << " | Health: " << GetPlayerLocationTile().GetEnemy()->GetHealth() << "\n";
-		cout << "Player: " << myPlayer.GetPlayerName() << " | Health: " << myPlayer.GetPlayerHealth() << "\n\n";
+		cout << "Enemy: " << enemyName << " | Health: " << GetPlayerLocationTile().GetEnemy()->GetHealth() << "\n";
+		cout << "Player: " << playerName << " | Health: " << myPlayer.GetPlayerHealth() << "\n\n";
 	}
 }
+
 
 
 /*
