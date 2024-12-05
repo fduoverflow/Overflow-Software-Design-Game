@@ -17,8 +17,14 @@ using namespace std;
 
 int main() {
 
+	//Introduce title and get player name
+	string playerName = "Link";
+	cout << "Welcome to The Legend of Gapplin!" << endl;
+	cout << "First, please enter your name: ";
+	cin >> playerName;
+
 	//Initialize player and inventory
-	Player myPlayer("link", 20, 5, 4);
+	Player myPlayer(playerName, 20, 5, 4);
 	Inventory inventory(25);
 
 	//Initialize UI

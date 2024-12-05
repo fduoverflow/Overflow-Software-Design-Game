@@ -607,7 +607,7 @@ void GameManager::GameBattleManager(Player& myPlayer)
 				{
 					cout << "Lord Vallonious laughs at you for trying to run from the tutorial battle...\n";
 				}
-				else if (runChance <= 50) // 50% run success chance
+				else if (runChance <= (15 + (myPlayer.GetPlayerEvade() * 5))) // run success chance based on player evade stat
 				{
 					cout << "You ran away successfully! The " << enemyName << " still remains...\n";
 					isActionRun = true;
@@ -1156,7 +1156,7 @@ void GameManager::SpawnLandOfScrumItems()
 
 	// Land of Scrum Robe
 	string arcaneRobeDesc = "Arcane fabric, made for escaping danger—now in limited supply!";
-	map->GetChunkAt(4, 0).GetTileAt(1, 11).SetItem(new Item("Arcane Robe", { L"👘",3 }, arcaneRobeDesc, Item::Type::EQUIPMENT, 3, 1));
+	map->GetChunkAt(4, 0).GetTileAt(1, 11).SetItem(new Item("Arcane Robe", { L"👘",3 }, arcaneRobeDesc, Item::Type::EQUIPMENT, 4, 1));
 
 	// Land of Scrum Hat
 	string arcaneHatDesc = "Woven with arcane magic... and maybe a bit of thread from Granny's attic.";
