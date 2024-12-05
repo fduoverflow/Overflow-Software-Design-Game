@@ -1363,6 +1363,9 @@ void GameManager::RollEndCredits()
 		cout << "-------------------------------------------------------------------------------------------------------\n";
 		cout << "Thank you so much for playing our game!\n";
 		cout << "Even though you cannot go back to previous areas, you are free to walk around the Land of Scrum!\n";
+		cout << "Legend of Gapplin was created by Team Overflow!\n";
+		cout << "Credits to the team behind the creation of this game!:\n";
+		cout << "Xavier Orrala, Tiffany Coelho, Shakir Templeman, Drilon Toska, Ryan Benyahia, and Joe Cangiano\n";
 		cout << "---------------------------------------------------------------------------------------------------------\n\n";
 		cout << "Gapplin says: Thank you for saving me! I hope your journey here was a good one!\n\n";
 		cout << "A voice from beyond says: you may now close the game. Thanks for playing!\n";
