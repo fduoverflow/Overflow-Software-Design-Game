@@ -2,7 +2,9 @@
 
 using namespace std;
 
-//Constructors
+/*
+* Default constructor
+*/
 Item::Item()
 {
 	name = "";
@@ -12,6 +14,10 @@ Item::Item()
 	quantity = 0;
 	isEquipped = false;
 }
+
+/*
+* Item constructor that takes in a name, icon, description, type, value, and quantity
+*/
 Item::Item(string n, icon i, string desc, Type t, int val, int q)
 {
 	name = n;
