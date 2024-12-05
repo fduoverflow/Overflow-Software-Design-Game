@@ -17,6 +17,7 @@ private:
 	Quest* branchesOfHeroesQuest;
 	Quest* threeStonesQuest;
 	Quest* captainQuest;
+	Quest* ninjaQuest;
 	Item* spellBook;
 	int enemiesToDefeat;					//Number of enemies that need to be defeated to move on to the next area
 	bool WillCollide(int, int, int, int);	// Checks whether of not the new player position is collidable
@@ -55,17 +56,23 @@ public:
 	//Return the Chunk address at player's current location.
 	Chunk& GetPlayerLocationChunk();
 
-	void InitilizeTutorialQuest(); // First Quest -- Retrieve spellbook from house after talking to Scrummius (owl)
+	//Quest initializers
+	void InitilizeTutorialQuest();	// First Quest -- Retrieve spellbook from house after talking to Scrummius (owl)
 	void TutorialQuestComplete();
 
-	void InitializeCaptainQuest(); //Quest Where player must retrieve their spellbook after it has been stolen by the thief as the player entered SprintVille
+	void InitializeCaptainQuest();	//Quest Where player must retrieve their spellbook after it has been stolen by the thief as the player entered SprintVille
 	bool CaptainQuestComplete();
+
+	void InitializeNinjaQuest();	//Quest given by the ninja
+	void EnterHouseNinjaQuest();
+	void NinjaQuestComplete();
 
 	//Quest getters and setters
 	Quest* GetFirstQuest();
 	Quest* GetBranchesQuest();
 	Quest* GetThreeStonesQuest();
 	Quest* GetCaptainQuest();
+	Quest* GetNinjaQuest();
 
 	void GameBattleManager(Player&); // Function that will manage how battles work and the interactions between the ATTACK, DEFLECT, and RUN actions
 	UserInputValidation::Action ProcessEnemyTurn(int currentEnemyHealth, int startEnemyhealth);

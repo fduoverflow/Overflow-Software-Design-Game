@@ -150,9 +150,25 @@ int main() {
 								manager.GetPlayerLocationTile().GetNPC()->SetDialogue("Congrats on completing the Branches of Heroes! Thine next destination should be further to the east.");
 							}
 						}
+
+						//Check if NPC is Ship Captain, then complete quest
 						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Ship Captain")
 						{
 							manager.CaptainQuestComplete();
+						}
+
+						//Check if NPC is Ninja
+						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Ninja")
+						{
+							if (!manager.GetNinjaQuest()->GetQuestStart() && !manager.GetNinjaQuest()->GetQuestComplete() && manager.GetCurrentMap() == 0)
+								manager.InitializeNinjaQuest();
+						}
+
+						//Check if NPC is The Old King
+						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "The Old King")
+						{
+							if (manager.GetNinjaQuest()->GetQuestStart() && !manager.GetNinjaQuest()->GetQuestComplete())
+								manager.NinjaQuestComplete();
 						}
 					}
 					break;
@@ -198,7 +214,27 @@ int main() {
 					if (manager.GetPlayerLocationTile().GetItem() != nullptr && manager.GetPlayerLocationTile().GetItem()->GetType() == Item::Type::TELEPORTER)
 						// Creates the new world in here for now, and brings the player to it if they have defeated the required number of enemies.
 					{
-						if (manager.GetEnemiesLeftToDefeat() <= 0)
+						if (manager.GetPlayerLocationTile().GetItem()->GetName() == "HouseDoor")
+						{
+							if (manager.GetNinjaQuest()->GetQuestStart() && !manager.GetNinjaQuest()->GetQuestComplete())
+								manager.EnterHouseNinjaQuest();
+							else
+								cout << "The door appears to be locked.\n";
+
+							//Redisplay map
+							system("cls");
+							manager.Display();
+						}
+						else if (manager.GetPlayerLocationTile().GetItem()->GetName() == "HouseDoorExit")
+						{
+							myPlayer.SetPlayerChunkLocation(4, 0);
+							myPlayer.SetPlayerLocation(9, 5);
+
+							//Redisplay map
+							system("cls");
+							manager.Display();
+						}
+						else if (manager.GetEnemiesLeftToDefeat() <= 0)
 						{
 							manager.SetNewWorld();
 							system("cls");

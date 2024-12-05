@@ -34,6 +34,7 @@ GameManager::GameManager()
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
 	captainQuest = new Quest("Ship Captain", "", "", nullptr);
+	ninjaQuest = new Quest("The Old King's Crown", "Find the crown of The Old King", "Go to the city to find the crown.", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 	inventory = nullptr;
@@ -52,6 +53,7 @@ GameManager::GameManager(Player* p)
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
 	captainQuest = new Quest("Ship Captain", "", "", nullptr);
+	ninjaQuest = new Quest("The Old King's Crown", "Find the crown of The Old King", "Go to the city to find the crown.", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 	inventory = nullptr;
@@ -67,6 +69,7 @@ GameManager::GameManager(Player* p, Inventory* i)
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
 	captainQuest = new Quest("Ship Captain", "", "", nullptr);
+	ninjaQuest = new Quest("The Old King's Crown", "Find the crown of The Old King", "Go to the city to find the crown.", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 	inventory = i;
@@ -90,6 +93,7 @@ void GameManager::InitializeStartingAreaWorld() {
 		" and Lord Vallonious has taken your pet, Gapplin? I don't believe you. But if I did I would say yooou are going to need a spell book if you are going tooo face him. Head west from your house and enter the old chateau. I believe yooou may find what you're looking for in there... liar.";
 	string herosTreeDialogue = "Greetings. I am the Hero's Tree. Thou must pass the Branches of Heroes to continue your adventure. These branches have chronicled the tales of these lands and to clear them, you must answer their three questions.";
 	string threeStonesDialogue = "The river seems to be uncrossable at the current moment...";
+	string ninjaNPCDialogue = "Huh? Who are you? Oh I get it, you're after The Old King's Crown too!";
 
 	//Place items near player's starting 
 	/*
@@ -111,6 +115,10 @@ void GameManager::InitializeStartingAreaWorld() {
 
 	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
 	map->GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
+
+	//Initalize Ninja NPC for their quest line.
+	map->GetChunkAt(1, 3).GetTileAt(7, 12).SetNPC(new NPC("Ninja", { L"🥷", 3 }, ninjaNPCDialogue));
+
 
 	//SpawnStartingAreaEnemies();
 	//Initialize starting area items
@@ -351,6 +359,54 @@ void GameManager::TutorialQuestComplete()
 	map->GetChunkAt(3, 1).GetTileAt(2, 6).GetNPC()->SetDialogue("You thought the River to be uncrossable, but the 3 stones of Agile can now guide you on your path to safely cross.You must however answer their 3 questions to cross safely");
 }
 
+void GameManager::InitializeNinjaQuest()
+{
+	//Reset cin to use std::getLine(). This is to allow for user input that includes spaces.
+	cin.ignore();
+
+	//Ask player if they want to start
+	string playerResponse;
+	cout << "Your response? (Y/N): ";
+	getline(cin, playerResponse);
+
+	//Clean input
+	NormalizeString(playerResponse);
+
+	//Dialgue with NPC
+	if (playerResponse == "Y" || playerResponse == "YES")
+	{
+		cout << "\nIs that so? Tell you what, I know where it is. Meet me in the city and I'll show it to you.\n";
+		map->GetChunkAt(1, 3).GetTileAt(7, 12).GetNPC()->SetDialogue("Meet me in the city.");
+		ninjaQuest->SetQuestStart(true);
+	}
+	else
+	{
+		cout << "\nThat's what I thought.\n";
+		map->GetChunkAt(1, 3).GetTileAt(7, 12).GetNPC()->SetDialogue("You're back? Did you change your answer?");
+	}
+}
+void GameManager::EnterHouseNinjaQuest()
+{
+	myPlayer->SetPlayerChunkLocation(3, 2);
+	myPlayer->SetPlayerLocation(7, 4);
+}
+void GameManager::NinjaQuestComplete()
+{
+	//Drop crown
+	map->GetChunkAt(3, 2).GetTileAt(9, 9).SetItem(new Item("Old Crown Hat", { L"👑", 3 }, "Crown of The Old King. Is it whispering to you?", Item::Type::EQUIPMENT, 50, 1));
+
+	//Update king's dialogue
+	map->GetChunkAt(3, 2).GetTileAt(9, 8).GetNPC()->SetDialogue("If that's all you needed, I would appreciate you leaving now.");
+
+	//Update ninja status
+	string ninjaDesc = "An evil ninja. It seems you've been betrayed.";
+	map->GetChunkAt(4, 0).GetTileAt(9, 4).SetNPC(nullptr);
+	map->GetChunkAt(4, 0).GetTileAt(9, 4).SetEnemy(new Enemy("Ninja", { L"🥷", 3 }, 30, new Item("Ninja Kunai", { L"🗡️", 3 }, "A kunai with some writting on it. It reminds you of a summoning rune.", Item::Type::WEAPON, 15, 1), "Shuriken Throw", 4, ninjaDesc));
+
+	//Update complete bool
+	ninjaQuest->SetQuestComplete(true);
+}
+
 //First Quest getter
 Quest* GameManager::GetFirstQuest()
 {
@@ -361,6 +417,12 @@ Quest* GameManager::GetFirstQuest()
 Quest* GameManager::GetBranchesQuest()
 {
 	return branchesOfHeroesQuest;
+}
+
+//Ninja Quest getter
+Quest* GameManager::GetNinjaQuest()
+{
+	return ninjaQuest;
 }
 
 //Three Stones Puzzle Quest getter
@@ -1240,13 +1302,46 @@ bool GameManager::CaptainQuestComplete()
 
 void GameManager::SetSprintVilleNPCs()
 {
+	//Ship captain
 	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I remember you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
 	map->GetChunkAt(4, 2).GetTileAt(8, 10).SetNPC(new NPC("Ship Captain", { L"⚓", 3 }, shipCaptainDialogue));
+
+	//Ninja
+	string ninjaNPCDialogue = "";
+	if(ninjaQuest->GetQuestStart())
+		ninjaNPCDialogue = "You made it. The crown is just through that door. But be prepared for a fight.";
+	else
+		ninjaNPCDialogue = "There is a dead ninja here. How strange.";
+	map->GetChunkAt(4, 0).GetTileAt(9, 4).SetNPC(new NPC("Ninja", { L"🥷", 3 }, ninjaNPCDialogue));
+
+	//Old King
+	string oldKingDialogue = "Huh? You're here looking for a crown? Sure, take it. If it brought you here then I'd rather get rid of it.";
+	map->GetChunkAt(3, 2).GetTileAt(9, 8).SetNPC(new NPC("The Old King", { L"🥷", 3 }, oldKingDialogue));
+
+	//Doors
+	map->GetChunkAt(4, 0).GetTileAt(9, 5).SetItem(new Item("HouseDoor", { L"🚪", 3 }, "This is a door to someone's house.", Item::Type::TELEPORTER, 0, 0));
+	map->GetChunkAt(3, 2).GetTileAt(7, 4).SetItem(new Item("HouseDoorExit", { L"🚪", 3 }, "This is a door to someone's house.", Item::Type::TELEPORTER, 0, 0));
 }
 
 void GameManager::RollEndCredits()
 {
-	if (inventory->findItem("LEGENDARY GAPPLIN") != nullptr)
+	if (inventory->findItem("LEGENDARY GAPPLIN") != nullptr && myPlayer->GetEquippedHat()->GetName() == "Old Crown Hat")
+	{
+		cout << endl;
+		cout << "Lord Vallonious turns to ash. Leaving an empty throne behind.\n";
+		cout << "You feel strangely calm. The ambient quiet room seems serene.\n";
+		cout << "An instinct beckons you to slowly sit down on the throne.\n";
+		cout << "You hold Gapplin in your hand and each of you looks at each other with a strange sense of understanding.\n";
+		cout << "You put your hand to the ground and let Gapplin go. You watch as he walks out of the room.\n";
+		cout << "Maybe this spot isn't so bad. Finally, some peace and quiet.\n\n";
+		cout << "-------------------------------------------------------------------------------------------------------\n";
+		cout << "Thank you so much for playing our game!\n";
+		cout << "Even though you cannot go back to previous areas, you are free to walk around the Land of Scrum!\n";
+		cout << "---------------------------------------------------------------------------------------------------------\n\n";
+		cout << "Gapplin says: Thank you for saving me! I hope your journey here was a good one!\n\n";
+		cout << "A voice from beyond says: you may now close the game. Thanks for playing!\n";
+	}
+	else if (inventory->findItem("LEGENDARY GAPPLIN") != nullptr)
 	{
 		cout << endl;
 		cout << "Lord Vallonious says: ARGHHHHHHHHHH. This is not my end.\n";
