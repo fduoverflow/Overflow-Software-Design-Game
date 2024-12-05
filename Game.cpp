@@ -150,9 +150,18 @@ int main() {
 								manager.GetPlayerLocationTile().GetNPC()->SetDialogue("Congrats on completing the Branches of Heroes! Thine next destination should be further to the east.");
 							}
 						}
+
+						//Check if NPC is Ship Captain, then complete quest
 						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Ship Captain")
 						{
 							manager.CaptainQuestComplete();
+						}
+
+						//Check if NPC is Ninja
+						if (manager.GetPlayerLocationTile().GetNPC()->GetName() == "Ninja")
+						{
+							if(!manager.GetNinjaQuest()->GetQuestStart() && !manager.GetNinjaQuest()->GetQuestComplete())
+								manager.InitializeNinjaQuest();
 						}
 					}
 					break;

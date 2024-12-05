@@ -34,6 +34,7 @@ GameManager::GameManager()
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
 	captainQuest = new Quest("Ship Captain", "", "", nullptr);
+	ninjaQuest = new Quest("The Old King's Crown", "Find the crown of The Old King", "Go to the city to find the crown.", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 	inventory = nullptr;
@@ -52,6 +53,7 @@ GameManager::GameManager(Player* p)
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
 	captainQuest = new Quest("Ship Captain", "", "", nullptr);
+	ninjaQuest = new Quest("The Old King's Crown", "Find the crown of The Old King", "Go to the city to find the crown.", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 	inventory = nullptr;
@@ -67,6 +69,7 @@ GameManager::GameManager(Player* p, Inventory* i)
 	branchesOfHeroesQuest = new Quest("Branches of Heroes", "Three roots block your path and you must pass them by answering their questions.", "Answer the 3 questions.", nullptr);
 	threeStonesQuest = new Quest("Three Stones", "The 3 stones of Agile can now guide you on your path to safely cross. You must answer their 3 questions to cross safely.", "Answer the 3 questions.", nullptr);
 	captainQuest = new Quest("Ship Captain", "", "", nullptr);
+	ninjaQuest = new Quest("The Old King's Crown", "Find the crown of The Old King", "Go to the city to find the crown.", nullptr);
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 	inventory = i;
@@ -90,6 +93,7 @@ void GameManager::InitializeStartingAreaWorld() {
 		" and Lord Vallonious has taken your pet, Gapplin? I don't believe you. But if I did I would say yooou are going to need a spell book if you are going tooo face him. Head west from your house and enter the old chateau. I believe yooou may find what you're looking for in there... liar.";
 	string herosTreeDialogue = "Greetings. I am the Hero's Tree. Thou must pass the Branches of Heroes to continue your adventure. These branches have chronicled the tales of these lands and to clear them, you must answer their three questions.";
 	string threeStonesDialogue = "The river seems to be uncrossable at the current moment...";
+	string ninjaNPCDialogue = "Huh? Who are you? Oh I get it, you're after The Old King's Crown too!";
 
 	//Place items near player's starting 
 	/*
@@ -111,6 +115,10 @@ void GameManager::InitializeStartingAreaWorld() {
 
 	//Initialize Hero's Tree NPC to offer the Branches of Heroes puzzle.
 	map->GetChunkAt(5, 3).GetTileAt(6, 8).SetNPC(new NPC("Hero's Tree", { L"🌲", 3 }, herosTreeDialogue));
+
+	//Initalize Ninja NPC for their quest line.
+	map->GetChunkAt(1, 3).GetTileAt(7, 12).SetNPC(new NPC("Ninja", { L"🥷", 3 }, ninjaNPCDialogue));
+
 
 	//SpawnStartingAreaEnemies();
 	//Initialize starting area items
@@ -351,6 +359,37 @@ void GameManager::TutorialQuestComplete()
 	map->GetChunkAt(3, 1).GetTileAt(2, 6).GetNPC()->SetDialogue("You thought the River to be uncrossable, but the 3 stones of Agile can now guide you on your path to safely cross.You must however answer their 3 questions to cross safely");
 }
 
+void GameManager::InitializeNinjaQuest()
+{
+	//Reset cin to use std::getLine(). This is to allow for user input that includes spaces.
+	cin.ignore();
+
+	//Ask player if they want to start
+	string playerResponse;
+	cout << "Your response? (Y/N): ";
+	getline(cin, playerResponse);
+
+	//Clean input
+	NormalizeString(playerResponse);
+
+	//Dialgue with NPC
+	if (playerResponse == "Y" || playerResponse == "YES")
+	{
+		cout << "\nIs that so? Tell you what, I know where it is. Meet me in the city and I'll show it to you.\n";
+		map->GetChunkAt(1, 3).GetTileAt(7, 12).GetNPC()->SetDialogue("Meet me in the city.");
+		ninjaQuest->SetQuestStart(true);
+	}
+	else
+	{
+		cout << "\nThat's what I thought.\n";
+		map->GetChunkAt(1, 3).GetTileAt(7, 12).GetNPC()->SetDialogue("You're back? Did you change your answer?");
+	}
+}
+void GameManager::NinjaQuestComplete()
+{
+	
+}
+
 //First Quest getter
 Quest* GameManager::GetFirstQuest()
 {
@@ -361,6 +400,12 @@ Quest* GameManager::GetFirstQuest()
 Quest* GameManager::GetBranchesQuest()
 {
 	return branchesOfHeroesQuest;
+}
+
+//Ninja Quest getter
+Quest* GameManager::GetNinjaQuest()
+{
+	return ninjaQuest;
 }
 
 //Three Stones Puzzle Quest getter
