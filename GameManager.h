@@ -44,6 +44,9 @@ public:
 	// Displays the map and anything within it
 	void Display();
 	void DisplayMap();
+	
+	void ClearScreenAndPrompt();
+	void ClearBattleMessages();
 
 	//Returns the Tile address at player's current location.
 	Tile& GetPlayerLocationTile();
@@ -95,4 +98,7 @@ public:
 	void SetSprintVilleNPCs();
 
 	int GetCurrentMap();
+
+	//Checking to see if the player is at the doors of Vallonious' room
+	void CheckForValloniousRoom();
 };
