@@ -174,6 +174,7 @@ void GameManager::InitializeLandOfScrumWorld() {
 
 	// Place all item, NPC, and enemy initializations for the city in this 
 	SpawnLandOfScrumEnemies();
+	SpawnLandOfScrumItems();
 
 	// Lock of Vallonious final boss room until the player answers that they would like to proceed
 	map->GetChunkAt(5, 1).GetTileAt(0, 6).SetID(10);
@@ -1292,8 +1293,19 @@ bool GameManager::CaptainQuestComplete()
 	captainQuest->SetQuestStart(false);
 	captainQuest->SetQuestComplete(true);
 	// Prompting the player that their spellbook is back in the inventory
-	cout << "You have completed the Captain's Quest. Your spellbook has been added back to your inventory\n\n";
-	inventory->addItem(*spellBook);
+
+	// Updating the Ship captain dialogue once the quest has been completed
+	map->GetChunkAt(4, 2).GetTileAt(8, 10).GetNPC()->SetDialogue("Sorry for the mix up matey!\n");
+	if (inventory->findItem("SCRUMMIUS' SPELL BOOK") == nullptr)
+	{
+		cout << "You have completed the Captain's Quest. Your spellbook has been added back to your inventory\n\n";
+		inventory->addItem(*spellBook);
+
+	}
+	else
+	{
+		cout << "Walk over yonder and get ready to sail!\n";
+	}
 
 	//Prompting the player that they can now go into the land of scrum
 	cout << "Now go forth and sail the seas to the Land of Scrum! Who knows what troubles await you on your quest for Gapplin!\n";
