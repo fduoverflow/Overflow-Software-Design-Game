@@ -136,6 +136,7 @@ void GameManager::InitializeCityWorld() {
 	// Place all item, NPC, and enemy initializations for the city in this function
 	SetSprintVilleNPCs();
 	SpawnSprintVilleEnemies();
+	SpawnSprintVilleItems();
 	
 	// Teleporter into Land of Scrum
 	map->GetChunkAt(4, 2).GetTileAt(8, 12).SetItem(new Item("Gate", { L"🚪", 3 }, "You're at the dock; would you like to take the ride to the Land of Scrum?", Item::Type::TELEPORTER, 0, 0));
@@ -914,9 +915,6 @@ void GameManager::SpawnStartingAreaEnemies()
 	map->GetChunkAt(3, 1).GetTileAt(8, 1).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
 	map->GetChunkAt(3,1).GetTileAt(12, 14).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
 
-
-
-
 	// Mushroom Warriors
 	// Chunk 4,2
 	map->GetChunkAt(4, 2).GetTileAt(14, 5).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
@@ -1013,6 +1011,31 @@ void GameManager::SpawnSprintVilleEnemies() {
 
 /* This function is used to initialize the enemies in the Land of Scrum Area
 */
+void GameManager::SpawnSprintVilleItems()
+{
+	// Weapon Descriptions and Initialization
+	string platinumSwordDesc = "A sword dropped from a knight. It yearns to be wielded once again.";
+	string blueMoonDesc = "Pack a wallop once in a blue moon—or every day!";
+	map->GetChunkAt(2, 1).GetTileAt(12,3).SetItem(new Item("Platinum Sword",{L"🗡️",5},platinumSwordDesc,Item::Type::WEAPON,8,1));
+	map->GetChunkAt(4, 0).GetTileAt(14, 7).SetItem(new Item("Blue Morning Star", { L"🏹",3 }, blueMoonDesc, Item::Type::WEAPON, 9, 1));
+
+	// Item Description and Initialization
+	string healingPotionDesc = "A mid-level pick-me-up. Better than an apple a day!";
+	string lesserHealingPotionDesc = "Tiny but mighty! It's like a hug for your HP";
+	map->GetChunkAt(2, 0).GetTileAt(7, 3).SetItem(new Item("Healing Potion", {L"🍵",3}, healingPotionDesc,Item::Type::HEALING,10,1));
+	map->GetChunkAt(4, 0).GetTileAt(12, 4).SetItem(new Item("Healing Potion", { L"🍵",3 }, healingPotionDesc, Item::Type::HEALING, 10, 1));
+	map->GetChunkAt(3, 0).GetTileAt(8, 12).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// SprintVille Robe
+	string enchantedRobeDesc = "Like the charmed robe, but with extra swish and dodge.";
+	map->GetChunkAt(4, 1).GetTileAt(6, 13).SetItem(new Item("Enchanted Robe", { L"👘",3 },enchantedRobeDesc, Item::Type::EQUIPMENT,  2, 1));
+
+	// SprintVille Hat
+	string enchantedHatDesc = "Guaranteed to add a mystical flair to your headgear collection.";
+	map->GetChunkAt(2, 1).GetTileAt(12, 13).SetItem(new Item("Enchanted Hat", {L"🎓",3},enchantedHatDesc, Item::Type::EQUIPMENT,6,1));
+
+}
+
 void GameManager::SpawnLandOfScrumEnemies() {
 
 	// Enemy Descriptions
@@ -1177,3 +1200,20 @@ void GameManager::SetSprintVilleNPCs()
 	map->GetChunkAt(4, 2).GetTileAt(8, 10).SetNPC(new NPC("Ship Captain", { L"⚓", 3 }, shipCaptainDialogue));
 }
 
+void GameManager::RollEndCredits()
+{
+	if (inventory->findItem("LEGENDARY GAPPLIN") != nullptr)
+	{
+		cout << endl;
+		cout << "Lord Vallonious says: ARGHHHHHHHHHH. This is not my end.\n";
+		cout << "This is not the last you see of me! I WILL HAVE MY REVENGE.\n\n";
+		cout << "A voice from beyond says: With Vallonious now defeated, Restrospecta can be at peace once again.\n";
+		cout << "You feel strongly however, that this is not the last you will see of Vallonious...\n\n";
+		cout << "-------------------------------------------------------------------------------------------------------\n";
+		cout << "Thank you so much for playing our game!\n";
+		cout << "Even though you cannot go back to previous areas, you are free to walk around the Land of Scrum!\n";
+		cout << "---------------------------------------------------------------------------------------------------------\n\n";
+		cout << "Gapplin says: Thank you for saving me! I hope your journey here was a good one!\n\n";
+		cout << "A voice from beyond says: you may now close the game. Thanks for playing!\n";
+	}
+}
