@@ -18,10 +18,10 @@ using namespace std;
 int main() {
 
 	//Introduce title and get player name
-	string playerName = "Link";
+	string playerName;
 	cout << "Welcome to The Legend of Gapplin!" << endl;
 	cout << "First, please enter your name: ";
-	cin >> playerName;
+	getline(cin, playerName);
 
 	//Initialize player and inventory
 	Player myPlayer(playerName, 20, 5, 4);
