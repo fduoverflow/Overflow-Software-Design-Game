@@ -85,6 +85,9 @@ public:
 	//Initialize starting area items
 	void SpawnStartingAreaItems();
 
+	//Initialize SpintVille items
+	void SpawnSprintVilleItems();
+
 	//Use Item from passed Inventory
 	void UseItem(Inventory& playerInv);
 
