@@ -98,4 +98,7 @@ public:
 
 	//Checking to see if the player is at the doors of Vallonious' room
 	void CheckForValloniousRoom();
+
+	// Checking to see if the player has finished the game
+	void RollEndCredits();
 };
