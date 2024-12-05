@@ -214,7 +214,7 @@ void GameManager::SetNewWorld() {
 	switch (currentMap) {
 	case 0:
 		InitializeStartingAreaWorld();
-		enemiesToDefeat = 4;
+		enemiesToDefeat = 0;
 		break;
 	case 1:
 		InitializeCityWorld();
@@ -385,9 +385,20 @@ void GameManager::InitializeNinjaQuest()
 		map->GetChunkAt(1, 3).GetTileAt(7, 12).GetNPC()->SetDialogue("You're back? Did you change your answer?");
 	}
 }
+void GameManager::EnterHouseNinjaQuest()
+{
+	myPlayer->SetPlayerChunkLocation(3, 2);
+	myPlayer->SetPlayerLocation(7, 4);
+}
 void GameManager::NinjaQuestComplete()
 {
-	
+	//Drop crown
+	map->GetChunkAt(3, 2).GetTileAt(9, 9).SetItem(new Item("Old Crown Hat", { L"👑", 3 }, "Crown of The Old King. Is it whispering to you?", Item::Type::EQUIPMENT, 50, 1));
+
+
+
+	//Update complete bool
+	ninjaQuest->SetQuestComplete(true);
 }
 
 //First Quest getter
@@ -1285,8 +1296,25 @@ bool GameManager::CaptainQuestComplete()
 
 void GameManager::SetSprintVilleNPCs()
 {
+	//Ship captain
 	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I remember you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
 	map->GetChunkAt(4, 2).GetTileAt(8, 10).SetNPC(new NPC("Ship Captain", { L"⚓", 3 }, shipCaptainDialogue));
+
+	//Ninja
+	string ninjaNPCDialogue = "";
+	if(ninjaQuest->GetQuestStart())
+		ninjaNPCDialogue = "You made it. The crown is just through that door. But be prepared for a fight.";
+	else
+		ninjaNPCDialogue = "There is a dead ninja here. How strange.";
+	map->GetChunkAt(4, 0).GetTileAt(9, 4).SetNPC(new NPC("Ninja", { L"🥷", 3 }, ninjaNPCDialogue));
+
+	//Old King
+	string oldKingDialogue = "Huh? You're here looking for a crown? Sure, take it. If it brought you here then I'd rather get rid of it.";
+	map->GetChunkAt(3, 2).GetTileAt(9, 8).SetNPC(new NPC("The Old King", { L"🥷", 3 }, oldKingDialogue));
+
+	//Doors
+	map->GetChunkAt(4, 0).GetTileAt(9, 5).SetItem(new Item("HouseDoor", { L"🚪", 3 }, "This is a door to someone's house.", Item::Type::TELEPORTER, 0, 0));
+	map->GetChunkAt(3, 2).GetTileAt(7, 4).SetItem(new Item("HouseDoorExit", { L"🚪", 3 }, "This is a door to someone's house.", Item::Type::TELEPORTER, 0, 0));
 }
 
 void GameManager::RollEndCredits()

@@ -64,6 +64,7 @@ public:
 	bool CaptainQuestComplete();
 
 	void InitializeNinjaQuest();	//Quest given by the ninja
+	void EnterHouseNinjaQuest();
 	void NinjaQuestComplete();
 
 	//Quest getters and setters
