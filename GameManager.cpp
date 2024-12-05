@@ -546,10 +546,7 @@ void GameManager::GameBattleManager(Player& myPlayer)
 		int runChance = 1 + (rand() % 100); // Random chance between 1 and 100
 
 		// Clear the screen after a valid action
-		if (validAction)
-		{
-			system("cls"); // Clears  console
-		}
+		system("cls");
 
 		if (validAction)
 		{
@@ -628,6 +625,7 @@ void GameManager::GameBattleManager(Player& myPlayer)
 			{
 				cout << enemyName << " deflects your attack, reducing damage taken!\n";
 				GetPlayerLocationTile().GetEnemy()->SetHealth(currentEnemyHealth - (playerAttackDamage / 2));
+				myPlayer.SetPlayerHealth(currentPlayerHealth - (playerAttackDamage / 2));
 			}
 		}
 
