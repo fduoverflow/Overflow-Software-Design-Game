@@ -18,6 +18,7 @@ private:
 	Quest* threeStonesQuest;
 	Quest* captainQuest;
 	Item* spellBook;
+	int enemiesToDefeat;					//Number of enemies that need to be defeated to move on to the next area
 	bool WillCollide(int, int, int, int);	// Checks whether of not the new player position is collidable
 
 	//Bool to check if player has completed tutorial battle.
@@ -94,5 +95,7 @@ public:
 	// Setting the NPCs of Sprintville
 	void SetSprintVilleNPCs();
 
+	//Control variable getters
 	int GetCurrentMap();
+	int GetEnemiesLeftToDefeat();
 };

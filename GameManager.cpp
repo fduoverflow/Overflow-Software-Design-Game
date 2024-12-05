@@ -37,6 +37,7 @@ GameManager::GameManager()
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 	inventory = nullptr;
+	enemiesToDefeat = 0;
 }
 /*
 * Constructor with passed player and map.
@@ -54,6 +55,7 @@ GameManager::GameManager(Player* p)
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 	inventory = nullptr;
+	enemiesToDefeat = 0;
 }
 GameManager::GameManager(Player* p, Inventory* i)
 {
@@ -68,6 +70,7 @@ GameManager::GameManager(Player* p, Inventory* i)
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 	inventory = i;
+	enemiesToDefeat = 0;
 }
 int GameManager::GetCurrentMap()
 {
@@ -171,12 +174,15 @@ void GameManager::SetNewWorld() {
 	switch (currentMap) {
 	case 0:
 		InitializeStartingAreaWorld();
+		enemiesToDefeat = 4;
 		break;
 	case 1:
 		InitializeCityWorld();
+		enemiesToDefeat = 4;
 		break;
 	case 2:
 		InitializeLandOfScrumWorld();
+		enemiesToDefeat = 3;
 		break;
 	default:
 		break;
@@ -601,11 +607,14 @@ void GameManager::GameBattleManager(Player& myPlayer)
 			}
 			if (enemyName == "Dust Golem")
 			{
-				myPlayer.SetPlayerHealth(20);
+				myPlayer.SetPlayerHealth(myPlayer.GetPlayerMaxHealth());
 				cout << "Lord Vallonious heals you after your battle with the Dust Golem.\n";
 				SpawnStartingAreaEnemies(); // Ensure enemies spawn after tutorial
 			}
 			GetPlayerLocationChunk().EnemyDefeted(GetPlayerLocationTile().GetEnemy());
+			enemiesToDefeat--;
+			if (enemiesToDefeat <= 0)
+				cout << "\n!!! You have defeated the required number of enemies to proceed to the next area. Do your best to find its entrance. !!!\n";
 			return;
 		}
 
@@ -1097,11 +1106,16 @@ bool GameManager::CaptainQuestComplete()
 	return true;
 }
 
-
-
 void GameManager::SetSprintVilleNPCs()
 {
 	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o' Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I rememeber you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
 	map->GetChunkAt(4, 2).GetTileAt(8, 10).SetNPC(new NPC("Ship Captain", { L"⚓", 3 }, shipCaptainDialogue));
 }
 
+/*
+* Return the number of enemies left to defeat before the player can proceed to the next area.
+*/
+int GameManager::GetEnemiesLeftToDefeat()
+{
+	return enemiesToDefeat;
+}
