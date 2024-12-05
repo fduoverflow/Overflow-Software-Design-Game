@@ -18,10 +18,22 @@ using namespace std;
 int main() {
 
 	//Introduce title and get player name
-	string playerName = "Link";
+	string playerName;
 	cout << "Welcome to The Legend of Gapplin!" << endl;
-	cout << "First, please enter your name: ";
-	cin >> playerName;
+	cout << "First, please enter your name (max 15 characters): ";
+	getline(cin, playerName);
+	if (playerName.length() > 16)
+	{
+		while (playerName.length() > 16)
+		{
+			system("cls");
+			cout << "Please enter a name of 15 characters or less\n";
+			cout << "Enter your name: ";
+			getline(cin, playerName);
+		}
+	}
+	cout << endl;
+	cout << "Welcome to the Land of Retrospecta, " << playerName << endl;
 
 	//Initialize player and inventory
 	Player myPlayer(playerName, 20, 5, 4);

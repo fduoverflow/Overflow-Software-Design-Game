@@ -174,6 +174,7 @@ void GameManager::InitializeLandOfScrumWorld() {
 
 	// Place all item, NPC, and enemy initializations for the city in this 
 	SpawnLandOfScrumEnemies();
+	SpawnLandOfScrumItems();
 
 	// Lock of Vallonious final boss room until the player answers that they would like to proceed
 	map->GetChunkAt(5, 1).GetTileAt(0, 6).SetID(10);
@@ -1292,8 +1293,19 @@ bool GameManager::CaptainQuestComplete()
 	captainQuest->SetQuestStart(false);
 	captainQuest->SetQuestComplete(true);
 	// Prompting the player that their spellbook is back in the inventory
-	cout << "You have completed the Captain's Quest. Your spellbook has been added back to your inventory\n\n";
-	inventory->addItem(*spellBook);
+
+	// Updating the Ship captain dialogue once the quest has been completed
+	map->GetChunkAt(4, 2).GetTileAt(8, 10).GetNPC()->SetDialogue("Sorry for the mix up matey!\n");
+	if (inventory->findItem("SCRUMMIUS' SPELL BOOK") == nullptr)
+	{
+		cout << "You have completed the Captain's Quest. Your spellbook has been added back to your inventory\n\n";
+		inventory->addItem(*spellBook);
+
+	}
+	else
+	{
+		cout << "Walk over yonder and get ready to sail!\n";
+	}
 
 	//Prompting the player that they can now go into the land of scrum
 	cout << "Now go forth and sail the seas to the Land of Scrum! Who knows what troubles await you on your quest for Gapplin!\n";
@@ -1303,7 +1315,7 @@ bool GameManager::CaptainQuestComplete()
 void GameManager::SetSprintVilleNPCs()
 {
 	//Ship captain
-	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I remember you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
+	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I remember you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o' Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
 	map->GetChunkAt(4, 2).GetTileAt(8, 10).SetNPC(new NPC("Ship Captain", { L"⚓", 3 }, shipCaptainDialogue));
 
 	//Ninja
