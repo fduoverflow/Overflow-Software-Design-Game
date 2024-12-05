@@ -162,8 +162,6 @@ int main() {
 						{
 							if (!manager.GetNinjaQuest()->GetQuestStart() && !manager.GetNinjaQuest()->GetQuestComplete() && manager.GetCurrentMap() == 0)
 								manager.InitializeNinjaQuest();
-							//else if (manager.GetNinjaQuest()->GetQuestStart() && !manager.GetNinjaQuest()->GetQuestComplete() && manager.GetCurrentMap() == 1)
-							//	manager.EnterHouseNinjaQuest();
 						}
 
 						//Check if NPC is The Old King

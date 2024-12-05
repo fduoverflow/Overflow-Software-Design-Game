@@ -214,7 +214,7 @@ void GameManager::SetNewWorld() {
 	switch (currentMap) {
 	case 0:
 		InitializeStartingAreaWorld();
-		enemiesToDefeat = 0;
+		enemiesToDefeat = 4;
 		break;
 	case 1:
 		InitializeCityWorld();
@@ -395,7 +395,13 @@ void GameManager::NinjaQuestComplete()
 	//Drop crown
 	map->GetChunkAt(3, 2).GetTileAt(9, 9).SetItem(new Item("Old Crown Hat", { L"👑", 3 }, "Crown of The Old King. Is it whispering to you?", Item::Type::EQUIPMENT, 50, 1));
 
+	//Update king's dialogue
+	map->GetChunkAt(3, 2).GetTileAt(9, 8).GetNPC()->SetDialogue("If that's all you needed, I would appreciate you leaving now.");
 
+	//Update ninja status
+	string ninjaDesc = "An evil ninja. It seems you've been betrayed.";
+	map->GetChunkAt(4, 0).GetTileAt(9, 4).SetNPC(nullptr);
+	map->GetChunkAt(4, 0).GetTileAt(9, 4).SetEnemy(new Enemy("Ninja", { L"🥷", 3 }, 30, new Item("Ninja Kunai", { L"🗡️", 3 }, "A kunai with some writting on it. It reminds you of a summoning rune.", Item::Type::WEAPON, 15, 1), "Shuriken Throw", 4, ninjaDesc));
 
 	//Update complete bool
 	ninjaQuest->SetQuestComplete(true);
@@ -1319,7 +1325,23 @@ void GameManager::SetSprintVilleNPCs()
 
 void GameManager::RollEndCredits()
 {
-	if (inventory->findItem("LEGENDARY GAPPLIN") != nullptr)
+	if (inventory->findItem("LEGENDARY GAPPLIN") != nullptr && myPlayer->GetEquippedHat()->GetName() == "Old Crown Hat")
+	{
+		cout << endl;
+		cout << "Lord Vallonious turns to ash. Leaving an empty throne behind.\n";
+		cout << "You feel strangely calm. The ambient quiet room seems serene.\n";
+		cout << "An instinct beckons you to slowly sit down on the throne.\n";
+		cout << "You hold Gapplin in your hand and each of you looks at each other with a strange sense of understanding.\n";
+		cout << "You put your hand to the ground and let Gapplin go. You watch as he walks out of the room.\n";
+		cout << "Maybe this spot isn't so bad. Finally, some peace and quiet.\n\n";
+		cout << "-------------------------------------------------------------------------------------------------------\n";
+		cout << "Thank you so much for playing our game!\n";
+		cout << "Even though you cannot go back to previous areas, you are free to walk around the Land of Scrum!\n";
+		cout << "---------------------------------------------------------------------------------------------------------\n\n";
+		cout << "Gapplin says: Thank you for saving me! I hope your journey here was a good one!\n\n";
+		cout << "A voice from beyond says: you may now close the game. Thanks for playing!\n";
+	}
+	else if (inventory->findItem("LEGENDARY GAPPLIN") != nullptr)
 	{
 		cout << endl;
 		cout << "Lord Vallonious says: ARGHHHHHHHHHH. This is not my end.\n";
