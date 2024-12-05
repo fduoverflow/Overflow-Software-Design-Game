@@ -7,11 +7,16 @@
 
 using namespace std;
 
+
+// Default constructor for the Map class.
+// Initializes an empty map with no rows and columns.
 Map::Map() {
 	numRows = 0;
 	numColumns = 0;
 }
 
+// Parameterized constructor for the Map class.
+// Reads a map file and initializes a 2D grid of chunks based on the input file.
 Map::Map(string fileName, int rows, int columns) {
 	numRows = rows;				// number of chunks
 	numColumns = columns;		// number of columns
@@ -76,12 +81,14 @@ Map::Map(string fileName, int rows, int columns) {
 	return;
 }
 
+// Displays the current visible chunk
 void Map::Display(int chunkX, int chunkY, int tileX, int tileY) {
 	ConsoleColors::EnableColor();
 	chunks[chunkY][chunkX].DisplayPlayerChunk(tileX, tileY);
 	ConsoleColors::DisableColor();
 }
 
+// Displays the chunk at x, y
 void Map::DisplayChunkAt(int chunkX, int chunkY) {
 	ConsoleColors::EnableColor();
 	chunks[chunkY][chunkX].DisplayChunk();
@@ -112,18 +119,18 @@ void Map::DisplayMap(int x, int y, wstring icon)
 	ConsoleColors::DisableColor();
 }
 
-/*
-* Returns Chunk at given row and col
-*/
+// Returns Chunk at given row and col
 Chunk& Map::GetChunkAt(int x, int y)
 {
 	return chunks[y][x];
 }
 
+// Retrieves the number of columns in the map.
 int Map::GetNumColumns() {
 	return numColumns;
 }
 
+// Retrieves the number of rows in the map.
 int Map::GetNumRows() {
 	return numRows;
 }

@@ -6,20 +6,21 @@
 #include "Enemy.h"
 using namespace std;
 
+// Default display representation for a tile.
 const string TILE_DISPLAY = "  ";
 
-//enum BLOCK_TYPE { GRASS, WATER, TREE, FLOOR, BUSH };
-
+// Represents a type of block in the game world.
 struct Block {
-	string name;
-	string description;
-	Color color;
-	bool collides;
+	string name;		// Name of the block type (e.g., "Grass").
+	string description;	// Description of the block type.
+	Color color;		// Display color of the block.
+	bool collides;		// Whether the block prevents movement (true = impassable).
 };
 
+// Total number of block types available.
 const int NUM_BLOCK_TYPES = 23;
 
-
+// Array defining all block types with their properties.
 const Block BLOCK_TYPES[NUM_BLOCK_TYPES] = {
 	{"Grass", "just a silly block of grass", DARK_GREEN, false},
 	{"Water", "it's cold to the touch", LIGHT_BLUE, true},
@@ -55,37 +56,37 @@ every other tile would be "out of bounds" and not accessible by the player
 class Tile
 {
 private:
-	//Main Tile variables
-	int ID;
-	int row;
-	int col;
+	int ID;		// Unique identifier for the tile.
+	int row;	// Row position of the tile in the chunk.
+	int col;	// Column position of the tile in the chunk.
 
-	// Marks if a tile is a flag for a quest
+	// Used to flag tiles as part of a quest.
 	string questFlag;
 
-	//Item in Tile
+	// Pointer to an item present on the tile.
 	Item* myItem;
 
-	//NPC on tile
+	// Pointer to an NPC present on the tile.
 	NPC* myNPC;
 
-	//Enemy on tile
+	// Pointer to an enemy present on the tile.
 	Enemy* myEnemy;
 
 public:
-	//Description Setter/Getters
+	// Displays information about the tile in a standard format.
 	void DisplayTile();
+	// Displays tile information specifically for the player's current position.
 	void DisplayPlayerTile();
 
-	//Row Setter/Getters
+	// Accessor and mutator for the row position of the tile.
 	int GetRow();
 	void SetRow(int r);
 
-	//Column Setter/Getters
+	// Accessor and mutator for the column position of the tile.
 	int GetColumn();
 	void SetColumn(int c);
 
-	// ID Getter/Setter
+	// Accessor and mutator for the tile's unique ID.
 	int GetID();
 	void SetID(int);
   
@@ -101,15 +102,15 @@ public:
 	Enemy* GetEnemy();
 	void SetEnemy(Enemy* newEnemy);
 
-	// questFlag Setters/Getters
+	// Accessor and mutator for the quest flag associated with the tile.
 	string GetQuestFlag();
 	void SetQuestFlag(string questFlag);
 
-	//Pickup item
+	// Removes and returns a reference to the item on the tile.
 	Item& PickUpItem();
 
 	//Constructors
-	Tile(int r, int c, int tileID);
-	Tile(int r, int c, Item* newItem, int tileID);
-	Tile();
+	Tile(int r, int c, int tileID);					// Initialize with position and ID.
+	Tile(int r, int c, Item* newItem, int tileID);	// Initialize with item, position, and ID.
+	Tile();											// Default constructor.
 };
