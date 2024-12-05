@@ -176,15 +176,13 @@ void GameManager::SetNewWorld() {
 
 	switch (currentMap) {
 	case 0:
-		//InitializeStartingAreaWorld();
-		InitializeLandOfScrumWorld();
+		InitializeStartingAreaWorld();
 		break;
 	case 1:
 		InitializeCityWorld();
 		break;
 	case 2:
-		InitializeStartingAreaWorld();
-		//InitializeLandOfScrumWorld();
+		InitializeLandOfScrumWorld();
 		break;
 	default:
 		break;
@@ -1076,9 +1074,6 @@ void GameManager::SpawnLandOfScrumEnemies() {
 	// Chunk 1,1
 	map->GetChunkAt(1, 1).GetTileAt(2, 5).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
 	map->GetChunkAt(1, 1).GetTileAt(13, 10).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
-
-	// Test item to be able to defeat Vallonious quicker (testing purposes)
-	map->GetChunkAt(1, 1).GetTileAt(4, 4).SetItem(new Item("Wand", { L"🐿️", 3 }, "This Wand can be used as a weapon against your enemies.", Item::Type::WEAPON, 40, 1));
 
 	// Chunk 2,2
 	map->GetChunkAt(2, 2).GetTileAt(8, 14).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
