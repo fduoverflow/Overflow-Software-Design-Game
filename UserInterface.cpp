@@ -18,6 +18,7 @@ string UserInterface::DisplayRules()
     rules += "9. Defeat bosses to progress.\n";
     rules += "10. Explore the world and interact with NPCs to receive quests.\n";
     rules += "11. Reach the land of Scrum to rescue Gapplin and defeat Vallonious.\n";
+    rules += "12. Each area requires you to defeat a given number of enemies before progressing. The first area requires 4 to be defeated.\n";
 
     //Stats affected by items
     rules += "\nStats affected by items:\n";

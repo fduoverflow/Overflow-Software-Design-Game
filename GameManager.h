@@ -18,6 +18,7 @@ private:
 	Quest* threeStonesQuest;
 	Quest* captainQuest;
 	Item* spellBook;
+	int enemiesToDefeat;					//Number of enemies that need to be defeated to move on to the next area
 	bool WillCollide(int, int, int, int);	// Checks whether of not the new player position is collidable
 
 	//Bool to check if player has completed tutorial battle.
@@ -82,6 +83,9 @@ public:
 	void SpawnSprintVilleEnemies();
 	void SpawnLandOfScrumEnemies();
 
+	//Respawn player on death
+	void RespawnPlayer();
+
 	//Initialize starting area items
 	void SpawnStartingAreaItems();
 
@@ -101,7 +105,9 @@ public:
 	// Setting the NPCs of Sprintville
 	void SetSprintVilleNPCs();
 
+	//Control variable getters
 	int GetCurrentMap();
+	int GetEnemiesLeftToDefeat();
 
 	//Checking to see if the player is at the doors of Vallonious' room
 	void CheckForValloniousRoom();

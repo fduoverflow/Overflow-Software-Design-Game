@@ -17,8 +17,14 @@ using namespace std;
 
 int main() {
 
+	//Introduce title and get player name
+	string playerName = "Link";
+	cout << "Welcome to The Legend of Gapplin!" << endl;
+	cout << "First, please enter your name: ";
+	cin >> playerName;
+
 	//Initialize player and inventory
-	Player myPlayer("link", 20, 5, 4);
+	Player myPlayer(playerName, 20, 5, 4);
 	Inventory inventory(25);
 
 	//Initialize UI
@@ -29,14 +35,6 @@ int main() {
 
 	// Initialize first world
 	manager.SetNewWorld();
-
-
-	//Spawning in the Spellbook Thief NPC-- will be more of just text rather than NPC to interact with
-	
-	//Temp spawns of last area. Will be moved once the last map is implemented.
-	
-
-	
 
 	//Set game loop variables
 	bool isGameOver = false;
@@ -90,7 +88,8 @@ int main() {
 		//End game if player dies
 		if (myPlayer.GetPlayerHealth() <= 0) {
 			cout << "You have died. Better luck next time!" << endl;
-			return 0;
+			cout << "Respawning you to the starting location." << endl;
+			manager.RespawnPlayer();
 		}
 
 		//Display player location info
@@ -158,7 +157,7 @@ int main() {
 					}
 					break;
 				case UserInputValidation::Action::PICKUP:
-					if (manager.GetPlayerLocationTile().GetItem() != nullptr)		//Check if item is on Tile
+					if (manager.GetPlayerLocationTile().GetItem() != nullptr && manager.GetPlayerLocationTile().GetItem()->GetType() != Item::Type::TELEPORTER)		//Check if item is on Tile
 					{
 						if (manager.GetPlayerLocationTile().GetItem()->GetName() == "Scrummius' Spell Book") // KEY item for First Quest-- flag trigger for completion of first quest
 						{
@@ -197,16 +196,20 @@ int main() {
 					break;
 				case UserInputValidation::Action::ENTER:
 					if (manager.GetPlayerLocationTile().GetItem() != nullptr && manager.GetPlayerLocationTile().GetItem()->GetType() == Item::Type::TELEPORTER)
-						// Creates the new world in here for now, and brings the player to it
+						// Creates the new world in here for now, and brings the player to it if they have defeated the required number of enemies.
 					{
-						manager.SetNewWorld();
-						system("cls");
-						manager.Display();
-						if (manager.GetCurrentMap() == 1)
+						if (manager.GetEnemiesLeftToDefeat() <= 0)
 						{
-							manager.InitializeCaptainQuest(); // Intialize Captain Quest -- retrieving the spellbook
+							manager.SetNewWorld();
+							system("cls");
+							manager.Display();
+							if (manager.GetCurrentMap() == 1)
+							{
+								manager.InitializeCaptainQuest(); // Intialize Captain Quest -- retrieving the spellbook
+							}
 						}
-						
+						else
+							cout << "\nTo enter the next area, you must first defeat " << manager.GetEnemiesLeftToDefeat() << " more enemies.\n\n";
 					}
 					else
 						cout << "There is nothing to enter.\n";

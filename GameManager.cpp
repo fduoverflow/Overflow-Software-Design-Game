@@ -37,6 +37,7 @@ GameManager::GameManager()
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 	inventory = nullptr;
+	enemiesToDefeat = 0;
 }
 /*
 * Constructor with passed player and map.
@@ -54,6 +55,7 @@ GameManager::GameManager(Player* p)
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 	inventory = nullptr;
+	enemiesToDefeat = 0;
 }
 GameManager::GameManager(Player* p, Inventory* i)
 {
@@ -68,6 +70,7 @@ GameManager::GameManager(Player* p, Inventory* i)
 	//Initialize tutorial battle checker
 	isFirstBattleDone = false;
 	inventory = i;
+	enemiesToDefeat = 0;
 }
 int GameManager::GetCurrentMap()
 {
@@ -171,6 +174,31 @@ void GameManager::InitializeLandOfScrumWorld() {
 	map->GetChunkAt(5, 1).GetTileAt(0, 9).SetID(10);
 }
 
+/*
+* Respawn the player to the starting position of the current map with max health.
+*/
+void GameManager::RespawnPlayer()
+{
+	myPlayer->SetPlayerHealth(myPlayer->GetPlayerMaxHealth());
+	switch(currentMap) 
+	{
+		case 0:
+			myPlayer->SetPlayerChunkLocation(startingArea.chunkX, startingArea.chunkY);
+			myPlayer->SetPlayerLocation(startingArea.tileX, startingArea.tileY);
+			break;
+		case 1:
+			myPlayer->SetPlayerChunkLocation(city.chunkX, city.chunkY);
+			myPlayer->SetPlayerLocation(city.tileX, city.tileY);
+			break;
+		case 2:
+			myPlayer->SetPlayerChunkLocation(landOfScrum.chunkX, landOfScrum.chunkY);
+			myPlayer->SetPlayerLocation(landOfScrum.tileX, landOfScrum.tileY);
+			break;
+		default:
+			break;
+	}
+}
+
 // Moves to the next work, thus changing the map
 void GameManager::SetNewWorld() {
 	currentMap++;
@@ -178,12 +206,15 @@ void GameManager::SetNewWorld() {
 	switch (currentMap) {
 	case 0:
 		InitializeStartingAreaWorld();
+		enemiesToDefeat = 4;
 		break;
 	case 1:
 		InitializeCityWorld();
+		enemiesToDefeat = 4;
 		break;
 	case 2:
 		InitializeLandOfScrumWorld();
+		enemiesToDefeat = 1;
 		break;
 	default:
 		break;
@@ -576,7 +607,7 @@ void GameManager::GameBattleManager(Player& myPlayer)
 				{
 					cout << "Lord Vallonious laughs at you for trying to run from the tutorial battle...\n";
 				}
-				else if (runChance <= 50) // 50% run success chance
+				else if (runChance <= (15 + (myPlayer.GetPlayerEvade() * 5))) // run success chance based on player evade stat
 				{
 					cout << "You ran away successfully! The " << enemyName << " still remains...\n";
 					isActionRun = true;
@@ -609,11 +640,14 @@ void GameManager::GameBattleManager(Player& myPlayer)
 			}
 			if (enemyName == "Dust Golem")
 			{
-				myPlayer.SetPlayerHealth(20);
+				myPlayer.SetPlayerHealth(myPlayer.GetPlayerMaxHealth());
 				cout << "Lord Vallonious heals you after your battle with the Dust Golem.\n";
 				SpawnStartingAreaEnemies(); // Ensure enemies spawn after tutorial
 			}
 			GetPlayerLocationChunk().EnemyDefeted(GetPlayerLocationTile().GetEnemy());
+			enemiesToDefeat--;
+			if (enemiesToDefeat <= 0)
+				cout << "\n!!! You have defeated the required number of enemies to proceed to the next area. Do your best to find its entrance. !!!\n";
 			return;
 		}
 
@@ -1122,7 +1156,7 @@ void GameManager::SpawnLandOfScrumItems()
 
 	// Land of Scrum Robe
 	string arcaneRobeDesc = "Arcane fabric, made for escaping danger—now in limited supply!";
-	map->GetChunkAt(4, 0).GetTileAt(1, 11).SetItem(new Item("Arcane Robe", { L"👘",3 }, arcaneRobeDesc, Item::Type::EQUIPMENT, 3, 1));
+	map->GetChunkAt(4, 0).GetTileAt(1, 11).SetItem(new Item("Arcane Robe", { L"👘",3 }, arcaneRobeDesc, Item::Type::EQUIPMENT, 4, 1));
 
 	// Land of Scrum Hat
 	string arcaneHatDesc = "Woven with arcane magic... and maybe a bit of thread from Granny's attic.";
@@ -1138,27 +1172,32 @@ void GameManager::CheckForValloniousRoom()
 	{
 		if ((myPlayer->GetPlayerLocationY() == 6 || myPlayer->GetPlayerLocationY() == 7 || myPlayer->GetPlayerLocationY() == 8 || myPlayer->GetPlayerLocationY() == 9) && myPlayer->GetPlayerLocationX() == 15)
 		{
-			// Give story beat/Dialogue if the player has entered the room with Lord Vallonious
-			cout << "\n\nLord Vallonious says: Welcome FOOL! I hope you've prepared well enough for our final battle\n If you must turn back now and prepare further, I will be merciful and allow you to do so.\n";
-			cout << "This may be thy final battle after all... the choice is yours...\n\n";
-			cout << "You feel as though there is no turning back after this point...\n";
-			cout << "As you think that, you hear Gapplin's cry coming from behind Vallonious' throne...\n";
-			cout << "Would you like to proceed? ";
-			cin >> playerAnswer;
-			cout << endl;
-			NormalizeString(playerAnswer);
-			if (playerAnswer == "YES")
+			if (enemiesToDefeat <= 0)
 			{
-				cout << "Lord Vallonious says: VERY WELL THEN FOOL! Our battle will be legendary.\n I will laugh my way as I take Gapplin and make him mine own.\n I hope your journey has been bountiful, but I'm afraid it ends HERE!!!!\n\n";
-				map->GetChunkAt(5, 1).GetTileAt(0, 6).SetID(9);
-				map->GetChunkAt(5, 1).GetTileAt(0, 7).SetID(17);
-				map->GetChunkAt(5, 1).GetTileAt(0, 8).SetID(17);
-				map->GetChunkAt(5, 1).GetTileAt(0, 9).SetID(9);
+				// Give story beat/Dialogue if the player has entered the room with Lord Vallonious
+				cout << "\n\nLord Vallonious says: Welcome FOOL! I hope you've prepared well enough for our final battle\n If you must turn back now and prepare further, I will be merciful and allow you to do so.\n";
+				cout << "This may be thy final battle after all... the choice is yours...\n\n";
+				cout << "You feel as though there is no turning back after this point...\n";
+				cout << "As you think that, you hear Gapplin's cry coming from behind Vallonious' throne...\n";
+				cout << "Would you like to proceed? ";
+				cin >> playerAnswer;
+				cout << endl;
+				NormalizeString(playerAnswer);
+				if (playerAnswer == "YES")
+				{
+					cout << "Lord Vallonious says: VERY WELL THEN FOOL! Our battle will be legendary.\n I will laugh my way as I take Gapplin and make him mine own.\n I hope your journey has been bountiful, but I'm afraid it ends HERE!!!!\n\n";
+					map->GetChunkAt(5, 1).GetTileAt(0, 6).SetID(9);
+					map->GetChunkAt(5, 1).GetTileAt(0, 7).SetID(17);
+					map->GetChunkAt(5, 1).GetTileAt(0, 8).SetID(17);
+					map->GetChunkAt(5, 1).GetTileAt(0, 9).SetID(9);
+				}
+				else
+				{
+					cout << "Lord Vallonious says: Go prepare and ready yourself for the final battle then... I'll be merciful as this will certainly be your last fight... MUAHAHAHAHAHHAHAH.\n\n";
+				}
 			}
 			else
-			{
-				cout << "Lord Vallonious says: Go prepare and ready yourself for the final battle then... I'll be merciful as this will certainly be your last fight... MUAHAHAHAHAHHAHAH.\n\n";
-			}
+				cout << "\n\nLord Vallonious says: FOOL! You'll need to defeat " << enemiesToDefeat << " more enemies before you can even dream to reach me!\n\n";
 		}
 	}
 }
@@ -1199,8 +1238,6 @@ bool GameManager::CaptainQuestComplete()
 	return true;
 }
 
-
-
 void GameManager::SetSprintVilleNPCs()
 {
 	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I remember you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
@@ -1223,4 +1260,11 @@ void GameManager::RollEndCredits()
 		cout << "Gapplin says: Thank you for saving me! I hope your journey here was a good one!\n\n";
 		cout << "A voice from beyond says: you may now close the game. Thanks for playing!\n";
 	}
+}
+/*
+* Return the number of enemies left to defeat before the player can proceed to the next area.
+*/
+int GameManager::GetEnemiesLeftToDefeat()
+{
+	return enemiesToDefeat;
 }
