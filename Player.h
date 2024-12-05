@@ -11,16 +11,25 @@ using namespace std;
 class Player
 {
 private:
+	//Main player strings
 	string playerName;
 	string outOfBoundsMessage = "\nThe player can not move to that location.\n";
 	string movingChunkMessage = "\nMoving to new Chunk.\n";
+	
+	//Player health variables
 	int maxPlayerHealth;
 	int currentPlayerHealth;
+	
+	//Player location variables
 	int playerChunkLoc[2];			// Player chunk location stored as row and column
 	int playerTileLocation[2];		// Tile that the player is located on
+	
+	//Player battle variables
 	string playerAttack;			// Player Attack Name
 	int playerAttackDamage;			// Player Attack damage number
 	int evasiveness;				// Player Evasiveness number
+	
+	//Player overworld icon
 	wstring playerIcon = L"🧙‍♂️";
 
 	//Equipped items
@@ -52,7 +61,6 @@ public:
 	//Player evasiveness setter/getter;
 	int GetPlayerEvade();
 	void SetPlayerEvade(int val);
-
 
 	//Player Location Setter/Getter
 	int GetPlayerLocationX();

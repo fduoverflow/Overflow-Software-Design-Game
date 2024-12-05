@@ -4,6 +4,7 @@
 #include <string> 
 using namespace std;
 
+//Display stuct to hold an emoji and size
 struct display {
     wstring emoji;
     int size;
@@ -35,7 +36,7 @@ private:
     // Name of the NPC, used to identify the character (e.g., "Scrummius the Owl")
     string name;
 
-    
+    // Icon for displaying on overwrold
     display icon;
 
     // Dialogue that the NPC will say to the player

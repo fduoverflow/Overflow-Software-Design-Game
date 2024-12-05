@@ -4,6 +4,7 @@
 
 using namespace std;
 
+//Display stuct to hold an emoji and size
 struct enemyDisplay {
     wstring emoji;
     int size;
@@ -66,7 +67,6 @@ public:
     // Enemy Attack Name/Attack Damage Setters/Getters.
     string GetEnemyAttack();
     void SetEnemyAttack(string);
-
     int GetEnemyAttackDamage();
     void SetEnemyAttackDamage(int);
 

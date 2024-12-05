@@ -53,6 +53,7 @@ class Item
 		void Equip();
 
 	private:
+		//Item parameter variables
 		string name;
 		string description;
 		Type myType;

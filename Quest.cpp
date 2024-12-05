@@ -1,4 +1,8 @@
 #include "Quest.h"
+
+/*
+* Default constructor
+*/
 Quest::Quest()
 {
 	questName = "";
@@ -8,6 +12,10 @@ Quest::Quest()
 	isQuestStarted = false;
 	isQuestCompleted = false;
 }
+
+/*
+* Quest constructor that assigns a name, description, objective, and item pointer.
+*/
 Quest::Quest(string n, string p, string obj, Item *i)
 {
 	questName = n;
@@ -17,6 +25,8 @@ Quest::Quest(string n, string p, string obj, Item *i)
 	isQuestStarted = false;
 	isQuestCompleted = false;
 }
+
+//Parameter setters/getters
 void Quest::SetQuestName(string n) {questName = n;}
 string Quest::GetQuestName() {return questName;}
 
@@ -34,19 +44,3 @@ bool Quest::GetQuestStart() {return isQuestStarted;}
 
 void Quest::SetQuestComplete(bool end) {isQuestCompleted = end;}
 bool Quest::GetQuestComplete() {return isQuestCompleted;}
-
-
-// Is QuestCompleted method -- each quest has bool to see if it completed
-
-// Objectives: travel to the house, gather the spellbook, and leave the house -- prompts first battle
-
-// QuestBuilder
-// enum type
-
-// start flag
-// content middle
-// end flag
-
-// start -- talking to scrummius
-// content - moving to the house, exploring, picking up the spellbook
-//end -- getting the spellbook from the house

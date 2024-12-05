@@ -1,7 +1,9 @@
 #include "Player.h"
 using namespace std;
 
-//Constructors
+/*
+* Player constructor that assigns a name, health, and tile x and y location.
+*/
 Player::Player(string name, int health, int tileX, int tileY)
 {
 	playerName = name;
@@ -16,6 +18,9 @@ Player::Player(string name, int health, int tileX, int tileY)
 	hat = nullptr;
 	body = nullptr;
 }
+/*
+* Default Player constructor.
+*/
 Player::Player()
 {
 	playerName = "";
@@ -31,7 +36,7 @@ Player::Player()
 	body = nullptr;
 }
 
-//Player Location Setter/Getter
+//Player Location Setters/Getters
 int Player::GetPlayerLocationX()
 {
 	return playerTileLocation[1];
