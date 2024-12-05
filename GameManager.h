@@ -44,6 +44,9 @@ public:
 	// Displays the map and anything within it
 	void Display();
 	void DisplayMap();
+	
+	void ClearScreenAndPrompt();
+	void ClearBattleMessages();
 
 	//Returns the Tile address at player's current location.
 	Tile& GetPlayerLocationTile();
@@ -82,6 +85,13 @@ public:
 	//Initialize starting area items
 	void SpawnStartingAreaItems();
 
+	//Initialize Land of Scrum items
+	void SpawnLandOfScrumItems();
+  
+	//Initialize SpintVille items
+	void SpawnSprintVilleItems();
+
+
 	//Use Item from passed Inventory
 	void UseItem(Inventory& playerInv);
 
@@ -92,4 +102,10 @@ public:
 	void SetSprintVilleNPCs();
 
 	int GetCurrentMap();
+
+	//Checking to see if the player is at the doors of Vallonious' room
+	void CheckForValloniousRoom();
+
+	// Checking to see if the player has finished the game
+	void RollEndCredits();
 };

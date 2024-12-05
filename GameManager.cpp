@@ -136,6 +136,7 @@ void GameManager::InitializeCityWorld() {
 	// Place all item, NPC, and enemy initializations for the city in this function
 	SetSprintVilleNPCs();
 	SpawnSprintVilleEnemies();
+	SpawnSprintVilleItems();
 	
 	// Teleporter into Land of Scrum
 	map->GetChunkAt(4, 2).GetTileAt(8, 12).SetItem(new Item("Gate", { L"🚪", 3 }, "You're at the dock; would you like to take the ride to the Land of Scrum?", Item::Type::TELEPORTER, 0, 0));
@@ -162,6 +163,12 @@ void GameManager::InitializeLandOfScrumWorld() {
 
 	// Place all item, NPC, and enemy initializations for the city in this 
 	SpawnLandOfScrumEnemies();
+
+	// Lock of Vallonious final boss room until the player answers that they would like to proceed
+	map->GetChunkAt(5, 1).GetTileAt(0, 6).SetID(10);
+	map->GetChunkAt(5, 1).GetTileAt(0, 7).SetID(10);
+	map->GetChunkAt(5, 1).GetTileAt(0, 8).SetID(10);
+	map->GetChunkAt(5, 1).GetTileAt(0, 9).SetID(10);
 }
 
 // Moves to the next work, thus changing the map
@@ -182,6 +189,7 @@ void GameManager::SetNewWorld() {
 		break;
 	}
 }
+
 Map* GameManager::GetMap()
 {
 	return map;
@@ -497,197 +505,146 @@ bool GameManager::ThreeStonesPuzzle()
 	}
 }
 
-/*
-This function will manage how battles will work and will be called in Game.cpp when a battle starts
-3 player actions: ATTACK, DEFLECT, RUN
-Enemy actions: ATTACK and DEFLECT
-*/
-void GameManager::GameBattleManager(Player &myPlayer)
+void GameManager::GameBattleManager(Player& myPlayer)
 {
-
-	//Check if the battle is the tutorial battle against the dust golem
+	// Check if the battle is the tutorial battle against the Dust Golem
 	if (!isFirstBattleDone && GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
 	{
-		cout << "Before the battle begins, you hear Lord Vallonious' voice in your head... FOOL this seems to be your first battle. Let me teach you the basics, so that our final battle may at least be a fair one.\n";
-		cout << "If you can not even defeat this simple Dust Golem, you hold no chance to defeat ME!\n\n";
-		cout << "You have 3 actions. ATTACK, DEFLECT, and RUN. Attack and Run are self explanatory... unless your feeble mind cannot comprehend these concepts...\n";
+		cout << "Before the battle begins, you hear Lord Vallonious' voice in your head...\n";
+		cout << "FOOL! This seems to be your first battle. Let me teach you the basics, so that our final battle may at least be a fair one.\n";
+		cout << "If you cannot even defeat this simple Dust Golem, you hold no chance to defeat ME!\n\n";
+		cout << "You have 3 actions: ATTACK, DEFLECT, and RUN. Attack and Run are self-explanatory...\n";
 		cout << "Deflect works like so: when an attack is deflected, the one who deflected takes half the damage, but so does the attacker.\n";
 		cout << "May your future battles be bountiful... I await in the Land of Scrum for our EPIC ENCOUNTER!\n\n";
 
-		//Update checker
+		// Update checker
 		isFirstBattleDone = true;
 	}
 
-	// if the player chooses run and run succeeds, it should stop the battle, but not get rid of the enemy
+	// Flag to determine if the player successfully runs
 	bool isActionRun = false;
-	while (GetPlayerLocationTile().GetEnemy() != nullptr && GetPlayerLocationTile().GetEnemy()->GetHealth() > 0 && isActionRun == false && myPlayer.GetPlayerHealth() > 0)
+
+	// Battle loop
+	while (GetPlayerLocationTile().GetEnemy() != nullptr &&
+		GetPlayerLocationTile().GetEnemy()->GetHealth() > 0 &&
+		!isActionRun &&
+		myPlayer.GetPlayerHealth() > 0)
 	{
-		// Player turn
-		// Asking for user input for their action
+		//  Whats being siad for player action
 		string battleAction;
 		cout << "Enter Attack, Deflect, or Run for your action: ";
 		cin >> battleAction;
 
-		cout << endl;
-
-		// Check if the input is a valid action
+		// Valiii input
 		UserInputValidation playerChecker;
 		bool validAction = playerChecker.ActionChecker(battleAction);
 
-		// Get the player and enemy name
+		// Fetch player and enemy data
 		string enemyName = GetPlayerLocationTile().GetEnemy()->GetName();
 		string playerName = myPlayer.GetPlayerName();
-
-		// Get enemy Health
-		int startEnemyHealth = GetPlayerLocationTile().GetEnemy()->GetHealth();
-		int currentEnemyHealth = startEnemyHealth;
-
-		// Get player name and attack damage
 		int playerAttackDamage = myPlayer.GetPlayerAttackDamage();
 		string playerAttackName = myPlayer.GetPlayerAttack();
-
-		// Get enemy attack and attack damage
-		string enemyAttackName = GetPlayerLocationTile().GetEnemy()->GetEnemyAttack();
 		int enemyAttackDamage = GetPlayerLocationTile().GetEnemy()->GetEnemyAttackDamage();
+		string enemyAttackName = GetPlayerLocationTile().GetEnemy()->GetEnemyAttack();
+		int currentEnemyHealth = GetPlayerLocationTile().GetEnemy()->GetHealth();
 		int currentPlayerHealth = myPlayer.GetPlayerHealth();
 
-		// Get a random number from 1 to 10
-		srand((unsigned)time(nullptr)); // seed value
-		int runChance = 1 + (rand() % 9);
+		// Making random chance for running
+		srand((unsigned)time(nullptr));
+		int runChance = 1 + (rand() % 100); // Random chance between 1 and 100
 
-		// If the player chose a valid action, process their action
+		// Clear the screen after a valid action
+		system("cls");
+
 		if (validAction)
 		{
 			switch (playerChecker.GetPlayerAction())
 			{
-			
-			// Player chooses the ATTACK Action and will do damage to the enemy			
 			case UserInputValidation::Action::ATTACK:
-													
 				cout << playerName << " uses " << playerAttackName << " and deals " << playerAttackDamage << " HP!\n";
 				GetPlayerLocationTile().GetEnemy()->SetHealth(currentEnemyHealth - playerAttackDamage);
-
-				currentEnemyHealth = GetPlayerLocationTile().GetEnemy()->GetHealth();
-				cout << enemyName << " Health: " << currentEnemyHealth << "\n\n";
 				break;
 
-			// Player chooses the DEFLECT Action-- player will take only half dmg, and enemy will take half dmg of the attack they dealt
 			case UserInputValidation::Action::DEFLECT:
 				cout << playerName << " deflects!\n";
 				myPlayer.SetPlayerHealth(currentPlayerHealth - (enemyAttackDamage / 2));
-				currentPlayerHealth = myPlayer.GetPlayerHealth();
-
 				GetPlayerLocationTile().GetEnemy()->SetHealth(currentEnemyHealth - (enemyAttackDamage / 2));
-				currentEnemyHealth = GetPlayerLocationTile().GetEnemy()->GetHealth();
-
-				cout << enemyName << " Health: " << currentEnemyHealth << "\n";
-				cout << playerName << " Health: " << currentPlayerHealth << "\n\n";
 				break;
+
 			case UserInputValidation::Action::RUN:
-				// The player cannot run away from the tutorial battle with the dust golem
 				if (GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
 				{
-					// run chance is set to 10 for now, meaning the player will 100% of the time fail at running when fighting the dust golem
-					runChance = 10;
-					cout << "Lord Vallonious laughs at you from trying to run from the tutorial battle...\n";
+					cout << "Lord Vallonious laughs at you for trying to run from the tutorial battle...\n";
 				}
-
-				// Setting Run chance at a 50% for now-- will be lowered later (thinking 15% as a default)
-				if (runChance <= 5)
+				else if (runChance <= 50) // 50% run success chance
 				{
-					cout << "You ran away safely, but the " << GetPlayerLocationTile().GetEnemy()->GetName() << " still remains...\n";
+					cout << "You ran away successfully! The " << enemyName << " still remains...\n";
 					isActionRun = true;
+					continue; // Exit  loop
 				}
 				else
 				{
 					cout << "You were not able to run away...\n";
 				}
 				break;
-			}		
+
+			default:
+				cout << "Invalid action. You lost your turn.\n";
+				break;
+			}
 		}
 		else
 		{
-			// player must enter a valid action, or their turn is lost
-			cout << "Oops, you entered a wrong command. You lost your turn...\n\n";
+			cout << "Invalid command. You lost your turn.\n";
 		}
 
-		// Occurs when the enemy is defeated by reaching 0 or less health after player action
+		// Check if the enemy is defeated
 		if (GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
 		{
-			//Notify player of enemy defeat
 			cout << enemyName << " has been defeated!\n";
-
-			//Drop item if Enemy was holding one
 			if (GetPlayerLocationTile().GetEnemy()->GetItem() != nullptr)
 			{
 				GetPlayerLocationTile().SetItem(GetPlayerLocationTile().GetEnemy()->GetItem());
 				cout << "The enemy dropped an item!\n";
 			}
-
-			//Heal the player if they just defeated the tutorial enemy, the dust golem.
-			if (GetPlayerLocationTile().GetEnemy()->GetName() == "Dust Golem")
+			if (enemyName == "Dust Golem")
 			{
 				myPlayer.SetPlayerHealth(20);
-				cout << "Lord Vallonious pities you, so he has healed you after your battle with the dust golem... he will not be so merciful next time...\n";
-				cout << "Player health: " << myPlayer.GetPlayerHealth();
-				//Initialize starting area enemies
-				SpawnStartingAreaEnemies();
+				cout << "Lord Vallonious heals you after your battle with the Dust Golem.\n";
+				SpawnStartingAreaEnemies(); // Ensure enemies spawn after tutorial
 			}
-
-			//Remove Enemy reference pointers to delete Enemy
 			GetPlayerLocationChunk().EnemyDefeted(GetPlayerLocationTile().GetEnemy());
-
 			return;
 		}
 
-		// Get the enemy action
-		UserInputValidation::Action enemyTurn = ProcessEnemyTurn(currentEnemyHealth, startEnemyHealth);
-
-		// Enemy actions limited to ATTACK and DEFLECT-- updating the health accordingly
-		switch (enemyTurn)
+		// Enemy turn
+		if (!isActionRun && GetPlayerLocationTile().GetEnemy()->GetHealth() > 0)
 		{
-			case UserInputValidation::Action::ATTACK:
-				cout << enemyName << " uses " << enemyAttackName << " and deals " << enemyAttackDamage << " HP!\n";
-
-				myPlayer.SetPlayerHealth(currentPlayerHealth - enemyAttackDamage);
-				currentPlayerHealth = myPlayer.GetPlayerHealth();
-
-				cout << playerName << " Health: " << currentPlayerHealth << "\n\n";
-				break;
-			case UserInputValidation::Action::DEFLECT:
-				cout << enemyName << " deflects!\n";
-
-				myPlayer.SetPlayerHealth(currentPlayerHealth - (playerAttackDamage / 2));
-				currentPlayerHealth = myPlayer.GetPlayerHealth();
-
-				GetPlayerLocationTile().GetEnemy()->SetHealth(currentEnemyHealth - (playerAttackDamage / 2));
-				currentEnemyHealth = GetPlayerLocationTile().GetEnemy()->GetHealth();
-
-				cout << enemyName << " Health: " << currentEnemyHealth << "\n";
-				cout << playerName << " Health: " << currentPlayerHealth << "\n\n";
-				break;
-			default:
-				break;
-		}
-
-		// Occurs when the enemy is defeated by reaching 0 or less health after enemy action
-		if (GetPlayerLocationTile().GetEnemy()->GetHealth() <= 0)
-		{
-			cout << enemyName << " has been defeated!\n";
-
-			//Drop item if Enemy was holding one
-			if (GetPlayerLocationTile().GetEnemy()->GetItem() != nullptr)
+			UserInputValidation::Action enemyAction = ProcessEnemyTurn(
+				GetPlayerLocationTile().GetEnemy()->GetHealth(),
+				GetPlayerLocationTile().GetEnemy()->GetStartingHealth()
+			);
+			if (enemyAction == UserInputValidation::Action::ATTACK)
 			{
-				GetPlayerLocationTile().SetItem(GetPlayerLocationTile().GetEnemy()->GetItem());
-				cout << "The enemy dropped an item!";
+				cout << enemyName << " uses " << enemyAttackName << " and deals " << enemyAttackDamage << " HP!\n";
+				myPlayer.SetPlayerHealth(currentPlayerHealth - enemyAttackDamage);
 			}
-
-			// Getting rid of the instance of the enemy that has been defeated
-			GetPlayerLocationChunk().EnemyDefeted(GetPlayerLocationTile().GetEnemy());
-			return;
+			else if (enemyAction == UserInputValidation::Action::DEFLECT)
+			{
+				cout << enemyName << " deflects your attack, reducing damage taken!\n";
+				GetPlayerLocationTile().GetEnemy()->SetHealth(currentEnemyHealth - (playerAttackDamage / 2));
+				myPlayer.SetPlayerHealth(currentPlayerHealth - (playerAttackDamage / 2));
+			}
 		}
+
+		// Display updated player and enemy health
+		cout << "\nUpdated Status:\n";
+		cout << "Enemy: " << enemyName << " | Health: " << GetPlayerLocationTile().GetEnemy()->GetHealth() << "\n";
+		cout << "Player: " << playerName << " | Health: " << myPlayer.GetPlayerHealth() << "\n\n";
 	}
 }
+
+
 
 /*
 This method will process the enemies turn
@@ -958,9 +915,6 @@ void GameManager::SpawnStartingAreaEnemies()
 	map->GetChunkAt(3, 1).GetTileAt(8, 1).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
 	map->GetChunkAt(3,1).GetTileAt(12, 14).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
 
-
-
-
 	// Mushroom Warriors
 	// Chunk 4,2
 	map->GetChunkAt(4, 2).GetTileAt(14, 5).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
@@ -1028,7 +982,7 @@ void GameManager::SpawnSprintVilleEnemies() {
 
 	// Pigeon Griffin Enemies
 	// Chunk 1,0
-	map->GetChunkAt(1, 1).GetTileAt(7, 6).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 5 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
+	map->GetChunkAt(1, 1).GetTileAt(7, 6).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 3 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
 	map->GetChunkAt(1, 1).GetTileAt(8, 10).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, "Sky Peck", 4, pigeonDesc));
 
 	// Chunk 2,1
@@ -1038,7 +992,7 @@ void GameManager::SpawnSprintVilleEnemies() {
 	map->GetChunkAt(2, 1).GetTileAt(4, 2).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sky Peck", 4, pigeonDesc));
 
 	// Chunk 2,0
-	map->GetChunkAt(2, 0).GetTileAt(6, 4).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 5 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
+	map->GetChunkAt(2, 0).GetTileAt(6, 4).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Winged Blade", { L"🗡️", 3 }, "A sword made from the sharp wings of the pigeon griffin.", Item::Type::WEAPON, 5, 1), "Sky Peck", 4, pigeonDesc));
 
 	// Chunk 3,0
 	map->GetChunkAt(3, 0).GetTileAt(1, 5).SetEnemy(new Enemy("Pigeon Griffin", { L"🦅", 3 }, 20, new Item("Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 5, 1), "Sky Peck", 4, pigeonDesc));
@@ -1062,62 +1016,152 @@ void GameManager::SpawnSprintVilleEnemies() {
 	map->GetChunkAt(4, 1).GetTileAt(3, 10).SetEnemy(new Enemy("Magical Trash Man", { L"🗑️", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Waste Hurl", 6, trashManDesc));
 }
 
+/* This function is used to initialize the enemies in the Land of Scrum Area
+*/
+void GameManager::SpawnSprintVilleItems()
+{
+	// Weapon Descriptions and Initialization
+	string platinumSwordDesc = "A sword dropped from a knight. It yearns to be wielded once again.";
+	string blueMoonDesc = "Pack a wallop once in a blue moon—or every day!";
+	map->GetChunkAt(2, 1).GetTileAt(12,3).SetItem(new Item("Platinum Sword",{L"🗡️",5},platinumSwordDesc,Item::Type::WEAPON,8,1));
+	map->GetChunkAt(4, 0).GetTileAt(14, 7).SetItem(new Item("Blue Morning Star", { L"🏹",3 }, blueMoonDesc, Item::Type::WEAPON, 9, 1));
+
+	// Item Description and Initialization
+	string healingPotionDesc = "A mid-level pick-me-up. Better than an apple a day!";
+	string lesserHealingPotionDesc = "Tiny but mighty! It's like a hug for your HP";
+	map->GetChunkAt(2, 0).GetTileAt(7, 3).SetItem(new Item("Healing Potion", {L"🍵",3}, healingPotionDesc,Item::Type::HEALING,10,1));
+	map->GetChunkAt(4, 0).GetTileAt(12, 4).SetItem(new Item("Healing Potion", { L"🍵",3 }, healingPotionDesc, Item::Type::HEALING, 10, 1));
+	map->GetChunkAt(3, 0).GetTileAt(8, 12).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// SprintVille Robe
+	string enchantedRobeDesc = "Like the charmed robe, but with extra swish and dodge.";
+	map->GetChunkAt(4, 1).GetTileAt(6, 13).SetItem(new Item("Enchanted Robe", { L"👘",3 },enchantedRobeDesc, Item::Type::EQUIPMENT,  2, 1));
+
+	// SprintVille Hat
+	string enchantedHatDesc = "Guaranteed to add a mystical flair to your headgear collection.";
+	map->GetChunkAt(2, 1).GetTileAt(12, 13).SetItem(new Item("Enchanted Hat", {L"🎓",3},enchantedHatDesc, Item::Type::EQUIPMENT,6,1));
+
+}
+
 void GameManager::SpawnLandOfScrumEnemies() {
 
 	// Enemy Descriptions
 	string blobDesc = "A malevolent mass of darkness, the Evil Dark Blob lurks in the Land of Scrum, waiting to engulf unwary adventurers.";
 	string shadowDesc = "A sinister wisp of darkness that floats eerily, its faint whispers sowing unease in the hearts of adventurers.";
+	string valloniousDesc = "The wicked dragon of the land of Restrospecta. Defeat him and finish your quest!";
 
 	// Puts the enemies in the map
 	// Dark Evil Blob Enemies
 	// Chunk 1,1
 	map->GetChunkAt(1, 1).GetTileAt(2, 5).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
-	map->GetChunkAt(1, 1).GetTileAt(13, 10).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(1, 1).GetTileAt(13, 10).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Venombrand", { L"🗡️", 3 }, "A sinister sword forged from toxic metals, its blade drips with a corrosive venom", Item::Type::WEAPON, 12, 1), "Corrosive Strike", 6, blobDesc));
 
 	// Chunk 2,2
-	map->GetChunkAt(2, 2).GetTileAt(8, 14).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(2, 2).GetTileAt(8, 14).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
 
 	// Chunk 4,0
-	map->GetChunkAt(4, 0).GetTileAt(5, 13).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(4, 0).GetTileAt(5, 13).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
 	map->GetChunkAt(4, 0).GetTileAt(8, 1).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
 
 	// Chunk 3,0
-	map->GetChunkAt(3, 0).GetTileAt(5, 6).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
-	map->GetChunkAt(3, 0).GetTileAt(5, 11).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(3, 0).GetTileAt(5, 6).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(3, 0).GetTileAt(5, 11).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Venomshot", { L"🏹", 3 }, "A bow that shoots arrows filled with a corrosive venom", Item::Type::WEAPON, 14, 1), "Corrosive Strike", 6, blobDesc));
 	map->GetChunkAt(3, 0).GetTileAt(10, 14).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
 
 	// Chunk 3,2
-	map->GetChunkAt(3, 2).GetTileAt(5, 6).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(3, 2).GetTileAt(5, 6).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
 	map->GetChunkAt(3, 2).GetTileAt(5, 11).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
-	map->GetChunkAt(3, 2).GetTileAt(10, 14).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, "Corrosive Strike", 6, blobDesc));
+	map->GetChunkAt(3, 2).GetTileAt(10, 14).SetEnemy(new Enemy("Dark Evil Blob", { L"🌑", 3 }, 27, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Corrosive Strike", 6, blobDesc));
 
 	// Gloomy Shadow Enemies
 	// Chunk 2,1
-	map->GetChunkAt(2, 1).GetTileAt(5, 2).SetEnemy(new Enemy("Gloomy Shadow", {L"👤", 3}, 30, new Item("Shadowfang Blade", {L"🗡️", 9}, "A lightweight sword imbued with dark energy. Deals 9 HP per hit.", Item::Type::WEAPON, 8, 1), "Dreadful Embrace", 7, shadowDesc));
-	map->GetChunkAt(2, 1).GetTileAt(5, 13).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(2, 1).GetTileAt(5, 2).SetEnemy(new Enemy("Gloomy Shadow", {L"👤", 3}, 30, new Item("Shadowfang Blade", {L"🗡️", 3}, "A lightweight sword imbued with dark energy. Deals 9 HP per hit.", Item::Type::WEAPON, 9, 1), "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(2, 1).GetTileAt(5, 13).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
 
 	// Chunk 2,2
-	map->GetChunkAt(2, 2).GetTileAt(13, 5).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(2, 2).GetTileAt(13, 5).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
 
 	// Chunk 2,0
-	map->GetChunkAt(2, 0).GetTileAt(13, 10).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(2, 0).GetTileAt(13, 10).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
 	map->GetChunkAt(2, 0).GetTileAt(8, 1).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
 
 	// Chunck 3,0
-	map->GetChunkAt(3, 0).GetTileAt(5, 1).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
-	map->GetChunkAt(3, 0).GetTileAt(10, 4).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(3, 0).GetTileAt(5, 1).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(3, 0).GetTileAt(10, 4).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Darkvein Bow", { L"🏹", 3 }, "A bow imbued with dark energy. Deals 11 HP per hit.", Item::Type::WEAPON, 11, 1), "Dreadful Embrace", 7, shadowDesc));
 	map->GetChunkAt(3, 0).GetTileAt(10, 9).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
 
 	// Chunk 4,2
-	map->GetChunkAt(4, 2).GetTileAt(8, 14).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
-	map->GetChunkAt(4, 2).GetTileAt(5, 2).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(4, 2).GetTileAt(8, 14).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(4, 2).GetTileAt(5, 2).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Eclipse Blade", { L"🗡", 3 }, "A long sword imbued with dark energy. Deals 13 HP per hit.", Item::Type::WEAPON, 13, 1), "Dreadful Embrace", 7, shadowDesc));
 
 	// Chunk 3,2
-	map->GetChunkAt(3, 2).GetTileAt(5, 1).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(3, 2).GetTileAt(5, 1).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
 	map->GetChunkAt(3, 2).GetTileAt(10, 4).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
-	map->GetChunkAt(3, 2).GetTileAt(10, 9).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
+	map->GetChunkAt(3, 2).GetTileAt(10, 9).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
+
+	// Lord Vallonious
+	map->GetChunkAt(5, 1).GetTileAt(10, 7).SetEnemy(new Enemy("Lord Vallonious", { L"🐉",3 }, 65, new Item("Legendary Gapplin", { L"🍏", 9 }, "The reason for your journey. Take good care of him! :)", Item::Type::KEY, 100, 1), "Dragon Breath", 9, valloniousDesc));
 }
 
+/* This function is used to initalize any items placed in the Land of Scrum Area
+*/
+void GameManager::SpawnLandOfScrumItems()
+{
+	// Land of Scrum Weapons
+	string excaliburSwordDesc =  "Legend has it this blade is invincible. Your mileage may vary.";
+	string phantomPhoenixDesc = "A mystical bird of fire, now available in bow form.";
+	map->GetChunkAt(1, 1).GetTileAt(4, 1).SetItem(new Item("Excalibur", { L"🗡️",5 }, excaliburSwordDesc, Item::Type::WEAPON, 10, 1));
+	map->GetChunkAt(2, 0).GetTileAt(11, 14).SetItem(new Item("Phantom Phoenix", { L"🏹",3 }, phantomPhoenixDesc, Item::Type::WEAPON, 10, 1));
+
+	// Item Description and Initialization
+	string greaterHealingPotionDesc = "This one packs a real punch—right to your health bar!";
+	string lesserHealingPotionDesc = "Tiny but mighty! It's like a hug for your HP";
+	map->GetChunkAt(1, 1).GetTileAt(11, 14).SetItem(new Item("Greater Healing Potion", { L"🍵",3 }, greaterHealingPotionDesc, Item::Type::HEALING, 15, 1));
+	map->GetChunkAt(2, 2).GetTileAt(11, 1).SetItem(new Item("Greater Healing Potion", { L"🍵",3 }, greaterHealingPotionDesc, Item::Type::HEALING, 15, 1));
+	map->GetChunkAt(4, 2).GetTileAt(1, 4).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// Land of Scrum Robe
+	string arcaneRobeDesc = "Arcane fabric, made for escaping danger—now in limited supply!";
+	map->GetChunkAt(4, 0).GetTileAt(1, 11).SetItem(new Item("Arcane Robe", { L"👘",3 }, arcaneRobeDesc, Item::Type::EQUIPMENT, 3, 1));
+
+	// Land of Scrum Hat
+	string arcaneHatDesc = "Woven with arcane magic... and maybe a bit of thread from Granny's attic.";
+	map->GetChunkAt(3, 0).GetTileAt(14, 1).SetItem(new Item("Arcane Hat", { L"🎓",3 }, arcaneHatDesc, Item::Type::EQUIPMENT, 9, 1));
+}
+
+void GameManager::CheckForValloniousRoom()
+{
+	// Check that the player has enter Vallonious' Room
+	// Chunk 4,1 and since the entrance way is 4 tiles long, you have to account for Rows 6-9, but all the same column of 15
+	string playerAnswer;
+	if ((myPlayer->GetPlayerChunkLocationX() == 4 && myPlayer->GetPlayerChunkLocationY() == 1) && map->GetChunkAt(5, 1).GetTileAt(0, 6).GetID() == 10)
+	{
+		if ((myPlayer->GetPlayerLocationY() == 6 || myPlayer->GetPlayerLocationY() == 7 || myPlayer->GetPlayerLocationY() == 8 || myPlayer->GetPlayerLocationY() == 9) && myPlayer->GetPlayerLocationX() == 15)
+		{
+			// Give story beat/Dialogue if the player has entered the room with Lord Vallonious
+			cout << "\n\nLord Vallonious says: Welcome FOOL! I hope you've prepared well enough for our final battle\n If you must turn back now and prepare further, I will be merciful and allow you to do so.\n";
+			cout << "This may be thy final battle after all... the choice is yours...\n\n";
+			cout << "You feel as though there is no turning back after this point...\n";
+			cout << "As you think that, you hear Gapplin's cry coming from behind Vallonious' throne...\n";
+			cout << "Would you like to proceed? ";
+			cin >> playerAnswer;
+			cout << endl;
+			NormalizeString(playerAnswer);
+			if (playerAnswer == "YES")
+			{
+				cout << "Lord Vallonious says: VERY WELL THEN FOOL! Our battle will be legendary.\n I will laugh my way as I take Gapplin and make him mine own.\n I hope your journey has been bountiful, but I'm afraid it ends HERE!!!!\n\n";
+				map->GetChunkAt(5, 1).GetTileAt(0, 6).SetID(9);
+				map->GetChunkAt(5, 1).GetTileAt(0, 7).SetID(17);
+				map->GetChunkAt(5, 1).GetTileAt(0, 8).SetID(17);
+				map->GetChunkAt(5, 1).GetTileAt(0, 9).SetID(9);
+			}
+			else
+			{
+				cout << "Lord Vallonious says: Go prepare and ready yourself for the final battle then... I'll be merciful as this will certainly be your last fight... MUAHAHAHAHAHHAHAH.\n\n";
+			}
+		}
+	}
+}
 /*
 Quest Makers for the Ship Captain's Quest
 Quest start- "thief" steals spellbook
@@ -1154,8 +1198,29 @@ bool GameManager::CaptainQuestComplete()
 	cout << "Now go forth and sail the seas to the Land of Scrum! Who knows what troubles await you on your quest for Gapplin!\n";
 	return true;
 }
+
+
+
 void GameManager::SetSprintVilleNPCs()
 {
-	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o' Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I rememeber you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
+	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I remember you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
 	map->GetChunkAt(4, 2).GetTileAt(8, 10).SetNPC(new NPC("Ship Captain", { L"⚓", 3 }, shipCaptainDialogue));
+}
+
+void GameManager::RollEndCredits()
+{
+	if (inventory->findItem("LEGENDARY GAPPLIN") != nullptr)
+	{
+		cout << endl;
+		cout << "Lord Vallonious says: ARGHHHHHHHHHH. This is not my end.\n";
+		cout << "This is not the last you see of me! I WILL HAVE MY REVENGE.\n\n";
+		cout << "A voice from beyond says: With Vallonious now defeated, Restrospecta can be at peace once again.\n";
+		cout << "You feel strongly however, that this is not the last you will see of Vallonious...\n\n";
+		cout << "-------------------------------------------------------------------------------------------------------\n";
+		cout << "Thank you so much for playing our game!\n";
+		cout << "Even though you cannot go back to previous areas, you are free to walk around the Land of Scrum!\n";
+		cout << "---------------------------------------------------------------------------------------------------------\n\n";
+		cout << "Gapplin says: Thank you for saving me! I hope your journey here was a good one!\n\n";
+		cout << "A voice from beyond says: you may now close the game. Thanks for playing!\n";
+	}
 }
