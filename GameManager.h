@@ -83,6 +83,9 @@ public:
 	void SpawnSprintVilleEnemies();
 	void SpawnLandOfScrumEnemies();
 
+	//Respawn player on death
+	void RespawnPlayer();
+
 	//Initialize starting area items
 	void SpawnStartingAreaItems();
 

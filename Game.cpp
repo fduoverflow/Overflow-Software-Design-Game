@@ -18,7 +18,7 @@ using namespace std;
 int main() {
 
 	//Initialize player and inventory
-	Player myPlayer("link", 100, 5, 4);
+	Player myPlayer("link", 20, 5, 4);
 	Inventory inventory(25);
 
 	//Initialize UI
@@ -82,7 +82,8 @@ int main() {
 		//End game if player dies
 		if (myPlayer.GetPlayerHealth() <= 0) {
 			cout << "You have died. Better luck next time!" << endl;
-			return 0;
+			cout << "Respawning you to the starting location." << endl;
+			manager.RespawnPlayer();
 		}
 
 		//Display player location info

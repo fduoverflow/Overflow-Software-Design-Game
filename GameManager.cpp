@@ -167,6 +167,31 @@ void GameManager::InitializeLandOfScrumWorld() {
 	SpawnLandOfScrumEnemies();
 }
 
+/*
+* Respawn the player to the starting position of the current map with max health.
+*/
+void GameManager::RespawnPlayer()
+{
+	myPlayer->SetPlayerHealth(myPlayer->GetPlayerMaxHealth());
+	switch(currentMap) 
+	{
+		case 0:
+			myPlayer->SetPlayerChunkLocation(startingArea.chunkX, startingArea.chunkY);
+			myPlayer->SetPlayerLocation(startingArea.tileX, startingArea.tileY);
+			break;
+		case 1:
+			myPlayer->SetPlayerChunkLocation(city.chunkX, city.chunkY);
+			myPlayer->SetPlayerLocation(city.tileX, city.tileY);
+			break;
+		case 2:
+			myPlayer->SetPlayerChunkLocation(landOfScrum.chunkX, landOfScrum.chunkY);
+			myPlayer->SetPlayerLocation(landOfScrum.tileX, landOfScrum.tileY);
+			break;
+		default:
+			break;
+	}
+}
+
 // Moves to the next work, thus changing the map
 void GameManager::SetNewWorld() {
 	currentMap++;
