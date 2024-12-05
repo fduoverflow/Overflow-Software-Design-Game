@@ -1009,6 +1009,8 @@ void GameManager::SpawnSprintVilleEnemies() {
 	map->GetChunkAt(4, 0).GetTileAt(14, 3).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Goblin's Dagger", { L"🗡️", 3 }, "The dagger of a goblin thief.", Item::Type::WEAPON, 8, 1), "Sneaky Slash", 5, goblinDesc));
 }
 
+/* This function is used to initialize the enemies in the Land of Scrum Area
+*/
 void GameManager::SpawnSprintVilleItems()
 {
 	// Weapon Descriptions and Initialization
@@ -1092,6 +1094,32 @@ void GameManager::SpawnLandOfScrumEnemies() {
 
 	// Lord Vallonious
 	map->GetChunkAt(5, 1).GetTileAt(10, 7).SetEnemy(new Enemy("Lord Vallonious", { L"🐉",3 }, 65, new Item("Legendary Gapplin", { L"🍏", 9 }, "The reason for your journey. Take good care of him! :)", Item::Type::KEY, 100, 1), "Dragon Breath", 9, valloniousDesc));
+}
+
+/* This function is used to initalize any items placed in the Land of Scrum Area
+*/
+void GameManager::SpawnLandOfScrumItems()
+{
+	// Land of Scrum Weapons
+	string excaliburSwordDesc =  "Legend has it this blade is invincible. Your mileage may vary.";
+	string phantomPhoenixDesc = "A mystical bird of fire, now available in bow form.";
+	map->GetChunkAt(1, 1).GetTileAt(4, 1).SetItem(new Item("Excalibur", { L"🗡️",5 }, excaliburSwordDesc, Item::Type::WEAPON, 10, 1));
+	map->GetChunkAt(2, 0).GetTileAt(11, 14).SetItem(new Item("Phantom Phoenix", { L"🏹",3 }, phantomPhoenixDesc, Item::Type::WEAPON, 10, 1));
+
+	// Item Description and Initialization
+	string greaterHealingPotionDesc = "This one packs a real punch—right to your health bar!";
+	string lesserHealingPotionDesc = "Tiny but mighty! It's like a hug for your HP";
+	map->GetChunkAt(1, 1).GetTileAt(11, 14).SetItem(new Item("Greater Healing Potion", { L"🍵",3 }, greaterHealingPotionDesc, Item::Type::HEALING, 15, 1));
+	map->GetChunkAt(2, 2).GetTileAt(11, 1).SetItem(new Item("Greater Healing Potion", { L"🍵",3 }, greaterHealingPotionDesc, Item::Type::HEALING, 15, 1));
+	map->GetChunkAt(4, 2).GetTileAt(1, 4).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// Land of Scrum Robe
+	string arcaneRobeDesc = "Arcane fabric, made for escaping danger—now in limited supply!";
+	map->GetChunkAt(4, 0).GetTileAt(1, 11).SetItem(new Item("Arcane Robe", { L"👘",3 }, arcaneRobeDesc, Item::Type::EQUIPMENT, 3, 1));
+
+	// Land of Scrum Hat
+	string arcaneHatDesc = "Woven with arcane magic... and maybe a bit of thread from Granny's attic.";
+	map->GetChunkAt(3, 0).GetTileAt(14, 1).SetItem(new Item("Arcane Hat", { L"🎓",3 }, arcaneHatDesc, Item::Type::EQUIPMENT, 9, 1));
 }
 
 void GameManager::CheckForValloniousRoom()
