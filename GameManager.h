@@ -89,6 +89,13 @@ public:
 	//Initialize starting area items
 	void SpawnStartingAreaItems();
 
+	//Initialize Land of Scrum items
+	void SpawnLandOfScrumItems();
+  
+	//Initialize SpintVille items
+	void SpawnSprintVilleItems();
+
+
 	//Use Item from passed Inventory
 	void UseItem(Inventory& playerInv);
 
@@ -101,4 +108,10 @@ public:
 	//Control variable getters
 	int GetCurrentMap();
 	int GetEnemiesLeftToDefeat();
+
+	//Checking to see if the player is at the doors of Vallonious' room
+	void CheckForValloniousRoom();
+
+	// Checking to see if the player has finished the game
+	void RollEndCredits();
 };

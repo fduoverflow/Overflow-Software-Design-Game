@@ -139,6 +139,7 @@ void GameManager::InitializeCityWorld() {
 	// Place all item, NPC, and enemy initializations for the city in this function
 	SetSprintVilleNPCs();
 	SpawnSprintVilleEnemies();
+	SpawnSprintVilleItems();
 	
 	// Teleporter into Land of Scrum
 	map->GetChunkAt(4, 2).GetTileAt(8, 12).SetItem(new Item("Gate", { L"🚪", 3 }, "You're at the dock; would you like to take the ride to the Land of Scrum?", Item::Type::TELEPORTER, 0, 0));
@@ -165,6 +166,12 @@ void GameManager::InitializeLandOfScrumWorld() {
 
 	// Place all item, NPC, and enemy initializations for the city in this 
 	SpawnLandOfScrumEnemies();
+
+	// Lock of Vallonious final boss room until the player answers that they would like to proceed
+	map->GetChunkAt(5, 1).GetTileAt(0, 6).SetID(10);
+	map->GetChunkAt(5, 1).GetTileAt(0, 7).SetID(10);
+	map->GetChunkAt(5, 1).GetTileAt(0, 8).SetID(10);
+	map->GetChunkAt(5, 1).GetTileAt(0, 9).SetID(10);
 }
 
 /*
@@ -213,6 +220,7 @@ void GameManager::SetNewWorld() {
 		break;
 	}
 }
+
 Map* GameManager::GetMap()
 {
 	return map;
@@ -941,9 +949,6 @@ void GameManager::SpawnStartingAreaEnemies()
 	map->GetChunkAt(3, 1).GetTileAt(8, 1).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
 	map->GetChunkAt(3,1).GetTileAt(12, 14).SetEnemy(new Enemy("Wizard Squirrel", { L"🐿️", 3 }, 15, "Nut Throw", 2, squirrelDesc));
 
-
-
-
 	// Mushroom Warriors
 	// Chunk 4,2
 	map->GetChunkAt(4, 2).GetTileAt(14, 5).SetEnemy(new Enemy("Mushroom Warrior", { L"🍄", 3 }, 12, new Item("Healing Mushroom", { L"🧋", 3 }, "Use this mushroom to heal your HP!", Item::Type::HEALING, 8, 1), "Mushroom Drop", 3, mushroomDesc));
@@ -957,7 +962,7 @@ void GameManager::SpawnStartingAreaEnemies()
 
 	// Possessed Stumps
 	// Chunk 4, 4
-	map->GetChunkAt(4, 4).GetTileAt(8, 12).SetEnemy(new Enemy("Possessed Stump", { L"👿", 3 }, 16, new Item("Elixer of Renewal", { L"🧋", 3 }, "Use this potion to heal your HP!", Item::Type::HEALING, 8, 1), "Splinter Swipe", 3, stumpDesc));
+	map->GetChunkAt(4, 4).GetTileAt(8, 12).SetEnemy(new Enemy("Possessed Stump", { L"👿", 3 }, 16, new Item("Elixer of Renewal", { L"🧋", 3 }, "Use this potion to heal your HP!", Item::Type::HEALING, 12, 1), "Splinter Swipe", 3, stumpDesc));
 
 	// Chunck 4,2
 	map->GetChunkAt(4, 2).GetTileAt(1, 12).SetEnemy(new Enemy("Possessed Stump", { L"👿", 3 }, 16, "Splinter Swipe", 3, stumpDesc));
@@ -1007,6 +1012,7 @@ void GameManager::SpawnSprintVilleEnemies() {
 	// Enemy Descriptions
 	string pigeonDesc = "A hybrid of pigeon and griffin, this creature combines the ferocity of a predator with the annoyance of a city pest. Approach with caution!";
 	string goblinDesc = "A cunning and nimble foe, the Goblin Thief thrives in chaos. Known for its underhanded tactics, it will blind and distract its enemies before darting in for a devastating attack.";
+	string trashManDesc = "A small garbage bag come to life. So much for recycling...";
 
 	// Pigeon Griffin Enemies
 	// Chunk 1,0
@@ -1036,6 +1042,39 @@ void GameManager::SpawnSprintVilleEnemies() {
 	// Chunk 4,0
 	map->GetChunkAt(4, 0).GetTileAt(2, 13).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Sneaky Slash", 5, goblinDesc));
 	map->GetChunkAt(4, 0).GetTileAt(14, 3).SetEnemy(new Enemy("Goblin Thief", { L"🧌", 3 }, 25, new Item("Goblin's Dagger", { L"🗡️", 3 }, "The dagger of a goblin thief.", Item::Type::WEAPON, 8, 1), "Sneaky Slash", 5, goblinDesc));
+
+	// Magical Trash man Enemies-- same Health as Goblin, but does 1 HP damage more
+	//Chunk 4,1
+	map->GetChunkAt(4, 1).GetTileAt(2, 3).SetEnemy(new Enemy("Magical Trash Man", { L"🗑️", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Waste Hurl", 6, trashManDesc));
+	map->GetChunkAt(4, 1).GetTileAt(12, 12).SetEnemy(new Enemy("Magical Trash Man", { L"🗑️", 3 }, 25,  "Waste Hurl", 5, trashManDesc));
+	map->GetChunkAt(4, 1).GetTileAt(3, 10).SetEnemy(new Enemy("Magical Trash Man", { L"🗑️", 3 }, 25, new Item("Mega Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 10, 1), "Waste Hurl", 6, trashManDesc));
+}
+
+/* This function is used to initialize the enemies in the Land of Scrum Area
+*/
+void GameManager::SpawnSprintVilleItems()
+{
+	// Weapon Descriptions and Initialization
+	string platinumSwordDesc = "A sword dropped from a knight. It yearns to be wielded once again.";
+	string blueMoonDesc = "Pack a wallop once in a blue moon—or every day!";
+	map->GetChunkAt(2, 1).GetTileAt(12,3).SetItem(new Item("Platinum Sword",{L"🗡️",5},platinumSwordDesc,Item::Type::WEAPON,8,1));
+	map->GetChunkAt(4, 0).GetTileAt(14, 7).SetItem(new Item("Blue Morning Star", { L"🏹",3 }, blueMoonDesc, Item::Type::WEAPON, 9, 1));
+
+	// Item Description and Initialization
+	string healingPotionDesc = "A mid-level pick-me-up. Better than an apple a day!";
+	string lesserHealingPotionDesc = "Tiny but mighty! It's like a hug for your HP";
+	map->GetChunkAt(2, 0).GetTileAt(7, 3).SetItem(new Item("Healing Potion", {L"🍵",3}, healingPotionDesc,Item::Type::HEALING,10,1));
+	map->GetChunkAt(4, 0).GetTileAt(12, 4).SetItem(new Item("Healing Potion", { L"🍵",3 }, healingPotionDesc, Item::Type::HEALING, 10, 1));
+	map->GetChunkAt(3, 0).GetTileAt(8, 12).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// SprintVille Robe
+	string enchantedRobeDesc = "Like the charmed robe, but with extra swish and dodge.";
+	map->GetChunkAt(4, 1).GetTileAt(6, 13).SetItem(new Item("Enchanted Robe", { L"👘",3 },enchantedRobeDesc, Item::Type::EQUIPMENT,  2, 1));
+
+	// SprintVille Hat
+	string enchantedHatDesc = "Guaranteed to add a mystical flair to your headgear collection.";
+	map->GetChunkAt(2, 1).GetTileAt(12, 13).SetItem(new Item("Enchanted Hat", {L"🎓",3},enchantedHatDesc, Item::Type::EQUIPMENT,6,1));
+
 }
 
 void GameManager::SpawnLandOfScrumEnemies() {
@@ -1043,6 +1082,7 @@ void GameManager::SpawnLandOfScrumEnemies() {
 	// Enemy Descriptions
 	string blobDesc = "A malevolent mass of darkness, the Evil Dark Blob lurks in the Land of Scrum, waiting to engulf unwary adventurers.";
 	string shadowDesc = "A sinister wisp of darkness that floats eerily, its faint whispers sowing unease in the hearts of adventurers.";
+	string valloniousDesc = "The wicked dragon of the land of Restrospecta. Defeat him and finish your quest!";
 
 	// Puts the enemies in the map
 	// Dark Evil Blob Enemies
@@ -1092,8 +1132,70 @@ void GameManager::SpawnLandOfScrumEnemies() {
 	map->GetChunkAt(3, 2).GetTileAt(5, 1).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
 	map->GetChunkAt(3, 2).GetTileAt(10, 4).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, "Dreadful Embrace", 7, shadowDesc));
 	map->GetChunkAt(3, 2).GetTileAt(10, 9).SetEnemy(new Enemy("Gloomy Shadow", { L"👤", 3 }, 30, new Item("Super Potion", { L"🧋", 3 }, "Use this potion to restore your HP", Item::Type::HEALING, 25, 1), "Dreadful Embrace", 7, shadowDesc));
+
+	// Lord Vallonious
+	map->GetChunkAt(5, 1).GetTileAt(10, 7).SetEnemy(new Enemy("Lord Vallonious", { L"🐉",3 }, 65, new Item("Legendary Gapplin", { L"🍏", 9 }, "The reason for your journey. Take good care of him! :)", Item::Type::KEY, 100, 1), "Dragon Breath", 9, valloniousDesc));
 }
 
+/* This function is used to initalize any items placed in the Land of Scrum Area
+*/
+void GameManager::SpawnLandOfScrumItems()
+{
+	// Land of Scrum Weapons
+	string excaliburSwordDesc =  "Legend has it this blade is invincible. Your mileage may vary.";
+	string phantomPhoenixDesc = "A mystical bird of fire, now available in bow form.";
+	map->GetChunkAt(1, 1).GetTileAt(4, 1).SetItem(new Item("Excalibur", { L"🗡️",5 }, excaliburSwordDesc, Item::Type::WEAPON, 10, 1));
+	map->GetChunkAt(2, 0).GetTileAt(11, 14).SetItem(new Item("Phantom Phoenix", { L"🏹",3 }, phantomPhoenixDesc, Item::Type::WEAPON, 10, 1));
+
+	// Item Description and Initialization
+	string greaterHealingPotionDesc = "This one packs a real punch—right to your health bar!";
+	string lesserHealingPotionDesc = "Tiny but mighty! It's like a hug for your HP";
+	map->GetChunkAt(1, 1).GetTileAt(11, 14).SetItem(new Item("Greater Healing Potion", { L"🍵",3 }, greaterHealingPotionDesc, Item::Type::HEALING, 15, 1));
+	map->GetChunkAt(2, 2).GetTileAt(11, 1).SetItem(new Item("Greater Healing Potion", { L"🍵",3 }, greaterHealingPotionDesc, Item::Type::HEALING, 15, 1));
+	map->GetChunkAt(4, 2).GetTileAt(1, 4).SetItem(new Item("Lesser Healing Potion", { L"🧋", 3 }, lesserHealingPotionDesc, Item::Type::HEALING, 6, 1));
+
+	// Land of Scrum Robe
+	string arcaneRobeDesc = "Arcane fabric, made for escaping danger—now in limited supply!";
+	map->GetChunkAt(4, 0).GetTileAt(1, 11).SetItem(new Item("Arcane Robe", { L"👘",3 }, arcaneRobeDesc, Item::Type::EQUIPMENT, 3, 1));
+
+	// Land of Scrum Hat
+	string arcaneHatDesc = "Woven with arcane magic... and maybe a bit of thread from Granny's attic.";
+	map->GetChunkAt(3, 0).GetTileAt(14, 1).SetItem(new Item("Arcane Hat", { L"🎓",3 }, arcaneHatDesc, Item::Type::EQUIPMENT, 9, 1));
+}
+
+void GameManager::CheckForValloniousRoom()
+{
+	// Check that the player has enter Vallonious' Room
+	// Chunk 4,1 and since the entrance way is 4 tiles long, you have to account for Rows 6-9, but all the same column of 15
+	string playerAnswer;
+	if ((myPlayer->GetPlayerChunkLocationX() == 4 && myPlayer->GetPlayerChunkLocationY() == 1) && map->GetChunkAt(5, 1).GetTileAt(0, 6).GetID() == 10)
+	{
+		if ((myPlayer->GetPlayerLocationY() == 6 || myPlayer->GetPlayerLocationY() == 7 || myPlayer->GetPlayerLocationY() == 8 || myPlayer->GetPlayerLocationY() == 9) && myPlayer->GetPlayerLocationX() == 15)
+		{
+			// Give story beat/Dialogue if the player has entered the room with Lord Vallonious
+			cout << "\n\nLord Vallonious says: Welcome FOOL! I hope you've prepared well enough for our final battle\n If you must turn back now and prepare further, I will be merciful and allow you to do so.\n";
+			cout << "This may be thy final battle after all... the choice is yours...\n\n";
+			cout << "You feel as though there is no turning back after this point...\n";
+			cout << "As you think that, you hear Gapplin's cry coming from behind Vallonious' throne...\n";
+			cout << "Would you like to proceed? ";
+			cin >> playerAnswer;
+			cout << endl;
+			NormalizeString(playerAnswer);
+			if (playerAnswer == "YES")
+			{
+				cout << "Lord Vallonious says: VERY WELL THEN FOOL! Our battle will be legendary.\n I will laugh my way as I take Gapplin and make him mine own.\n I hope your journey has been bountiful, but I'm afraid it ends HERE!!!!\n\n";
+				map->GetChunkAt(5, 1).GetTileAt(0, 6).SetID(9);
+				map->GetChunkAt(5, 1).GetTileAt(0, 7).SetID(17);
+				map->GetChunkAt(5, 1).GetTileAt(0, 8).SetID(17);
+				map->GetChunkAt(5, 1).GetTileAt(0, 9).SetID(9);
+			}
+			else
+			{
+				cout << "Lord Vallonious says: Go prepare and ready yourself for the final battle then... I'll be merciful as this will certainly be your last fight... MUAHAHAHAHAHHAHAH.\n\n";
+			}
+		}
+	}
+}
 /*
 Quest Makers for the Ship Captain's Quest
 Quest start- "thief" steals spellbook
@@ -1133,10 +1235,27 @@ bool GameManager::CaptainQuestComplete()
 
 void GameManager::SetSprintVilleNPCs()
 {
-	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o' Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I rememeber you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
+	string shipCaptainDialogue = "Ahoy there, matey! Let's see yer ticket. No ticket, no voyage to the fabled Land o Scrum, savvy?\nAye, step aboard if ye've got it, but mind ye keep to the code... or the sea'll sort ye out proper!\n Wait a minute... I remember you I took your ticket already!\n\n**Pulls out spellbook**\n\n Wait this is not a ticket, this be yer spellbook... My apologies matey. For ye troubles, I will sail ye to the the fabled Land o’ Scrum free o charge!\n\n **The Captain hands you back your spellbook**\n";
 	map->GetChunkAt(4, 2).GetTileAt(8, 10).SetNPC(new NPC("Ship Captain", { L"⚓", 3 }, shipCaptainDialogue));
 }
 
+void GameManager::RollEndCredits()
+{
+	if (inventory->findItem("LEGENDARY GAPPLIN") != nullptr)
+	{
+		cout << endl;
+		cout << "Lord Vallonious says: ARGHHHHHHHHHH. This is not my end.\n";
+		cout << "This is not the last you see of me! I WILL HAVE MY REVENGE.\n\n";
+		cout << "A voice from beyond says: With Vallonious now defeated, Restrospecta can be at peace once again.\n";
+		cout << "You feel strongly however, that this is not the last you will see of Vallonious...\n\n";
+		cout << "-------------------------------------------------------------------------------------------------------\n";
+		cout << "Thank you so much for playing our game!\n";
+		cout << "Even though you cannot go back to previous areas, you are free to walk around the Land of Scrum!\n";
+		cout << "---------------------------------------------------------------------------------------------------------\n\n";
+		cout << "Gapplin says: Thank you for saving me! I hope your journey here was a good one!\n\n";
+		cout << "A voice from beyond says: you may now close the game. Thanks for playing!\n";
+	}
+}
 /*
 * Return the number of enemies left to defeat before the player can proceed to the next area.
 */
